@@ -1,0 +1,72 @@
+---
+const { bilde } = Astro.props
+
+import { bilder } from './meta.json'
+
+if (!bilde) {
+  throw new Error('No picture provided')
+}
+
+export async function getStaticPaths() {
+  return bilder.map((bilde, i) => {
+    const id = i + 1
+    const prev = id === 1 ? '' : id - 1 + ''
+    const next = id === bilder.length ? '' : id + 1 + ''
+    if (!bilde.file || !bilde.alt) {
+      throw new Error('Missing src or alt in bilde object')
+    }
+    return {
+      params: { id },
+      props: { bilde: { ...bilde, next, prev } },
+    }
+  })
+}
+---
+
+<h1>{bilde.header}</h1>
+
+<a class="img-link" href={'/imgs/captain_scapegoat/' + bilde.file}>
+  <img src={'/imgs/captain_scapegoat/' + bilde.file} alt={bilde.alt} />
+</a>
+{bilde.txt.map((txt, i) => <p>{txt}</p>)}
+
+{
+  bilde.prev && (
+    <a href={bilde.prev} class="button-link">
+      Forrige
+    </a>
+  )
+}
+{
+  bilde.next && (
+    <a href={bilde.next} class="button-link">
+      Neste
+    </a>
+  )
+}
+
+<style>
+  body {
+    background-color: black;
+    color: white;
+  }
+  img {
+    max-width: 100%;
+    max-height: 100vh;
+    height: auto;
+  }
+  .button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 10px 0;
+  }
+
+  .img-link {
+    display: block;
+    margin: 0 auto;
+  }
+</style>
