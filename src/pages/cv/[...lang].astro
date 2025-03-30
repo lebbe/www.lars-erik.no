@@ -1,0 +1,206 @@
+---
+import { getI18nFunction } from "../../utils/i18n.ts";
+import type { Languages } from "../../types/i18n.ts";
+
+export async function getStaticPaths() {
+  const languages: (Languages | undefined)[] = [undefined, "en"];
+  return languages.map((lang: Languages| undefined) => ({
+    params: { lang },
+    props: { lang },
+  }));
+}
+
+const { lang } = Astro.props;
+
+
+const t = getI18nFunction(lang, ["common", "cv"]);
+---
+
+<html lang={lang || "no"}>
+  <head>
+    <title>CV - Lars-Erik Bruce</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/cv/en">{t("English")}</a></li>
+          <li><a href="/cv/">{t("Norsk")}</a></li>
+        </ul>
+      </nav>
+      <h1>Lars-Erik Bruce</h1>
+      <p>
+        {t("Senior Systemutvikler (Frontend-spesialist)")}
+      </p>
+      Sted: Oslo, Norge Født: 02.08.1984 Telefon: (+47) 41 65 06 02 E-post: lebchen@gmail.com
+      LinkedIn: linkedin.com/in/lars-erik-bruce-0200951a/ Github: github.com/lebbe
+
+      <dl>
+        <dt>{t("Sted")}</dt>
+        <dd>{t("Oslo, Norge")}</dd>
+        <dt>{t("Fødselsdato")}</dt>
+        <dd>{t("02.08.1984")}</dd>
+        <dt>{t("Telefon")}</dt>
+        <dd>(+47) 41 65 06 02</dd>
+        <dt>{t("E-post")}</dt>
+        <dd>lebchen (at) gmail.com</dd>
+        <dt>LinkedIn</dt>
+        <dd>
+          <a href="https://www.linkedin.com/in/lars-erik-bruce-0200951a/"
+            >linkedin.com/in/lars-erik-bruce-0200951a/</a
+          >
+        </dd>
+        <dt>Github</dt>
+        <dd><a href="https://github.com/lebbe">github.com/lebbe</a></dd>
+      </dl>
+    </header>
+    <main>
+      <p>
+        {
+          t(
+            "Engasjert og løsningsorientert systemutvikler med over 12 års erfaring innen web- og systemutvikling. Spesialist på frontend-teknologier (HTML, CSS, JavaScript, React, TypeScript), med solid bakgrunn innen Java og REST-baserte backend-løsninger. Brenner for web-plattformen, universell utforming, innovasjon og smidige prosesser, og har lang erfaring med å være teknisk leder og arkitekt. Er kjent for å ta ansvar, kommunisere godt og dele kompetanse med teamet. Jeg er alltid på utkikk etter nye utfordringer og muligheter for å lære og vokse."
+          )
+        }
+      </p>
+
+      <h2>{t("Nøkkelkompetanse")}</h2>
+
+      <ul>
+        <li>
+          <em>{t("Frontend-teknologier")}:</em> React (hooks), Node.js/Express, HTML5,
+          CSS/SCSS, TypeScript, JavaScript, jQuery
+        </li>
+        <li>
+          <em>{t("Backend-teknologier")}:</em> Java, Spring, REST, Microservices,
+          PostgreSQL
+        </li>
+        <li>
+          <em>{t("Verktøy")}:</em> Node/npm, Git, Docker, Webpack/Vite, Gulp, Jenkins,
+          Jira, Confluence, OpenShift, AWS, Grafana, Kibana/Splunk, Nexus, Artifactory
+        </li>
+        <li>
+          <em>{t("Metodikk")}:</em> Smidig utvikling, Scrum, Kanban, Continuous Integration,
+          Continuous Delivery, DevOps, TDD, BDD
+        </li>
+        <li>
+          <em>{t("Språk")}:</em> Norsk (morsmål), Engelsk (flytende)
+        </li>
+      </ul>
+
+      <h2>{t("Arbeidserfaring")}</h2>
+
+      <h3>Senior Software Engineer</h3>
+      Redpill Linpro Development Services Januar 2022 - Nå
+
+      <ul>
+        <li>
+          {
+            t(
+              "Moderniserer web-applikasjoner på tvers av flere team hos en stor statlig aktør, med fokus på React/TypeScript, Node/Express og WCAG/UU-compliance."
+            )
+          }
+        </li>
+        <li>
+          {
+            t(
+              "Utvikler både backend (Java/OpenShift) og frontend, med spesielt ansvar for UI-arkitektur og automatisert testing (Playwright, Cucumber)."
+            )
+          }
+        </li>
+        <li>
+          {
+            t(
+              "Hjelper teamene med problemløsning i frontend-stacken og sikrer at universell utforming blir ivaretatt."
+            )
+          }
+        </li>
+        <li>
+          {
+            t(
+              "Har bidratt til å sette opp CI/CD-pipelines i Jenkins for sømløs utrulling"
+            )
+          }
+        </li>
+      </ul>
+
+      <p>
+        <em>{t("Nøkkelord:")}</em> React, TypeScript, Node.js, Java, Spring, REST,
+        Vite, OpenShift, PostgreSQL, Jenkins, Git
+      </p>
+
+      <h3>Frontend Techlead</h3>
+      Tripletex AS 2012 - 2021
+
+      <p>
+        {t("I Tripletex startet jeg i 2012 å lage mobiltilpassede nettsider for regnskapssystemet: Jeg stod både for bruksdesign og implementering av essensielle funksjoner som timeføring, prosjektering, å se store regnskapsrapporter, tilpasset en liten skjerm. I 2014 fikk jeg hovedansvaret for all frontend-utvikling (først som web-arkitekt, og deretter som techlead), og hadde dette helt frem til jeg forlot selskapet i 2021. Jeg stod også i mange år for å kurse nyansatte i hele teknologi-stacken til selskapet.")}
+      </p>
+
+      <p>
+        {t("Gjennom årene har jeg produsert og jobbet med blant annet: Onboarding-system, hjelpesystem, felles komponentbibliotek både i JSP og React, skjema-validering, periodevelgere, dialoger, med mer. I tillegg har jeg opparbeidet meg en kompetanse og teft til å benytte browserens utviklerverktøy for å avdekke bugs i frontend-applikasjoner hvor andre garvede utviklere har stått helt fast.")}
+      </p>
+      <p>
+        {t("De siste årene var jeg sentral i arkitektur-teamet, og satt føringer for web-arkitekturen, samtidig som jeg bistod alle teams med utvikling og koordinering av funksjonalitet. Når jeg så at ulike teams hadde lagd lignende komponenter, tok jeg ansvaret med å gjøre det om til solide og godt testede felleskomponenter.")}
+      </p>
+
+	  <ul>
+		<li>{t("Ledet front-end-utviklingen i et stort team som leverer en nettbasert løsning for regnskap, lønn og prosjektstyring.")}</li>
+		<li>{t("Stod ansvarlig for å modernisere hele frontend-stacken med React, Flow/TypeScript, Node.js og SCSS, samt introdusere CI/CD-rutiner.")}</li>
+		<li>{t("Planla og gjennomførte migrering fra eldre Java/JSP-baserte sider til moderne React-baserte komponenter.")}</li>
+		<li>{t("Koordinerte prosjekter som forbedret brukeropplevelse (UX), brukervennlighet og responsivt design på tvers av hundrevis av sider.")}</li>
+		<li>{t("Teknisk leder, med fokus på team-samarbeid, arbeidsmetodikk og teknisk retning.")}</li>
+	  </ul>
+      <p>
+        <em>{t("Nøkkelord:")}</em> React, TypeScript, Java, JSP, Node.js, Kanban, Scrum, Git, Docker, DevOps
+      </p>
+
+	  <h3>Summer intern &mdash; Systemutvikler</h3>
+	  cXense
+	  2011
+	  <ul>
+		<li>{t("Implementerte et JavaScript-basert system for å parse RDF/A-syntax i HTML-dokumenter for å veilede kontekstuell annonsering.")}</li>
+		<li>{t("Bidro til AI-plattformen for personalisering av annonser ved å bygge en visuell grafmodell basert på metadata.")}</li>
+	  </ul>
+	  <p>
+        <em>{t("Nøkkelord:")}</em> JavaScript, jQuery, YUI, RDF, Semantisk web, AI, Scrum/Kanban.
+      </p>
+
+	  <h3>{t("Vitenskapelig assistent, gruppelærer, eksamenssensor")}</h3>
+	  Universitetet i Oslo
+	  2009 - 2011
+	  <ul>
+		<li>{t("Utforsket muligheten til å bruke semantiske teknologier for å visualisere og distribuere innholdet i Statistikkbanken (et samarbeid mellom UiO, DNV, SSB og Cambridge Semantics).")}</li>
+		<li>{t("Eksamenssensor i Logikk og beregninger (INF1800).")}</li>
+		<li>{t("Underviste i Logikk og beregninger og Introduksjon til kognitive vitenskaper.")}</li>
+		</ul>
+
+		<h2>{t("Utdanning")}</h2>
+		<h3>{t("Master i Informatikk")}</h3>
+		Universitetet i Oslo
+		2010 - 2012
+		<p>{t("Fordypning i språkteknologi og informasjonsuttrekk. Masteroppgave om automatisk diagnostisering ved hjelp av NLP og ontologier.")}</p>
+
+		<h3>Bachelor of Science, Computer Science</h3>
+
+		University of Oslo
+		2007 - 2010
+		<p>{t("Fordypning i objektorientert (Java) og funksjonell programmering (Scheme, Common Lisp), samt språkteknologi og filosofi.")}</p>
+
+
+		<h2>{t("Øvrig")}</h2>
+		<ul>
+			<li><em>{t("Publikasjoner")}</em>: {t("Har skrevet leserinnlegg om web-teknologi i Kode24. Fokus på moderne HTML og teknisk vedlikehold av kodebasen.")}</li>
+			<li><em>{t("Fritidsinteresser")}</em>: {t("Produserer elektronsik musikk under artistnavnet lebchen og bygger LEGO.")}</li>
+		</ul>
+
+
+		<h2>{t("Referanser")}</h2>
+		<p>{t("Referanser kan oppgis på forespørsel.")}</p>
+    </main>
+	<footer>
+		<p>{t("CV sist oppdatert")}: 29.03.2025</p>
+
+	</footer>
+  </body>
+</html>

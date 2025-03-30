@@ -1,0 +1,101 @@
+{
+  "English": { "en": "English" },
+  "Norsk": { "en": "Norsk" },
+  "Senior Systemutvikler (Frontend-spesialist)": {
+    "en": "Senior System Developer (Frontend Specialist)"
+  },
+  "Sted": { "en": "Location" },
+  "Oslo, Norge": { "en": "Oslo, Norway" },
+  "Fødselsdato": { "en": "Birth date" },
+  "02.08.1984": { "en": "08.02.1984" },
+  "Telefon": { "en": "Phone" },
+  "E-post": { "en": "E-mail" },
+  "Engasjert og løsningsorientert systemutvikler med over 12 års erfaring innen web- og systemutvikling. Spesialist på frontend-teknologier (HTML, CSS, JavaScript, React, TypeScript), med solid bakgrunn innen Java og REST-baserte backend-løsninger. Brenner for web-plattformen, universell utforming, innovasjon og smidige prosesser, og har lang erfaring med å være teknisk leder og arkitekt. Er kjent for å ta ansvar, kommunisere godt og dele kompetanse med teamet. Jeg er alltid på utkikk etter nye utfordringer og muligheter for å lære og vokse.": {
+    "en": "Engaged and solution-oriented system developer with over 12 years of experience in web and system development. Specialist in frontend technologies (HTML, CSS, JavaScript, React, TypeScript), with a solid background in Java and REST-based backend solutions. Passionate about the web platform, universal design, innovation, and agile processes, and have extensive experience as a technical leader and architect. Known for taking responsibility, communicating well, and sharing expertise with the team. I am always looking for new challenges and opportunities to learn and grow."
+  },
+  "Nøkkelkompetanse": { "en": "Key Competencies" },
+  "Frontend-teknologier": { "en": "Frontend Technologies" },
+  "Backend-teknologier": { "en": "Backend Technologies" },
+  "Verktøy": { "en": "Tools" },
+  "Metodikk": { "en": "Methodology" },
+  "Språk": { "en": "Language" },
+  "Arbeidserfaring": { "en": "Work Experience" },
+  "Moderniserer web-applikasjoner på tvers av flere team hos en stor statlig aktør, med fokus på React/TypeScript, Node/Express og WCAG/UU-compliance.": {
+    "en": "Modernizing web applications across several teams at a large government agency, focusing on React/TypeScript, Node/Express, and WCAG/UU compliance."
+  },
+  "Utvikler både backend (Java/OpenShift) og frontend, med spesielt ansvar for UI-arkitektur og automatisert testing (Playwright, Cucumber).": {
+    "en": "Developing both backend (Java/OpenShift) and frontend, with special responsibility for UI architecture and automated testing (Playwright, Cucumber)."
+  },
+  "Hjelper teamene med problemløsning i frontend-stacken og sikrer at universell utforming blir ivaretatt.": {
+    "en": "Helping teams with problem-solving in the frontend stack and ensuring that universal design is maintained."
+  },
+  "Har bidratt til å sette opp CI/CD-pipelines i Jenkins for sømløs utrulling": {
+    "en": "Contributed to setting up CI/CD pipelines in Jenkins for seamless deployment"
+  },
+  "Nøkkelord:": { "en": "Keywords" },
+  "I Tripletex startet jeg i 2012 å lage mobiltilpassede nettsider for regnskapssystemet: Jeg stod både for bruksdesign og implementering av essensielle funksjoner som timeføring, prosjektering, å se store regnskapsrapporter, tilpasset en liten skjerm. I 2014 fikk jeg hovedansvaret for all frontend-utvikling (først som web-arkitekt, og deretter som techlead), og hadde dette helt frem til jeg forlot selskapet i 2021. Jeg stod også i mange år for å kurse nyansatte i hele teknologi-stacken til selskapet.": {
+    "en": "At Tripletex, I started in 2012 to create mobile-adapted websites for the accounting system: I was responsible for both user design and implementation of essential functions such as time tracking, project management, viewing large accounting reports, adapted to a small screen. In 2014, I took on the main responsibility for all frontend development (initially as a web architect, and later as tech lead), and held this position until I left the company in 2021. For many years, I was also responsible for training new employees in the entire technology stack of the company."
+  },
+  "Gjennom årene har jeg produsert og jobbet med blant annet: Onboarding-system, hjelpesystem, felles komponentbibliotek både i JSP og React, skjema-validering, periodevelgere, dialoger, med mer. I tillegg har jeg opparbeidet meg en kompetanse og teft til å benytte browserens utviklerverktøy for å avdekke bugs i frontend-applikasjoner hvor andre garvede utviklere har stått helt fast.": {
+    "en": "Over the years, I have produced and worked on, among other things: Onboarding system, help system, common component library in both JSP and React, form validation, period selectors, dialogs, etc. In addition, I have developed a competence and knack for using the browser's developer tools to uncover bugs in frontend applications where other seasoned developers have been completely stuck."
+  },
+  "De siste årene var jeg sentral i arkitektur-teamet, og satt føringer for web-arkitekturen, samtidig som jeg bistod alle teams med utvikling og koordinering av funksjonalitet. Når jeg så at ulike teams hadde lagd lignende komponenter, tok jeg ansvaret med å gjøre det om til solide og godt testede felleskomponenter.": {
+    "en": "Over the past few years, I was central to the architecture team, setting guidelines for web architecture while assisting all teams with development and coordination of functionality. When I saw that different teams had created similar components, I took the responsibility to turn them into solid and well-tested common components."
+  },
+  "Ledet front-end-utviklingen i et stort team som leverer en nettbasert løsning for regnskap, lønn og prosjektstyring.": {
+    "en": "Led the front-end development in a large team delivering a web-based solution for accounting, payroll, and project management."
+  },
+  "Stod ansvarlig for å modernisere hele frontend-stacken med React, Flow/TypeScript, Node.js og SCSS, samt introdusere CI/CD-rutiner.": {
+    "en": "Responsible for modernizing the entire frontend stack with React, Flow/TypeScript, Node.js, and SCSS, as well as introducing CI/CD routines."
+  },
+  "Planla og gjennomførte migrering fra eldre Java/JSP-baserte sider til moderne React-baserte komponenter.": {
+    "en": "Planned and executed migration from older Java/JSP-based pages to modern React-based components."
+  },
+  "Koordinerte prosjekter som forbedret brukeropplevelse (UX), brukervennlighet og responsivt design på tvers av hundrevis av sider.": {
+    "en": "Coordinated projects that improved user experience (UX), usability, and responsive design across hundreds of pages."
+  },
+  "Teknisk leder, med fokus på team-samarbeid, arbeidsmetodikk og teknisk retning.": {
+    "en": "Technical leader, focusing on team collaboration, work methodology, and technical direction."
+  },
+  "Implementerte et JavaScript-basert system for å parse RDF/A-syntax i HTML-dokumenter for å veilede kontekstuell annonsering.": {
+    "en": "Implemented a JavaScript-based system to parse RDF/A syntax in HTML documents to guide contextual advertising."
+  },
+  "Bidro til AI-plattformen for personalisering av annonser ved å bygge en visuell grafmodell basert på metadata.": {
+    "en": "Contributed to the AI platform for ad personalization by building a visual graph model based on metadata."
+  },
+  "Vitenskapelig assistent, gruppelærer, eksamenssensor": {
+    "en": "Scientific Assistant, Group Teacher, Exam Sensor"
+  },
+  "Utforsket muligheten til å bruke semantiske teknologier for å visualisere og distribuere innholdet i Statistikkbanken (et samarbeid mellom UiO, DNV, SSB og Cambridge Semantics).": {
+    "en": "Explored the possibility of using semantic technologies to visualize and distribute the content of the Statistics Bank (a collaboration between UiO, DNV, SSB, and Cambridge Semantics)."
+  },
+  "Eksamenssensor i Logikk og beregninger (INF1800).": {
+    "en": "Exam sensor in Logic and Calculations (INF1800)."
+  },
+
+  "Underviste i Logikk og beregninger og Introduksjon til kognitive vitenskaper.": {
+    "en": "Taught Logic and Calculations and Introduction to Cognitive Sciences."
+  },
+  "Utdanning": { "en": "Education" },
+  "Master i Informatikk": { "en": "Master in Computer Science" },
+  "Fordypning i språkteknologi og informasjonsuttrekk. Masteroppgave om automatisk diagnostisering ved hjelp av NLP og ontologier.": {
+    "en": "Specialization in language technology and information extraction. Master's thesis on automatic diagnosis using NLP and ontologies."
+  },
+  "Fordypning i objektorientert (Java) og funksjonell programmering (Scheme, Common Lisp), samt språkteknologi og filosofi.": {
+    "en": "Specialization in object-oriented (Java) and functional programming (Scheme, Common Lisp), as well as language technology and philosophy."
+  },
+  "Øvrig": { "en": "Other" },
+  "Publikasjoner": { "en": "Publications" },
+  "Har skrevet leserinnlegg om web-teknologi i Kode24. Fokus på moderne HTML og teknisk vedlikehold av kodebasen.": {
+    "en": "Have written opinion pieces on web technology in Kode24. Focus on modern HTML and technical maintenance of the codebase."
+  },
+  "Fritidsinteresser": { "en": "Leisure Interests" },
+  "Produserer elektronsik musikk under artistnavnet lebchen og bygger LEGO.": {
+    "en": "Produces electronic music under the artist name lebchen and builds LEGO."
+  },
+  "Referanser": { "en": "References" },
+  "Referanser kan oppgis på forespørsel.": {
+    "en": "References can be provided upon request."
+  },
+  "CV sist oppdatert": { "en": "CV last updated" }
+}

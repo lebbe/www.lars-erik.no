@@ -1,5 +1,10 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
+
+import vue from "@astrojs/vue";
 
 // https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  integrations: [vue()],
+  output: "static",
+});
