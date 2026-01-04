@@ -100,7 +100,6 @@ const firstTrack = tracks[0]
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    background: rgba(0, 0, 0, 0.5);
     gap: 20px;
   }
 
@@ -166,7 +165,7 @@ const firstTrack = tracks[0]
     constructor(playerEl: Element) {
       this.playerEl = playerEl
       this.trackCount = parseInt(
-        playerEl.getAttribute('data-track-count') || '0',
+        playerEl.getAttribute('data-track-count') || '0'
       )
       this.currentTrackIndex = 0
 
