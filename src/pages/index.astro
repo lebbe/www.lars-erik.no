@@ -1,5 +1,6 @@
 ---
 import './style.css'
+import Section from '../components/section/Section.astro'
 ---
 
 <html lang="en">
@@ -12,17 +13,20 @@ import './style.css'
   </head>
   <body>
     <div class="editor-canvas">
-      <section class="editable-section social-area">
-        <span class="section-label">Social_media</span>
+      <Section label="Social_media" columns={3} class="social-area">
         <div class="social-links">
           <a href="https://facebook.com">[FACEBOOK]</a>
           <a href="https://linkedin.com">[LINKEDIN]</a>
           <a href="https://instagram.com">[INSTAGRAM]</a>
         </div>
-      </section>
+      </Section>
 
-      <header class="editable-section header-area">
-        <span class="section-label">Identity_Module</span>
+      <Section
+        label="Identity_Module"
+        columns={2}
+        as="header"
+        class="header-area"
+      >
         <h1>Lars-Erik Bruce</h1>
         <p>
           Fullstack menneske og lyddesigner. Denne siden er under konstant
@@ -31,17 +35,15 @@ import './style.css'
         <nav>
           <a href="bio.html">[LES BIOGRAFI]</a>
         </nav>
-      </header>
+      </Section>
 
-      <section class="editable-section cv-area">
-        <span class="section-label">Files</span>
+      <Section label="Files" columns={1}>
         <h3>CV</h3>
         <p>Sist oppdatert: 2026-01-03</p>
         <a href="cv.pdf" class="btn">DOWNLOAD.PDF</a>
-      </section>
+      </Section>
 
-      <section class="editable-section articles-area">
-        <span class="section-label">Written_Content</span>
+      <Section label="Written_Content" columns={1} class="articles-area">
         <h3>Artikler</h3>
 
         <div class="article-entry">
@@ -67,10 +69,9 @@ import './style.css'
           <p class="keywords">Utvikling, Koffein, Flytsone</p>
           <a href="#" class="source-link">Kilde: Tek.no</a>
         </div>
-      </section>
+      </Section>
 
-      <section class="editable-section music-area">
-        <span class="section-label">Audio_Engine</span>
+      <Section label="Audio_Engine" columns={2}>
         <h3>Musikk og Lydlandskap</h3>
         <div class="music-player-mock">
           <div class="track">
@@ -84,29 +85,26 @@ import './style.css'
             </div>
           </div>
         </div>
-      </section>
+      </Section>
 
-      <section class="editable-section fun-stats">
-        <span class="section-label">Nerd_Metrics</span>
+      <Section label="Nerd_Metrics" columns={1}>
         <p>Kaffeinnhold: 88%</p>
         <p>Uleste e-poster: 4 201</p>
         <p>Linjer kode skrevet i dag: 12</p>
-      </section>
+      </Section>
 
-      <section class="editable-section random-thought">
-        <span class="section-label">Random_Seed</span>
+      <Section label="Random_Seed" columns={1}>
         <blockquote>
           "Hvis det fungerer på første forsøk, har du gjort noe feil."
         </blockquote>
-      </section>
+      </Section>
 
-      <section class="editable-section status-box">
-        <span class="section-label">System_Status</span>
+      <Section label="System_Status" columns={1}>
         <div class="status-indicator">
           <div class="dot pulse"></div>
           <span>Søker etter motivasjon...</span>
         </div>
-      </section>
+      </Section>
     </div>
   </body>
 </html>

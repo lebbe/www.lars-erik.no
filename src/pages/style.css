@@ -26,52 +26,18 @@ body {
   width: 100%;
 }
 
-/* Section Layout */
-.editable-section {
-  position: relative;
-  padding: 25px;
-  background-color: var(--section-bg);
-  border: 1px dashed var(--border-color);
-  transition: background-color 0.2s ease;
-}
-
-.section-label {
-  position: absolute;
-  top: -10px;
-  left: 10px;
-  background: var(--bg-color);
-  padding: 2px 6px;
-  font-size: 0.65rem;
-  color: var(--label-color);
-  z-index: 10;
-}
-
 /* Grid Placements */
 .social-area {
-  grid-column: span 3;
   padding: 10px 20px;
   display: flex;
   justify-content: flex-end;
 }
-.header-area {
-  grid-column: span 2;
-}
-.cv-area {
-  grid-column: span 1;
-}
+
 .articles-area {
   grid-row: span 2;
   display: flex;
   flex-direction: column;
   gap: 15px;
-}
-.music-area {
-  grid-column: span 2;
-}
-.fun-stats,
-.random-thought,
-.status-box {
-  grid-column: span 1;
 }
 
 /* Links and Hovers */
@@ -111,46 +77,6 @@ a:hover {
   font-size: 0.7rem;
   border-bottom: 1px solid var(--active-border-color);
   padding: 0;
-}
-
-/* Animated Border Effect */
-.editable-section:hover {
-  background-color: var(--section-hover-bg);
-  border: 1px solid transparent;
-  background-image:
-    linear-gradient(90deg, var(--active-border-color) 50%, transparent 50%),
-    linear-gradient(90deg, var(--active-border-color) 50%, transparent 50%),
-    linear-gradient(0deg, var(--active-border-color) 50%, transparent 50%),
-    linear-gradient(0deg, var(--active-border-color) 50%, transparent 50%);
-  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
-  background-size:
-    12px 1px,
-    12px 1px,
-    1px 12px,
-    1px 12px;
-  background-position:
-    0 0,
-    100% 100%,
-    0 100%,
-    100% 0;
-  animation: border-dance 0.3s infinite linear;
-}
-
-@keyframes border-dance {
-  0% {
-    background-position:
-      0 0,
-      100% 100%,
-      0 100%,
-      100% 0;
-  }
-  100% {
-    background-position:
-      12px 0,
-      calc(100% - 12px) 100%,
-      0 calc(100% - 12px),
-      100% 12px;
-  }
 }
 
 /* Music Mockup */
@@ -228,27 +154,11 @@ h3 {
     padding: 10px;
   }
 
-  .social-area,
-  .header-area,
-  .cv-area,
-  .articles-area,
-  .music-area,
-  .fun-stats,
-  .random-thought,
-  .status-box {
-    grid-column: span 1 !important;
-    grid-row: auto !important;
-  }
-
   .social-area {
     justify-content: center;
   }
 
   .header-area {
     text-align: center;
-  }
-
-  .section-label {
-    font-size: 0.6rem;
   }
 }
