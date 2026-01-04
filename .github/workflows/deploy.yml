@@ -25,13 +25,12 @@ jobs:
       - name: Build Astro site
         run: npm run build
 
-      - name: Deploy via SFTP
+      - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USERNAME }}
-          password: ${{ secrets.SFTP_PASSWORD }}
-          port: ${{ secrets.SFTP_PORT }}
-          protocol: sftp
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
           local-dir: ./dist/
-          server-dir: ${{ secrets.SFTP_REMOTE_PATH }}
+          server-dir: ${{ secrets.FTP_REMOTE_PATH }}
