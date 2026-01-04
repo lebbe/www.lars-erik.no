@@ -15,6 +15,7 @@
     "lint": "npm run lint:prettier && npm run lint:ox"
   },
   "dependencies": {
+    "@lucide/astro": "^0.562.0",
     "astro": "^5.16.6"
   },
   "devDependencies": {

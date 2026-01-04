@@ -1,14 +1,24 @@
 ---
+import { Facebook, Linkedin, Instagram } from '@lucide/astro'
 import Section from './section/Section.astro'
 ---
 
 <Section label="Social_media" columns={3} class="social-area">
   <div class="social-links">
-    <a href="https://www.facebook.com/mr.bruce.le">[FACEBOOK]</a>
-    <a href="https://www.linkedin.com/in/lars-erik-bruce-0200951a/">
-      [LINKEDIN]
-    </a>
-    <a href="https://www.instagram.com/lebbechen/">[INSTAGRAM]</a>
+    <span class="social-link-item">
+      <Facebook size={18} class="social-icon" />
+      <a href="https://www.facebook.com/mr.bruce.le">[FACEBOOK]</a>
+    </span>
+    <span class="social-link-item">
+      <Linkedin size={18} class="social-icon" />
+      <a href="https://www.linkedin.com/in/lars-erik-bruce-0200951a/">
+        [LINKEDIN]
+      </a>
+    </span>
+    <span class="social-link-item">
+      <Instagram size={18} class="social-icon" />
+      <a href="https://www.instagram.com/lebbechen/">[INSTAGRAM]</a>
+    </span>
   </div>
 </Section>
 

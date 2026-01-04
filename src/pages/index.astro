@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css'
+import { Globe, Guitar, Music, Github } from '@lucide/astro'
 import Section from '../components/section/Section.astro'
 import Toppings from '../components/Toppings.astro'
 import MusicPlayer from '../components/MusicPlayer.astro'
@@ -64,7 +65,7 @@ const musicTracks = [
           heading="Artikler"
         >
           <Fragment set:html={featuredArticles} />
-          <a href="/articles" class="source-link">Se alle artikler →</a>
+          <a href="/articles">Se alle artikler →</a>
         </Section>
 
         <Section
@@ -81,26 +82,26 @@ const musicTracks = [
           heading="Mine Andre Hjørner"
         >
           <div class="portal-link">
-            <span class="portal-icon">🌐</span>
+            <Globe class="portal-icon" size={20} />
             <a href="https://lebbe.neocities.org/" target="_blank"
               >Lebbes Terminal</a
             >
             <span class="portal-desc">// Min Neocities-side</span>
           </div>
           <div class="portal-link">
-            <span class="portal-icon">🎸</span>
+            <Guitar class="portal-icon" size={20} />
             <a href="https://lebchen.rocks/" target="_blank">Lebchen Rocks</a>
             <span class="portal-desc">// Min artist-side</span>
           </div>
           <div class="portal-link">
-            <span class="portal-icon">🎼</span>
+            <Music class="portal-icon" size={20} />
             <a href="https://www.youtube.com/@Lars-ErikBruce" target="_blank"
               >@Lars-Erik Bruce</a
             >
             <span class="portal-desc">// Mine komposisjoner</span>
           </div>
           <div class="portal-link">
-            <span class="portal-icon">💾</span>
+            <Github class="portal-icon" size={20} />
             <a href="https://github.com/lebbe/" target="_blank">@lebbe</a>
             <span class="portal-desc">// Min GitHub</span>
           </div>

@@ -183,7 +183,7 @@ const firstTrack = tracks[0]
     constructor(playerEl: Element) {
       this.playerEl = playerEl
       this.trackCount = parseInt(
-        playerEl.getAttribute('data-track-count') || '0'
+        playerEl.getAttribute('data-track-count') || '0',
       )
       this.currentTrackIndex = 0
 
@@ -191,7 +191,7 @@ const firstTrack = tracks[0]
       this.imgTag = playerEl.querySelector('.album-art') as HTMLImageElement
       this.titleEl = playerEl.querySelector('.track-title') as HTMLElement
       this.descriptionEl = playerEl.querySelector(
-        '.track-description'
+        '.track-description',
       ) as HTMLElement
       this.audioEl = playerEl.querySelector('.audio-player') as HTMLAudioElement
       this.trackDataEl = playerEl.querySelector('.track-data') as HTMLElement

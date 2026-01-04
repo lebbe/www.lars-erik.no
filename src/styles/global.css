@@ -59,8 +59,24 @@ a:hover {
   box-shadow: 0 0 12px var(--active-border-color);
 }
 
+.social-links {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.social-link-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.social-icon {
+  color: var(--label-color);
+  flex-shrink: 0;
+}
+
 .social-links a {
-  margin-left: 15px;
   font-size: 0.75rem;
 }
 
