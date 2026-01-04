@@ -4,6 +4,7 @@ import { Globe, Guitar, Music, Github } from '@lucide/astro'
 import Section from '../components/section/Section.astro'
 import Toppings from '../components/Toppings.astro'
 import MusicPlayer from '../components/MusicPlayer.astro'
+import CMSToolbar from '../components/CMSToolbar.astro'
 
 // Read articles.md as raw text
 const articlesRaw = await Astro.glob('../index/sections/articles.md')
@@ -54,6 +55,7 @@ const musicTracks = [
     <title>Lars-Erik Bruce</title>
   </head>
   <body>
+    <CMSToolbar />
     <div class="editor-canvas">
       <Toppings />
 

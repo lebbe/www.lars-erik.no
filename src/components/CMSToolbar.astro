@@ -1,0 +1,1312 @@
+---
+import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
+---
+
+<div class="cms-toolbar" data-js-enabled="false">
+  <button class="toolbar-btn edit-btn" title="Edit Content">
+    <FilePenLine size={20} />
+  </button>
+  <button class="toolbar-btn theme-btn" title="Color picker">
+    <Palette size={20} />
+  </button>
+  <button class="toolbar-btn add-element-btn" title="Add Element">
+    <SquarePlus size={20} />
+  </button>
+</div>
+
+<!-- Theme Picker Dialog -->
+<div class="theme-dialog-overlay">
+  <div class="theme-dialog">
+    <div class="dialog-header">
+      <h3>Color Palette</h3>
+      <button class="close-btn" title="Close">
+        <X size={20} />
+      </button>
+    </div>
+
+    <div class="dialog-content">
+      <div class="theme-preset">
+        <label for="theme-select">Preset Themes:</label>
+        <select id="theme-select">
+          <option value="">Custom</option>
+          <option value="default">(User Generated) - Neon Green</option>
+          <option value="cyan">Cyber Cyan</option>
+          <option value="purple">Synthwave Purple</option>
+          <option value="orange">Retro Orange</option>
+          <option value="cool-blue">Cool Blue</option>
+        </select>
+      </div>
+
+      <div class="color-picker-grid">
+        <div class="color-picker-item">
+          <label for="bg-color">Background</label>
+          <div class="color-input-wrapper">
+            <input
+              type="color"
+              id="bg-color"
+              class="color-input"
+              data-var="--bg-color"
+            />
+            <span class="color-value" id="bg-color-value">#0f0f0f</span>
+          </div>
+        </div>
+
+        <div class="color-picker-item">
+          <label for="section-bg">Section BG</label>
+          <div class="color-input-wrapper">
+            <input
+              type="color"
+              id="section-bg"
+              class="color-input"
+              data-var="--section-bg"
+            />
+            <span class="color-value" id="section-bg-value">#1a1a1a</span>
+          </div>
+        </div>
+
+        <div class="color-picker-item">
+          <label for="section-hover-bg">Section Hover</label>
+          <div class="color-input-wrapper">
+            <input
+              type="color"
+              id="section-hover-bg"
+              class="color-input"
+              data-var="--section-hover-bg"
+            />
+            <span class="color-value" id="section-hover-bg-value">#242424</span>
+          </div>
+        </div>
+
+        <div class="color-picker-item">
+          <label for="border-color">Border</label>
+          <div class="color-input-wrapper">
+            <input
+              type="color"
+              id="border-color"
+              class="color-input"
+              data-var="--border-color"
+            />
+            <span class="color-value" id="border-color-value">#333333</span>
+          </div>
+        </div>
+
+        <div class="color-picker-item">
+          <label for="active-border-color">Active Border</label>
+          <div class="color-input-wrapper">
+            <input
+              type="color"
+              id="active-border-color"
+              class="color-input"
+              data-var="--active-border-color"
+            />
+            <span class="color-value" id="active-border-color-value"
+              >#00ff41</span
+            >
+          </div>
+        </div>
+
+        <div class="color-picker-item">
+          <label for="text-color">Text</label>
+          <div class="color-input-wrapper">
+            <input
+              type="color"
+              id="text-color"
+              class="color-input"
+              data-var="--text-color"
+            />
+            <span class="color-value" id="text-color-value">#d1d1d1</span>
+          </div>
+        </div>
+
+        <div class="color-picker-item">
+          <label for="label-color">Label</label>
+          <div class="color-input-wrapper">
+            <input
+              type="color"
+              id="label-color"
+              class="color-input"
+              data-var="--label-color"
+            />
+            <span class="color-value" id="label-color-value">#a0a0a0</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="reset-btn">Reset to Default</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Element Dialog -->
+<div class="add-element-dialog-overlay">
+  <div class="add-element-dialog">
+    <div class="dialog-header">
+      <h3>Add New Section</h3>
+      <button class="close-btn add-element-close-btn" title="Close">
+        <X size={20} />
+      </button>
+    </div>
+
+    <div class="dialog-content">
+      <div class="form-group">
+        <label for="section-label">Section Label:</label>
+        <input
+          type="text"
+          id="section-label"
+          placeholder="e.g., My_Section"
+          class="form-input"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="section-heading">Section Heading (optional):</label>
+        <input
+          type="text"
+          id="section-heading"
+          placeholder="e.g., My Awesome Section"
+          class="form-input"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="section-cols">Number of Columns:</label>
+        <select id="section-cols" class="form-input">
+          <option value="1">1 Column</option>
+          <option value="2" selected>2 Columns</option>
+          <option value="3">3 Columns</option>
+        </select>
+      </div>
+
+      <button class="submit-btn">Add Section</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Section Dialog -->
+<div class="edit-section-dialog-overlay">
+  <div class="add-element-dialog">
+    <div class="dialog-header">
+      <h3>Edit Section</h3>
+      <button class="close-btn edit-section-close-btn" title="Close">
+        <X size={20} />
+      </button>
+    </div>
+
+    <div class="dialog-content">
+      <div class="form-group">
+        <label for="edit-section-label">Section Label:</label>
+        <input
+          type="text"
+          id="edit-section-label"
+          placeholder="e.g., My_Section"
+          class="form-input"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="edit-section-heading">Section Heading (optional):</label>
+        <input
+          type="text"
+          id="edit-section-heading"
+          placeholder="e.g., My Awesome Section"
+          class="form-input"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="edit-section-cols">Number of Columns:</label>
+        <select id="edit-section-cols" class="form-input">
+          <option value="1">1 Column</option>
+          <option value="2" selected>2 Columns</option>
+          <option value="3">3 Columns</option>
+        </select>
+      </div>
+
+      <button class="submit-btn edit-section-submit">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Enable toolbar when JavaScript is available
+  document.addEventListener('DOMContentLoaded', () => {
+    const toolbar = document.querySelector('.cms-toolbar') as HTMLElement | null
+    if (toolbar) {
+      toolbar.setAttribute('data-js-enabled', 'true')
+    }
+
+    const editBtn = document.querySelector(
+      '.edit-btn'
+    ) as HTMLButtonElement | null
+    let editMode = false
+
+    const toggleEditMode = () => {
+      editMode = !editMode
+
+      // Dispatch custom event that Section components can listen to
+      window.dispatchEvent(
+        new CustomEvent('cms-edit-mode-changed', { detail: { editMode } })
+      )
+
+      // Toggle visual indicator on button
+      if (editBtn) {
+        editBtn.classList.toggle('active')
+      }
+
+      // Make all editable sections content-editable
+      document.querySelectorAll('.editable-section').forEach((section) => {
+        if (editMode) {
+          section.classList.add('edit-mode-active')
+          // Make all child elements that aren't labels editable
+          const content = section.querySelector(
+            '.editable-content'
+          ) as HTMLElement | null
+          if (content) {
+            content.contentEditable = 'true'
+            content.focus()
+          }
+        } else {
+          section.classList.remove('edit-mode-active')
+          const content = section.querySelector(
+            '.editable-content'
+          ) as HTMLElement | null
+          if (content) {
+            content.contentEditable = 'false'
+          }
+          // Remove section toolbar when exiting edit mode
+          const sectionToolbar = section.querySelector('.section-toolbar')
+          if (sectionToolbar) {
+            sectionToolbar.remove()
+          }
+        }
+      })
+
+      // Add/update section toolbars
+      if (editMode) {
+        setupSectionToolbars()
+      }
+    }
+
+    if (editBtn) {
+      editBtn.addEventListener('click', toggleEditMode)
+    }
+
+    // Exit edit mode with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && editMode) {
+        toggleEditMode()
+      }
+    })
+
+    // Setup section toolbars for edit mode
+    const setupSectionToolbars = () => {
+      document.querySelectorAll('.edit-mode-active').forEach((section) => {
+        if (section.querySelector('.section-toolbar')) return // Already has toolbar
+
+        const toolbar = document.createElement('div')
+        toolbar.className = 'section-toolbar'
+
+        const editBtn = document.createElement('button')
+        editBtn.className = 'section-toolbar-btn'
+        editBtn.title = 'Edit Section'
+        editBtn.innerHTML =
+          '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="12 3 20.12 3.12 21.84 4.84 22 12M3 12.07v8.93a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"></polyline><path d="M7 7h12v6"></path></svg>'
+        editBtn.addEventListener('click', () => {
+          const label = section.querySelector(
+            '.section-label'
+          ) as HTMLElement | null
+          const heading = section.querySelector('h2') as HTMLElement | null
+          const colsAttr = section.style.getPropertyValue('--columns')
+
+          if (sectionLabelInput) {
+            sectionLabelInput.value = label?.textContent || ''
+          }
+          if (sectionHeadingInput) {
+            sectionHeadingInput.value = heading?.textContent || ''
+          }
+          if (sectionColsSelect) {
+            sectionColsSelect.value = colsAttr.trim() || '2'
+          }
+
+          // Store reference to section being edited
+          ;(window as any).editingSectionElement = section
+
+          if (editSectionDialog) {
+            editSectionDialog.classList.add('open')
+          }
+        })
+
+        const deleteBtn = document.createElement('button')
+        deleteBtn.className = 'section-toolbar-btn'
+        deleteBtn.title = 'Delete Section'
+        deleteBtn.innerHTML =
+          '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>'
+        deleteBtn.addEventListener('click', () => {
+          if (confirm('Delete this section?')) {
+            section.remove()
+          }
+        })
+
+        const dragBtn = document.createElement('button')
+        dragBtn.className = 'section-toolbar-btn'
+        dragBtn.title = 'Drag to Reorder'
+        dragBtn.innerHTML =
+          '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="16" cy="5" r="1"></circle><circle cx="16" cy="12" r="1"></circle><circle cx="16" cy="19" r="1"></circle></svg>'
+
+        // Make section draggable
+        section.draggable = true
+        section.addEventListener('dragstart', (e) => {
+          const dataTransfer = (e as DragEvent).dataTransfer
+          if (dataTransfer) {
+            dataTransfer.effectAllowed = 'move'
+            dataTransfer.setData('text/html', section.innerHTML)
+          }
+        })
+
+        section.addEventListener('dragover', (e) => {
+          e.preventDefault()
+          const dataTransfer = (e as DragEvent).dataTransfer
+          if (dataTransfer) {
+            dataTransfer.dropEffect = 'move'
+          }
+          section.classList.add('drag-over')
+        })
+
+        section.addEventListener('dragleave', () => {
+          section.classList.remove('drag-over')
+        })
+
+        section.addEventListener('drop', (e) => {
+          e.preventDefault()
+          section.classList.remove('drag-over')
+          const canvas = section.parentElement
+          if (canvas) {
+            const allSections = Array.from(
+              canvas.querySelectorAll('.editable-section')
+            )
+            const draggedIdx = allSections.findIndex(
+              (el) => (el as HTMLElement).draggable
+            )
+            const targetIdx = allSections.indexOf(section as any)
+            if (draggedIdx !== targetIdx && draggedIdx !== -1) {
+              const dragged = allSections[draggedIdx] as HTMLElement
+              if (draggedIdx < targetIdx) {
+                section.insertAdjacentElement('afterend', dragged)
+              } else {
+                section.insertAdjacentElement('beforebegin', dragged)
+              }
+            }
+          }
+        })
+
+        toolbar.appendChild(editBtn)
+        toolbar.appendChild(dragBtn)
+        toolbar.appendChild(deleteBtn)
+        section.insertBefore(toolbar, section.firstChild)
+      })
+    }
+
+    // Theme Picker Dialog
+    const themeBtn = document.querySelector(
+      '.theme-btn'
+    ) as HTMLButtonElement | null
+    const themeDialog = document.querySelector(
+      '.theme-dialog-overlay'
+    ) as HTMLElement | null
+    const closeBtn = document.querySelector(
+      '.close-btn'
+    ) as HTMLButtonElement | null
+    const colorInputs = document.querySelectorAll(
+      '.color-input'
+    ) as NodeListOf<HTMLInputElement>
+    const themeSelect = document.getElementById(
+      'theme-select'
+    ) as HTMLSelectElement | null
+    const resetBtn = document.querySelector(
+      '.reset-btn'
+    ) as HTMLButtonElement | null
+
+    const themes: Record<string, Record<string, string>> = {
+      default: {
+        '--bg-color': '#0f0f0f',
+        '--section-bg': '#1a1a1a',
+        '--section-hover-bg': '#242424',
+        '--border-color': '#333',
+        '--active-border-color': '#00ff41',
+        '--text-color': '#d1d1d1',
+        '--label-color': '#a0a0a0',
+      },
+      cyan: {
+        '--bg-color': '#0a0e27',
+        '--section-bg': '#0f1628',
+        '--section-hover-bg': '#1a2847',
+        '--border-color': '#2a4a6a',
+        '--active-border-color': '#00d4ff',
+        '--text-color': '#e0f2ff',
+        '--label-color': '#7db3d1',
+      },
+      purple: {
+        '--bg-color': '#1a0f2e',
+        '--section-bg': '#2a1650',
+        '--section-hover-bg': '#3a2460',
+        '--border-color': '#5a3a80',
+        '--active-border-color': '#ff006e',
+        '--text-color': '#f0e0ff',
+        '--label-color': '#b88dd9',
+      },
+      orange: {
+        '--bg-color': '#2a1810',
+        '--section-bg': '#3a2620',
+        '--section-hover-bg': '#4a3630',
+        '--border-color': '#6a5a4a',
+        '--active-border-color': '#ff8c00',
+        '--text-color': '#ffe0c0',
+        '--label-color': '#d4a080',
+      },
+      'cool-blue': {
+        '--bg-color': '#0f1419',
+        '--section-bg': '#1a2a3a',
+        '--section-hover-bg': '#2a3a4a',
+        '--border-color': '#3a5a7a',
+        '--active-border-color': '#00bfff',
+        '--text-color': '#c0e0ff',
+        '--label-color': '#80b0d0',
+      },
+    }
+
+    const applyTheme = (themeName: string) => {
+      const theme = themes[themeName]
+      if (!theme) return
+
+      Object.entries(theme).forEach(([varName, color]) => {
+        document.documentElement.style.setProperty(varName, color)
+        updateColorInput(varName, color)
+      })
+
+      if (themeName && themeSelect) {
+        themeSelect.value = themeName
+      }
+    }
+
+    const updateColorInput = (varName: string, color: string) => {
+      const input = document.querySelector(
+        `[data-var="${varName}"]`
+      ) as HTMLInputElement | null
+      if (input) {
+        input.value = color
+      }
+      // Update displayed value
+      const colorId = varName.substring(2) // Remove '--'
+      const valueSpan = document.getElementById(`${colorId}-value`)
+      if (valueSpan) {
+        valueSpan.textContent = color.toUpperCase()
+      }
+    }
+
+    // Initialize color inputs
+    colorInputs.forEach((input) => {
+      const varName = input.dataset.var || ''
+      const currentValue = getComputedStyle(document.documentElement)
+        .getPropertyValue(varName)
+        .trim()
+      input.value = rgbToHex(currentValue)
+
+      input.addEventListener('input', (e) => {
+        const target = e.target as HTMLInputElement
+        const newColor = target.value
+        document.documentElement.style.setProperty(varName, newColor)
+        updateColorInput(varName, newColor)
+        if (themeSelect) {
+          themeSelect.value = '' // Set to Custom
+        }
+      })
+    })
+
+    // Theme select handler
+    if (themeSelect) {
+      themeSelect.addEventListener('change', (e) => {
+        const target = e.target as HTMLSelectElement
+        if (target.value) {
+          applyTheme(target.value)
+        }
+      })
+    }
+
+    // Reset button
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        applyTheme('default')
+      })
+    }
+
+    // Dialog handlers
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        if (themeDialog) {
+          themeDialog.classList.add('open')
+        }
+      })
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        if (themeDialog) {
+          themeDialog.classList.remove('open')
+        }
+      })
+    }
+
+    if (themeDialog) {
+      themeDialog.addEventListener('click', (e) => {
+        if (e.target === themeDialog) {
+          themeDialog.classList.remove('open')
+        }
+      })
+    }
+
+    // Close dialog with Escape
+    document.addEventListener('keydown', (e) => {
+      if (
+        e.key === 'Escape' &&
+        themeDialog &&
+        themeDialog.classList.contains('open')
+      ) {
+        themeDialog.classList.remove('open')
+      }
+    })
+
+    // Helper function to convert rgb to hex
+    function rgbToHex(rgb: string): string {
+      // If already hex, return it
+      if (rgb.startsWith('#')) return rgb
+
+      const result = rgb.match(/\d+/g)
+      if (!result || result.length < 3) return '#000000'
+
+      const r = parseInt(result[0]).toString(16).padStart(2, '0')
+      const g = parseInt(result[1]).toString(16).padStart(2, '0')
+      const b = parseInt(result[2]).toString(16).padStart(2, '0')
+
+      return `#${r}${g}${b}`
+    }
+
+    // Edit Section Dialog
+    const editSectionDialog = document.querySelector(
+      '.edit-section-dialog-overlay'
+    ) as HTMLElement | null
+    const editSectionCloseBtn = document.querySelector(
+      '.edit-section-close-btn'
+    ) as HTMLButtonElement | null
+    const editSectionLabelInput = document.getElementById(
+      'edit-section-label'
+    ) as HTMLInputElement | null
+    const editSectionHeadingInput = document.getElementById(
+      'edit-section-heading'
+    ) as HTMLInputElement | null
+    const editSectionColsSelect = document.getElementById(
+      'edit-section-cols'
+    ) as HTMLSelectElement | null
+    const editSectionSubmitBtn = document.querySelector(
+      '.edit-section-submit'
+    ) as HTMLButtonElement | null
+
+    if (editSectionCloseBtn) {
+      editSectionCloseBtn.addEventListener('click', () => {
+        if (editSectionDialog) {
+          editSectionDialog.classList.remove('open')
+        }
+      })
+    }
+
+    if (editSectionDialog) {
+      editSectionDialog.addEventListener('click', (e) => {
+        if (e.target === editSectionDialog) {
+          editSectionDialog.classList.remove('open')
+        }
+      })
+    }
+
+    if (editSectionSubmitBtn) {
+      editSectionSubmitBtn.addEventListener('click', () => {
+        const section = (window as any)
+          .editingSectionElement as HTMLElement | null
+        if (!section) return
+
+        const newLabel = editSectionLabelInput?.value || 'New_Section'
+        const newHeading = editSectionHeadingInput?.value || ''
+        const newCols = editSectionColsSelect?.value || '2'
+
+        if (!newLabel.trim()) {
+          alert('Please enter a section label')
+          return
+        }
+
+        // Update label
+        const labelEl = section.querySelector(
+          '.section-label'
+        ) as HTMLElement | null
+        if (labelEl) {
+          labelEl.textContent = newLabel
+        }
+
+        // Update heading
+        const headingEl = section.querySelector('h2') as HTMLElement | null
+        if (headingEl) {
+          if (newHeading.trim()) {
+            headingEl.textContent = newHeading
+            headingEl.style.display = 'block'
+          } else {
+            headingEl.style.display = 'none'
+          }
+        } else if (newHeading.trim()) {
+          // Create heading if it doesn't exist
+          const newHeadingEl = document.createElement('h2')
+          newHeadingEl.textContent = newHeading
+          const contentDiv = section.querySelector('.editable-content')
+          if (contentDiv) {
+            contentDiv.insertAdjacentElement('beforebegin', newHeadingEl)
+          }
+        }
+
+        // Update columns
+        section.style.setProperty('--columns', newCols)
+
+        // Close dialog
+        if (editSectionDialog) {
+          editSectionDialog.classList.remove('open')
+        }
+      })
+    }
+
+    // Close edit dialog with Escape
+    document.addEventListener('keydown', (e) => {
+      if (
+        e.key === 'Escape' &&
+        editSectionDialog &&
+        editSectionDialog.classList.contains('open')
+      ) {
+        editSectionDialog.classList.remove('open')
+      }
+    })
+
+    // Allow Enter key to submit form
+    if (editSectionLabelInput) {
+      editSectionLabelInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          editSectionSubmitBtn?.click()
+        }
+      })
+    }
+
+    // Add Element Dialog
+    const addElementBtn = document.querySelector(
+      '.add-element-btn'
+    ) as HTMLButtonElement | null
+    const addElementDialog = document.querySelector(
+      '.add-element-dialog-overlay'
+    ) as HTMLElement | null
+    const addElementCloseBtn = document.querySelector(
+      '.add-element-close-btn'
+    ) as HTMLButtonElement | null
+    const submitBtn = document.querySelector(
+      '.submit-btn'
+    ) as HTMLButtonElement | null
+    const sectionLabelInput = document.getElementById(
+      'section-label'
+    ) as HTMLInputElement | null
+    const sectionHeadingInput = document.getElementById(
+      'section-heading'
+    ) as HTMLInputElement | null
+    const sectionColsSelect = document.getElementById(
+      'section-cols'
+    ) as HTMLSelectElement | null
+
+    if (addElementBtn) {
+      addElementBtn.addEventListener('click', () => {
+        if (addElementDialog) {
+          addElementDialog.classList.add('open')
+          sectionLabelInput?.focus()
+        }
+      })
+    }
+
+    if (addElementCloseBtn) {
+      addElementCloseBtn.addEventListener('click', () => {
+        if (addElementDialog) {
+          addElementDialog.classList.remove('open')
+        }
+      })
+    }
+
+    if (addElementDialog) {
+      addElementDialog.addEventListener('click', (e) => {
+        if (e.target === addElementDialog) {
+          addElementDialog.classList.remove('open')
+        }
+      })
+    }
+
+    if (submitBtn) {
+      submitBtn.addEventListener('click', () => {
+        const label = sectionLabelInput?.value || 'New_Section'
+        const heading = sectionHeadingInput?.value || ''
+        const cols = sectionColsSelect?.value || '2'
+
+        if (!label.trim()) {
+          alert('Please enter a section label')
+          return
+        }
+
+        // Create new section element
+        const newSection = document.createElement('section')
+        newSection.className = 'editable-section'
+        newSection.style.setProperty('--columns', cols)
+
+        // Copy Astro component ID from existing section for styling
+        const existingSection = document.querySelector(
+          '.editable-section'
+        ) as HTMLElement | null
+        const copyAstroAttributes = (element: HTMLElement) => {
+          if (existingSection) {
+            // Copy any data-astro-cid attributes
+            Array.from(existingSection.attributes).forEach((attr) => {
+              if (attr.name.startsWith('data-astro-cid-')) {
+                element.setAttribute(attr.name, attr.value)
+              }
+            })
+          }
+        }
+
+        copyAstroAttributes(newSection)
+
+        // Build the HTML for the section
+        const labelElement = document.createElement('span')
+        labelElement.className = 'section-label'
+        labelElement.textContent = label
+        copyAstroAttributes(labelElement)
+
+        newSection.appendChild(labelElement)
+
+        if (heading.trim()) {
+          const headingElement = document.createElement('h2')
+          headingElement.textContent = heading
+          copyAstroAttributes(headingElement)
+          newSection.appendChild(headingElement)
+        }
+
+        const contentDiv = document.createElement('div')
+        contentDiv.className = 'editable-content'
+        contentDiv.textContent = 'Click to edit content...'
+        copyAstroAttributes(contentDiv)
+        newSection.appendChild(contentDiv)
+
+        // Add to editor canvas
+        const editorCanvas = document.querySelector('.editor-canvas')
+        if (editorCanvas) {
+          editorCanvas.appendChild(newSection)
+        }
+
+        // Reset form
+        if (sectionLabelInput) sectionLabelInput.value = ''
+        if (sectionHeadingInput) sectionHeadingInput.value = ''
+        if (sectionColsSelect) sectionColsSelect.value = '2'
+
+        // Close dialog
+        if (addElementDialog) {
+          addElementDialog.classList.remove('open')
+        }
+      })
+    }
+
+    // Close dialog with Escape
+    document.addEventListener('keydown', (e) => {
+      if (
+        e.key === 'Escape' &&
+        addElementDialog &&
+        addElementDialog.classList.contains('open')
+      ) {
+        addElementDialog.classList.remove('open')
+      }
+    })
+
+    // Allow Enter key to submit form
+    if (sectionLabelInput) {
+      sectionLabelInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          submitBtn?.click()
+        }
+      })
+    }
+  })
+</script>
+
+<style is:global>
+  .cms-toolbar {
+    position: fixed;
+    right: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 12px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 12px 0 0 12px;
+    border: 1px solid rgba(100, 200, 255, 0.3);
+    border-right: none;
+    backdrop-filter: blur(10px);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
+    transition: right 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 9999;
+    /* Hidden by default (no JavaScript) */
+    display: none;
+  }
+
+  /* Show when JavaScript is enabled */
+  .cms-toolbar[data-js-enabled='true'] {
+    display: flex;
+  }
+
+  /* Hide on narrow screens */
+  @media (max-width: 1024px) {
+    .cms-toolbar {
+      display: none !important;
+    }
+  }
+
+  .cms-toolbar:hover {
+    right: 0;
+  }
+
+  .toolbar-btn {
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(100, 200, 255, 0.5);
+    background: rgba(100, 200, 255, 0.1);
+    color: #64c8ff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .toolbar-btn:hover {
+    background: rgba(100, 200, 255, 0.25);
+    border-color: rgba(100, 200, 255, 0.8);
+    box-shadow: 0 0 12px rgba(100, 200, 255, 0.4);
+    transform: scale(1.05);
+  }
+
+  .toolbar-btn:active {
+    transform: scale(0.95);
+  }
+
+  .toolbar-btn.active {
+    background: rgba(100, 200, 255, 0.35);
+    border-color: #64c8ff;
+    box-shadow:
+      0 0 16px rgba(100, 200, 255, 0.6),
+      inset 0 0 8px rgba(100, 200, 255, 0.2);
+  }
+
+  /* Theme Dialog Styles */
+  .theme-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10000;
+  }
+
+  .theme-dialog-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .theme-dialog {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid rgba(100, 200, 255, 0.4);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    box-shadow:
+      0 10px 40px rgba(0, 0, 0, 0.6),
+      0 0 30px rgba(100, 200, 255, 0.2);
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: dialogSlideIn 0.3s ease forwards;
+  }
+
+  @keyframes dialogSlideIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid rgba(100, 200, 255, 0.2);
+  }
+
+  .dialog-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #64c8ff;
+    font-family: 'Courier New', monospace;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: #64c8ff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+  }
+
+  .close-btn:hover {
+    background: rgba(100, 200, 255, 0.15);
+    box-shadow: 0 0 12px rgba(100, 200, 255, 0.3);
+  }
+
+  .dialog-content {
+    padding: 20px;
+  }
+
+  .theme-preset {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .theme-preset label {
+    font-size: 0.85rem;
+    color: #a0bfd9;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .theme-preset select {
+    background: rgba(100, 200, 255, 0.1);
+    border: 1px solid rgba(100, 200, 255, 0.4);
+    color: #ffffff;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .theme-preset select option {
+    background: #1a1a2e;
+    color: #ffffff;
+  }
+
+  .theme-preset select:hover {
+    border-color: rgba(100, 200, 255, 0.6);
+    box-shadow: 0 0 8px rgba(100, 200, 255, 0.2);
+  }
+
+  .theme-preset select:focus {
+    outline: none;
+    border-color: #64c8ff;
+    box-shadow: 0 0 12px rgba(100, 200, 255, 0.4);
+  }
+
+  .color-picker-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .color-picker-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .color-picker-item label {
+    font-size: 0.75rem;
+    color: #a0bfd9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+
+  .color-input-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .color-input {
+    width: 60px;
+    height: 44px;
+    border: 1px solid rgba(100, 200, 255, 0.4);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .color-input:hover {
+    border-color: rgba(100, 200, 255, 0.6);
+    box-shadow: 0 0 12px rgba(100, 200, 255, 0.2);
+  }
+
+  .color-input:focus {
+    outline: none;
+    border-color: #64c8ff;
+    box-shadow: 0 0 16px rgba(100, 200, 255, 0.4);
+  }
+
+  .color-value {
+    font-size: 0.75rem;
+    color: #64c8ff;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    flex: 1;
+    text-align: right;
+  }
+
+  .reset-btn {
+    width: 100%;
+    padding: 12px;
+    background: rgba(100, 150, 200, 0.15);
+    border: 1px solid rgba(100, 200, 255, 0.4);
+    color: #64c8ff;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .reset-btn:hover {
+    background: rgba(100, 200, 255, 0.2);
+    border-color: rgba(100, 200, 255, 0.8);
+    box-shadow: 0 0 12px rgba(100, 200, 255, 0.3);
+  }
+
+  .reset-btn:active {
+    transform: scale(0.98);
+  }
+
+  /* Add Element Dialog Styles */
+  .add-element-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10000;
+  }
+
+  .add-element-dialog-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .add-element-dialog {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid rgba(100, 200, 255, 0.4);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    box-shadow:
+      0 10px 40px rgba(0, 0, 0, 0.6),
+      0 0 30px rgba(100, 200, 255, 0.2);
+    max-width: 450px;
+    width: 90%;
+    animation: dialogSlideIn 0.3s ease forwards;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .form-group label {
+    font-size: 0.75rem;
+    color: #a0bfd9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+
+  .form-input {
+    background: rgba(100, 200, 255, 0.1);
+    border: 1px solid rgba(100, 200, 255, 0.4);
+    color: #ffffff;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+  }
+
+  .form-input::placeholder {
+    color: rgba(224, 242, 255, 0.5);
+  }
+
+  .form-input:hover {
+    border-color: rgba(100, 200, 255, 0.6);
+    box-shadow: 0 0 8px rgba(100, 200, 255, 0.2);
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: #64c8ff;
+    box-shadow: 0 0 12px rgba(100, 200, 255, 0.4);
+    background: rgba(100, 200, 255, 0.15);
+  }
+
+  .form-input option {
+    background: #1a1a2e;
+    color: #ffffff;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0, 255, 65, 0.15);
+    border: 1px solid rgba(0, 255, 65, 0.4);
+    color: #00ff41;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .submit-btn:hover {
+    background: rgba(0, 255, 65, 0.25);
+    border-color: rgba(0, 255, 65, 0.8);
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.3);
+  }
+
+  .submit-btn:active {
+    transform: scale(0.98);
+  }
+
+  /* Section Toolbar Styles */
+  .section-toolbar {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 8px;
+    padding: 8px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid rgba(100, 200, 255, 0.4);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.4),
+      0 0 20px rgba(100, 200, 255, 0.15);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .editable-section:hover .section-toolbar {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .section-toolbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(100, 200, 255, 0.5);
+    background: rgba(100, 200, 255, 0.1);
+    color: #64c8ff;
+    border-radius: 6px;
+    cursor: grab;
+    transition: all 0.2s ease;
+    padding: 0;
+  }
+
+  .section-toolbar-btn:hover {
+    background: rgba(100, 200, 255, 0.2);
+    border-color: rgba(100, 200, 255, 0.8);
+    box-shadow: 0 0 12px rgba(100, 200, 255, 0.3);
+  }
+
+  .section-toolbar-btn:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+  }
+
+  .editable-section.drag-over {
+    opacity: 0.7;
+    border-color: rgba(100, 200, 255, 0.8) !important;
+    background-color: rgba(100, 200, 255, 0.1) !important;
+  }
+
+  /* Edit Section Dialog Overlay */
+  .edit-section-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10000;
+  }
+
+  .edit-section-dialog-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+</style>

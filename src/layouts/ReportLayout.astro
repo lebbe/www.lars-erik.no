@@ -1,4 +1,6 @@
 ---
+import CMSToolbar from '../components/CMSToolbar.astro'
+
 interface Props {
   frontmatter: {
     title: string
@@ -20,6 +22,7 @@ const { frontmatter } = Astro.props
     <title>{frontmatter.title} - Lars-Erik Bruce</title>
   </head>
   <body>
+    <CMSToolbar />
     <div class="report-container">
       <div class="report-header">
         <div class="report-meta">
