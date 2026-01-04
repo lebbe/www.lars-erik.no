@@ -73,7 +73,7 @@ const allTags = Array.from(
           <div class="reports-container">
             {
               reportData.map((report: any) => (
-                <div class="report-item" data-tags={report.tags.join(',')}>
+                <div class="report-item" tabindex="0" data-tags={report.tags.join(',')}>
                   <h3 class="report-title">{report.title}</h3>
                   <div class="report-meta">
                     <span class="report-date">{report.date}</span>
@@ -84,7 +84,10 @@ const allTags = Array.from(
                       <span class="report-tag">{tag}</span>
                     ))}
                   </div>
-                  <div class="report-description" set:html={report.summary} />
+                  <div class="report-description">
+                    <div set:html={report.summary} />
+                    <button class="expand-btn">Utvid</button>
+                  </div>
                   <a href={report.link} class="report-link">
                     Les rapporten →
                   </a>
@@ -166,9 +169,11 @@ const allTags = Array.from(
     transition: all 0.2s;
   }
 
-  .report-item:hover {
+  .report-item:hover,
+  .report-item:focus {
     background: var(--section-hover-bg);
     border-color: var(--active-border-color);
+    outline: none;
   }
 
   .report-item.hidden {
@@ -219,6 +224,59 @@ const allTags = Array.from(
     line-height: 1.4;
     margin-bottom: 8px;
     color: var(--text-color);
+    max-height: 250px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .report-description::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(transparent, var(--section-bg));
+    pointer-events: none;
+  }
+
+  .report-description:has(.expand-btn:focus),
+  .report-item:focus .report-description {
+    max-height: none;
+  }
+
+  .report-description:has(.expand-btn:focus)::after,
+  .report-item:focus .report-description::after {
+    display: none;
+  }
+
+  .expand-btn {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--section-bg);
+    border: 1px solid var(--label-color);
+    color: var(--label-color);
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    font-family: inherit;
+    z-index: 1;
+  }
+
+  .expand-btn:hover,
+  .expand-btn:focus {
+    border-color: var(--active-border-color);
+    color: var(--active-border-color);
+    outline: none;
+  }
+
+  .report-description:has(.expand-btn:focus) .expand-btn,
+  .report-item:focus .expand-btn {
+    position: static;
+    transform: none;
+    margin-top: 8px;
   }
 
   .report-link {
