@@ -1,6 +1,6 @@
 ---
-import './style.css'
 import Section from '../components/section/Section.astro'
+import Articles from '../index/sections/articles.md'
 ---
 
 <html lang="en">
@@ -49,29 +49,7 @@ import Section from '../components/section/Section.astro'
         class="articles-area"
         heading="Artikler"
       >
-        <div class="article-entry">
-          <h4>Hvorfor CSS Grid er bedre enn fastfood</h4>
-          <p class="keywords">Layout, Arkitektur, Effektivitet</p>
-          <a href="#" class="source-link">Kilde: kode24</a>
-        </div>
-
-        <div class="article-entry">
-          <h4>Analoge synther i en digital hverdag</h4>
-          <p class="keywords">Audio, Signalbehandling, Hardware</p>
-          <a href="#" class="source-link">Kilde: Musikkultur</a>
-        </div>
-
-        <div class="article-entry">
-          <h4>Kunsten å skrive ingenting</h4>
-          <p class="keywords">Minimalisme, Fokus, Refleksjon</p>
-          <a href="#" class="source-link">Kilde: Medium</a>
-        </div>
-
-        <div class="article-entry">
-          <h4>Kaffebønner og kildekode</h4>
-          <p class="keywords">Utvikling, Koffein, Flytsone</p>
-          <a href="#" class="source-link">Kilde: Tek.no</a>
-        </div>
+        <Articles />
       </Section>
 
       <Section label="Audio_Engine" columns={2} heading="Musikk og Lydlandskap">
