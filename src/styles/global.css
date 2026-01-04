@@ -187,6 +187,9 @@ h3 {
 
 /* Responsive Layout */
 @media (max-width: 768px) {
+  body {
+    padding: 20px 0;
+  }
   .editor-canvas {
     grid-template-columns: 1fr;
     padding: 10px;
@@ -196,7 +199,7 @@ h3 {
     justify-content: center;
   }
 
-  .header-area {
+  .header-area h1 {
     text-align: center;
   }
 }
