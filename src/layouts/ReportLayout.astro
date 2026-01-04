@@ -1,0 +1,206 @@
+---
+interface Props {
+  frontmatter: {
+    title: string
+    date: string
+    service?: string
+    tags?: string[]
+  }
+}
+
+const { frontmatter } = Astro.props
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{frontmatter.title} - Lars-Erik Bruce</title>
+  </head>
+  <body>
+    <div class="report-container">
+      <div class="report-header">
+        <div class="report-meta">
+          {frontmatter.date && <time>{frontmatter.date}</time>}
+          {
+            frontmatter.service && (
+              <span class="service">{frontmatter.service}</span>
+            )
+          }
+        </div>
+        <div class="disclaimer">
+          <p>
+            Denne rapporten er generert av kunstig intelligens og kan inneholde
+            feil eller unøyaktigheter. Innholdet er kun ment som informasjon og
+            erstatter ikke profesjonell rådgivning. Du må selv verifisere alle
+            opplysninger mot originale kilder før de legges til grunn for
+            beslutninger.
+          </p><p>
+            This report is AI-generated and may contain errors or inaccuracies.
+            The content is provided for informational purposes only and does not
+            constitute professional advice. You are responsible for verifying
+            all information against primary sources before relying on it for
+            decision-making.
+          </p>
+        </div>
+        {
+          frontmatter.tags && frontmatter.tags.length > 0 && (
+            <div class="tags">
+              Tags:{' '}
+              {frontmatter.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      <div class="report-content">
+        <slot />
+      </div>
+
+      <a href="/research" class="back-link">← Tilbake til rapporter</a>
+    </div>
+  </body>
+</html>
+
+<style>
+  :root {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --border-color: #444;
+    --active-border-color: #1db954;
+    --label-color: #888;
+    --section-bg: #1a1a1a;
+  }
+
+  :global(body) {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .report-container {
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .report-header {
+    margin-bottom: 30px;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 20px;
+  }
+
+  h1 {
+    margin: 0 0 15px 0;
+    font-size: 2rem;
+    color: var(--active-border-color);
+  }
+
+  .report-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.9rem;
+    color: var(--label-color);
+    margin-bottom: 10px;
+  }
+
+  time {
+    display: block;
+  }
+
+  .service {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    background: var(--border-color);
+    color: var(--text-color);
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  .report-content {
+    margin: 30px 0;
+  }
+
+  :global(.report-content h2) {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: var(--active-border-color);
+    border-left: 3px solid var(--active-border-color);
+    padding-left: 10px;
+  }
+
+  :global(.report-content h3) {
+    font-size: 1.1rem;
+    color: var(--active-border-color);
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  :global(.report-content p) {
+    margin: 12px 0;
+    font-size: 0.95rem;
+  }
+
+  :global(.report-content ul),
+  :global(.report-content ol) {
+    margin: 15px 0;
+    padding-left: 20px;
+  }
+
+  :global(.report-content li) {
+    margin: 8px 0;
+  }
+
+  :global(.report-content a) {
+    color: var(--active-border-color);
+    text-decoration: none;
+    padding: 2px 4px;
+    transition: all 0.2s;
+  }
+
+  :global(.report-content a:hover) {
+    background-color: var(--active-border-color);
+    color: #000;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 30px;
+    color: var(--label-color);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .back-link:hover {
+    color: var(--active-border-color);
+  }
+
+  .disclaimer {
+    background-color: var(--section-bg);
+    border: 1px dashed var(--border-color);
+    padding: 15px;
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: var(--text-color);
+  }
+</style>

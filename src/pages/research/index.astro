@@ -1,0 +1,228 @@
+---
+import '../../styles/global.css'
+import Section from '../../components/section/Section.astro'
+
+// Load all report markdown files
+const reports = await Astro.glob('./reports/*.md')
+
+// Extract frontmatter and create report objects
+const reportData = reports.map((report: any) => ({
+  title: report.frontmatter.title,
+  date: report.frontmatter.date,
+  tags: report.frontmatter.tags || [],
+  service: report.frontmatter.service,
+  link: report.frontmatter.link,
+  description: report.compiledContent(),
+  summary: report.frontmatter.summary || '',
+}))
+
+// Extract unique tags and sort
+const allTags = Array.from(
+  new Set(reportData.flatMap((report) => report.tags))
+).sort()
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="description"
+      content="Gemini Deep Research rapporter og analyser. Omfattende undersøkelser på temaer som interesserer meg."
+    />
+    <title>Syntetisk Innsikt</title>
+  </head>
+  <body>
+    <div class="editor-canvas">
+      <Section
+        label="LLM_Header"
+        as="header"
+        heading="Gemini Deep Research"
+        columns={3}
+      >
+        <p>
+          Denne siden inneholder AI-genererte rapporter jeg har bestilt for å
+          utforske ulike temaer. Innholdet er kun ment som informasjon og
+          erstatter ikke profesjonelle råd. Jeg tar ikke ansvar for eventuelle
+          feil i rapportene, og du må selv verifisere viktige opplysninger mot
+          originale kilder.
+        </p>
+      </Section>
+
+      <main>
+        <Section label="Report_Filters" columns={1} heading="Filter">
+          <div class="tag-filter">
+            <button class="tag-btn active" data-tag="all">Alle</button>
+            {
+              allTags.map((tag) => (
+                <button class="tag-btn" data-tag={tag}>
+                  {tag}
+                </button>
+              ))
+            }
+          </div>
+        </Section>
+
+        <Section
+          label="Research_Reports"
+          columns={2}
+          heading="Deep Research Rapporter"
+        >
+          <div class="reports-container">
+            {
+              reportData.map((report: any) => (
+                <div class="report-item" data-tags={report.tags.join(',')}>
+                  <h3 class="report-title">{report.title}</h3>
+                  <div class="report-meta">
+                    <span class="report-date">{report.date}</span>
+                    <span class="report-service">{report.service}</span>
+                  </div>
+                  <div class="report-tags">
+                    {report.tags.map((tag: string) => (
+                      <span class="report-tag">{tag}</span>
+                    ))}
+                  </div>
+                  <div class="report-description" set:html={report.summary} />
+                  <a href={report.link} class="report-link">
+                    Les rapporten →
+                  </a>
+                </div>
+              ))
+            }
+          </div>
+        </Section>
+      </main>
+    </div>
+  </body>
+</html>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tagButtons = document.querySelectorAll('.tag-btn')
+    const reportItems = document.querySelectorAll('.report-item')
+
+    tagButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        // Update active button
+        tagButtons.forEach((b) => b.classList.remove('active'))
+        btn.classList.add('active')
+
+        const selectedTag = btn.getAttribute('data-tag') || ''
+
+        // Filter reports
+        reportItems.forEach((item) => {
+          if (selectedTag === 'all') {
+            item.classList.remove('hidden')
+          } else {
+            const tagString = item.getAttribute('data-tags') || ''
+            const tags = tagString.split(',').map((t) => t.trim())
+            if (tags.includes(selectedTag)) {
+              item.classList.remove('hidden')
+            } else {
+              item.classList.add('hidden')
+            }
+          }
+        })
+      })
+    })
+  })
+</script>
+
+<style>
+  .tag-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag-btn {
+    background: none;
+    border: 1px solid var(--label-color);
+    color: var(--label-color);
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .tag-btn:hover {
+    border-color: var(--active-border-color);
+    color: var(--active-border-color);
+  }
+
+  .tag-btn.active {
+    background-color: var(--active-border-color);
+    color: #000;
+    border-color: var(--active-border-color);
+  }
+
+  .report-item {
+    padding: 12px;
+    border: 1px dashed var(--border-color);
+    background: var(--section-bg);
+    transition: all 0.2s;
+  }
+
+  .report-item:hover {
+    background: var(--section-hover-bg);
+    border-color: var(--active-border-color);
+  }
+
+  .report-item.hidden {
+    display: none;
+  }
+
+  .report-title {
+    margin: 0 0 8px 0;
+    font-size: 0.95rem;
+    color: var(--active-border-color);
+  }
+
+  .report-meta {
+    font-size: 0.7rem;
+    color: var(--label-color);
+    margin-bottom: 8px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .report-date {
+    display: block;
+  }
+
+  .report-service {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .report-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .report-tag {
+    font-size: 0.65rem;
+    background: var(--border-color);
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+
+  .report-description {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    color: var(--text-color);
+  }
+
+  .report-link {
+    font-size: 0.8rem;
+    display: inline-block;
+  }
+</style>
