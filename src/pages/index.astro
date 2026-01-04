@@ -41,71 +41,85 @@ const musicTracks = [
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+    <meta
+      name="description"
+      content="Portefølje for Lars-Erik Bruce - utvikler, musiker og kodeentusiast. Utforsk artikler, musikk og digitale prosjekter."
+    />
     <title>Lars-Erik Bruce</title>
   </head>
   <body>
     <div class="editor-canvas">
       <Toppings />
 
-      <Section
-        label="Written_Content"
-        columns={1}
-        class="articles-area"
-        heading="Artikler"
-      >
-        <Fragment set:html={featuredArticles} />
-        <a href="/articles" class="source-link">Se alle artikler →</a>
-      </Section>
+      <main>
+        <Section
+          label="Written_Content"
+          columns={1}
+          class="articles-area"
+          heading="Artikler"
+        >
+          <Fragment set:html={featuredArticles} />
+          <a href="/articles" class="source-link">Se alle artikler →</a>
+        </Section>
 
-      <Section label="Audio_Engine" columns={2} heading="Musikk og Lydlandskap">
-        <MusicPlayer tracks={musicTracks} />
-      </Section>
+        <Section
+          label="Audio_Engine"
+          columns={2}
+          heading="Musikk og Lydlandskap"
+        >
+          <MusicPlayer tracks={musicTracks} />
+        </Section>
 
-      <Section label="Digital_Portals" columns={2} heading="Mine Andre Hjørner">
-        <div class="portal-link">
-          <span class="portal-icon">🌐</span>
-          <a href="https://lebbe.neocities.org/" target="_blank"
-            >Lebbes Terminal</a
-          >
-          <span class="portal-desc">// Min Neocities-side</span>
-        </div>
-        <div class="portal-link">
-          <span class="portal-icon">🎸</span>
-          <a href="https://lebchen.rocks/" target="_blank">Lebchen Rocks</a>
-          <span class="portal-desc">// Min artist-side</span>
-        </div>
-        <div class="portal-link">
-          <span class="portal-icon">🎼</span>
-          <a href="https://www.youtube.com/@Lars-ErikBruce" target="_blank"
-            >@Lars-Erik Bruce</a
-          >
-          <span class="portal-desc">// Mine komposisjoner</span>
-        </div>
-        <div class="portal-link">
-          <span class="portal-icon">💾</span>
-          <a href="https://github.com/lebbe/" target="_blank">@lebbe</a>
-          <span class="portal-desc">// Min GitHub</span>
-        </div>
-      </Section>
+        <Section
+          label="Digital_Portals"
+          columns={2}
+          heading="Mine Andre Hjørner"
+        >
+          <div class="portal-link">
+            <span class="portal-icon">🌐</span>
+            <a href="https://lebbe.neocities.org/" target="_blank"
+              >Lebbes Terminal</a
+            >
+            <span class="portal-desc">// Min Neocities-side</span>
+          </div>
+          <div class="portal-link">
+            <span class="portal-icon">🎸</span>
+            <a href="https://lebchen.rocks/" target="_blank">Lebchen Rocks</a>
+            <span class="portal-desc">// Min artist-side</span>
+          </div>
+          <div class="portal-link">
+            <span class="portal-icon">🎼</span>
+            <a href="https://www.youtube.com/@Lars-ErikBruce" target="_blank"
+              >@Lars-Erik Bruce</a
+            >
+            <span class="portal-desc">// Mine komposisjoner</span>
+          </div>
+          <div class="portal-link">
+            <span class="portal-icon">💾</span>
+            <a href="https://github.com/lebbe/" target="_blank">@lebbe</a>
+            <span class="portal-desc">// Min GitHub</span>
+          </div>
+        </Section>
 
-      <Section label="Nerd_Metrics" columns={1}>
-        <p>Kaffeinnhold: 88%</p>
-        <p>Uleste e-poster: 4 201</p>
-        <p>Linjer kode skrevet i dag: 12</p>
-      </Section>
+        <Section label="Nerd_Metrics" columns={1}>
+          <p>Kaffeinnhold: 88%</p>
+          <p>Uleste e-poster: 4 201</p>
+          <p>Linjer kode skrevet i dag: 12</p>
+        </Section>
 
-      <Section label="Random_Seed" columns={1}>
-        <blockquote>
-          "Hvis det fungerer på første forsøk, har du gjort noe feil."
-        </blockquote>
-      </Section>
+        <Section label="Random_Seed" columns={1}>
+          <blockquote>
+            "Hvis det fungerer på første forsøk, har du gjort noe feil."
+          </blockquote>
+        </Section>
 
-      <Section label="System_Status" columns={1}>
-        <div class="status-indicator">
-          <div class="dot pulse"></div>
-          <span>Søker etter motivasjon...</span>
-        </div>
-      </Section>
+        <Section label="System_Status" columns={1}>
+          <div class="status-indicator">
+            <div class="dot pulse"></div>
+            <span>Søker etter motivasjon...</span>
+          </div>
+        </Section>
+      </main>
     </div>
   </body>
 </html>
