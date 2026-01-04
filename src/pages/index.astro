@@ -2,6 +2,7 @@
 import '../styles/global.css'
 import Section from '../components/section/Section.astro'
 import Toppings from '../components/Toppings.astro'
+import MusicPlayer from '../components/MusicPlayer.astro'
 
 // Read articles.md as raw text
 const articlesRaw = await Astro.glob('../index/sections/articles.md')
@@ -10,6 +11,28 @@ const articlesContent = await articlesRaw[0].compiledContent()
 // Split by separator and take first 3 entries
 const allArticles = articlesContent.split('<hr>')
 const featuredArticles = allArticles.slice(0, 3).join('<hr>')
+
+// Music tracks
+const musicTracks = [
+  {
+    id: 'track1',
+    title: '01. Submerged_Visions',
+    audioUrl: '/audio/submerged-visions.mp3',
+    imageUrl: '/images/album-1.jpg',
+  },
+  {
+    id: 'track2',
+    title: '02. Echoes_of_Lars',
+    audioUrl: '/audio/echoes-of-lars.wav',
+    imageUrl: '/images/album-2.jpg',
+  },
+  {
+    id: 'track3',
+    title: '03. Distant_Data_Stream',
+    audioUrl: '/audio/distant-data-stream.flac',
+    imageUrl: '/images/album-3.jpg',
+  },
+]
 ---
 
 <html lang="en">
@@ -35,18 +58,7 @@ const featuredArticles = allArticles.slice(0, 3).join('<hr>')
       </Section>
 
       <Section label="Audio_Engine" columns={2} heading="Musikk og Lydlandskap">
-        <div class="music-player-mock">
-          <div class="track">
-            <span>01. Submerged_Visions.mp3</span><div class="wave-mock"></div>
-          </div>
-          <div class="track">
-            <span>02. Echoes_of_Lars.wav</span><div class="wave-mock"></div>
-          </div>
-          <div class="track">
-            <span>03. Distant_Data_Stream.flac</span><div class="wave-mock">
-            </div>
-          </div>
-        </div>
+        <MusicPlayer tracks={musicTracks} />
       </Section>
 
       <Section label="Digital_Portals" columns={2} heading="Mine Andre Hjørner">

@@ -1,0 +1,247 @@
+---
+interface Track {
+  id: string
+  title: string
+  audioUrl: string
+  imageUrl: string
+}
+
+interface Props {
+  tracks: Track[]
+}
+
+const { tracks } = Astro.props
+const firstTrack = tracks[0]
+---
+
+<div class="music-player-container">
+  <div class="music-player" data-track-count={tracks.length}>
+    <!-- Bilde -->
+    <div class="player-image" data-current-track={firstTrack.id}>
+      <img src={firstTrack.imageUrl} alt={firstTrack.title} class="album-art" />
+      <div class="nav-arrows">
+        <button
+          class="arrow prev-track"
+          aria-label="Forrige spor"
+          style="display: none;"
+        >
+          ◀
+        </button>
+        <button
+          class="arrow next-track"
+          aria-label="Neste spor"
+          style="display: none;"
+        >
+          ▶
+        </button>
+      </div>
+    </div>
+
+    <!-- Audio Player -->
+    <div class="player-controls">
+      <h3 class="track-title" data-current-track={firstTrack.id}>
+        {firstTrack.title}
+      </h3>
+      <audio controls class="audio-player" data-current-track={firstTrack.id}>
+        <source src={firstTrack.audioUrl} />
+        Din nettleser støtter ikke audio-avspilling.
+      </audio>
+    </div>
+
+    <!-- Hidden track data for JS -->
+    <div class="track-data" style="display: none;">
+      {
+        tracks.map((track) => (
+          <div
+            class="track-info"
+            data-id={track.id}
+            data-title={track.title}
+            data-audio={track.audioUrl}
+            data-image={track.imageUrl}
+          />
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  .music-player-container {
+    width: 100%;
+  }
+
+  .music-player {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .player-image {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #111;
+    border: 1px dashed var(--border-color);
+  }
+
+  .album-art {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .nav-arrows {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background: rgba(0, 0, 0, 0.5);
+    gap: 20px;
+  }
+
+  .arrow {
+    background: none;
+    border: none;
+    color: var(--active-border-color);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 10px;
+  }
+
+  .arrow:hover {
+    transform: scale(1.2);
+    text-shadow: 0 0 10px var(--active-border-color);
+  }
+
+  .player-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .track-title {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--active-border-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .audio-player {
+    width: 100%;
+  }
+
+  .track-data {
+    display: none;
+  }
+</style>
+
+<script>
+  interface Track {
+    id: string
+    title: string
+    audioUrl: string
+    imageUrl: string
+  }
+
+  class MusicPlayer {
+    playerEl!: Element
+    trackCount!: number
+    currentTrackIndex!: number
+    imageEl!: HTMLElement
+    imgTag!: HTMLImageElement
+    titleEl!: HTMLElement
+    audioEl!: HTMLAudioElement
+    trackDataEl!: HTMLElement
+    prevBtn!: HTMLButtonElement
+    nextBtn!: HTMLButtonElement
+    tracks!: Track[]
+
+    constructor(playerEl: Element) {
+      this.playerEl = playerEl
+      this.trackCount = parseInt(
+        playerEl.getAttribute('data-track-count') || '0'
+      )
+      this.currentTrackIndex = 0
+
+      this.imageEl = playerEl.querySelector('.player-image') as HTMLElement
+      this.imgTag = playerEl.querySelector('.album-art') as HTMLImageElement
+      this.titleEl = playerEl.querySelector('.track-title') as HTMLElement
+      this.audioEl = playerEl.querySelector('.audio-player') as HTMLAudioElement
+      this.trackDataEl = playerEl.querySelector('.track-data') as HTMLElement
+      this.prevBtn = playerEl.querySelector('.prev-track') as HTMLButtonElement
+      this.nextBtn = playerEl.querySelector('.next-track') as HTMLButtonElement
+
+      this.tracks = this.parseTrackData()
+
+      // Show nav buttons on hover
+      this.imageEl.addEventListener('mouseenter', () => {
+        this.prevBtn.style.display = 'block'
+        this.nextBtn.style.display = 'block'
+      })
+      this.imageEl.addEventListener('mouseleave', () => {
+        this.prevBtn.style.display = 'none'
+        this.nextBtn.style.display = 'none'
+      })
+
+      // Navigation
+      this.prevBtn.addEventListener('click', () => this.previousTrack())
+      this.nextBtn.addEventListener('click', () => this.nextTrack())
+
+      // Auto-play next track when current ends
+      this.audioEl.addEventListener('ended', () => this.nextTrack())
+    }
+
+    parseTrackData() {
+      const trackInfos = this.trackDataEl.querySelectorAll('.track-info')
+      return Array.from(trackInfos).map((info: Element) => ({
+        id: (info as HTMLElement).getAttribute('data-id') || '',
+        title: (info as HTMLElement).getAttribute('data-title') || '',
+        audioUrl: (info as HTMLElement).getAttribute('data-audio') || '',
+        imageUrl: (info as HTMLElement).getAttribute('data-image') || '',
+      }))
+    }
+
+    loadTrack(index: number) {
+      if (index < 0) index = this.tracks.length - 1
+      if (index >= this.tracks.length) index = 0
+
+      this.currentTrackIndex = index
+      const track = this.tracks[index]
+
+      // Update UI
+      this.imgTag.src = track.imageUrl
+      this.imgTag.alt = track.title
+      this.titleEl.textContent = track.title
+
+      // Update audio source
+      const source = this.audioEl.querySelector('source') as HTMLSourceElement
+      source.src = track.audioUrl
+      this.audioEl.load()
+
+      // Auto-play if something was playing
+      if (!this.audioEl.paused) {
+        this.audioEl.play()
+      }
+    }
+
+    nextTrack() {
+      this.loadTrack(this.currentTrackIndex + 1)
+    }
+
+    previousTrack() {
+      this.loadTrack(this.currentTrackIndex - 1)
+    }
+  }
+
+  // Initialize all music players
+  document.querySelectorAll('.music-player').forEach((player) => {
+    new MusicPlayer(player)
+  })
+</script>
