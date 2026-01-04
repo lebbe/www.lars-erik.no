@@ -4,6 +4,7 @@ interface Track {
   title: string
   audioUrl: string
   imageUrl: string
+  description: string
 }
 
 interface Props {
@@ -23,25 +24,24 @@ const firstTrack = tracks[0]
         <button
           class="arrow prev-track"
           aria-label="Forrige spor"
-          style="display: none;"
+          type="button"
         >
           ◀
         </button>
-        <button
-          class="arrow next-track"
-          aria-label="Neste spor"
-          style="display: none;"
-        >
+        <button class="arrow next-track" aria-label="Neste spor" type="button">
           ▶
         </button>
       </div>
     </div>
 
     <!-- Audio Player -->
-    <div class="player-controls">
+    <div class="player-controls" aria-live="polite">
       <h3 class="track-title" data-current-track={firstTrack.id}>
         {firstTrack.title}
       </h3>
+      <p class="track-description" data-current-track={firstTrack.id}>
+        {firstTrack.description}
+      </p>
       <audio controls class="audio-player" data-current-track={firstTrack.id}>
         <source src={firstTrack.audioUrl} />
         Din nettleser støtter ikke audio-avspilling.
@@ -58,6 +58,7 @@ const firstTrack = tracks[0]
             data-title={track.title}
             data-audio={track.audioUrl}
             data-image={track.imageUrl}
+            data-description={track.description}
           />
         ))
       }
@@ -101,6 +102,13 @@ const firstTrack = tracks[0]
     align-items: center;
     padding: 0 20px;
     gap: 20px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .player-image:hover .nav-arrows,
+  .nav-arrows:has(.arrow:focus-visible) {
+    opacity: 1;
   }
 
   .arrow {
@@ -111,11 +119,19 @@ const firstTrack = tracks[0]
     cursor: pointer;
     transition: all 0.2s;
     padding: 10px;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .arrow:hover {
+  .arrow:hover,
+  .arrow:focus-visible {
     transform: scale(1.2);
     text-shadow: 0 0 10px var(--active-border-color);
+    outline: 2px solid var(--active-border-color);
+    outline-offset: 2px;
   }
 
   .player-controls {
@@ -147,6 +163,7 @@ const firstTrack = tracks[0]
     title: string
     audioUrl: string
     imageUrl: string
+    description: string
   }
 
   class MusicPlayer {
@@ -156,6 +173,7 @@ const firstTrack = tracks[0]
     imageEl!: HTMLElement
     imgTag!: HTMLImageElement
     titleEl!: HTMLElement
+    descriptionEl!: HTMLElement
     audioEl!: HTMLAudioElement
     trackDataEl!: HTMLElement
     prevBtn!: HTMLButtonElement
@@ -172,6 +190,9 @@ const firstTrack = tracks[0]
       this.imageEl = playerEl.querySelector('.player-image') as HTMLElement
       this.imgTag = playerEl.querySelector('.album-art') as HTMLImageElement
       this.titleEl = playerEl.querySelector('.track-title') as HTMLElement
+      this.descriptionEl = playerEl.querySelector(
+        '.track-description'
+      ) as HTMLElement
       this.audioEl = playerEl.querySelector('.audio-player') as HTMLAudioElement
       this.trackDataEl = playerEl.querySelector('.track-data') as HTMLElement
       this.prevBtn = playerEl.querySelector('.prev-track') as HTMLButtonElement
@@ -179,19 +200,15 @@ const firstTrack = tracks[0]
 
       this.tracks = this.parseTrackData()
 
-      // Show nav buttons on hover
-      this.imageEl.addEventListener('mouseenter', () => {
-        this.prevBtn.style.display = 'block'
-        this.nextBtn.style.display = 'block'
-      })
-      this.imageEl.addEventListener('mouseleave', () => {
-        this.prevBtn.style.display = 'none'
-        this.nextBtn.style.display = 'none'
-      })
-
       // Navigation
       this.prevBtn.addEventListener('click', () => this.previousTrack())
       this.nextBtn.addEventListener('click', () => this.nextTrack())
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') this.previousTrack()
+        if (e.key === 'ArrowRight') this.nextTrack()
+      })
 
       // Auto-play next track when current ends
       this.audioEl.addEventListener('ended', () => this.nextTrack())
@@ -204,6 +221,8 @@ const firstTrack = tracks[0]
         title: (info as HTMLElement).getAttribute('data-title') || '',
         audioUrl: (info as HTMLElement).getAttribute('data-audio') || '',
         imageUrl: (info as HTMLElement).getAttribute('data-image') || '',
+        description:
+          (info as HTMLElement).getAttribute('data-description') || '',
       }))
     }
 
@@ -218,6 +237,7 @@ const firstTrack = tracks[0]
       this.imgTag.src = track.imageUrl
       this.imgTag.alt = track.title
       this.titleEl.textContent = track.title
+      this.descriptionEl.textContent = track.description
 
       // Update audio source
       const source = this.audioEl.querySelector('source') as HTMLSourceElement
