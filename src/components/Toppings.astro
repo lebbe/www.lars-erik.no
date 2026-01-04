@@ -1,0 +1,33 @@
+---
+import Section from './section/Section.astro'
+---
+
+<Section label="Social_media" columns={3} class="social-area">
+  <div class="social-links">
+    <a href="https://facebook.com">[FACEBOOK]</a>
+    <a href="https://linkedin.com">[LINKEDIN]</a>
+    <a href="https://instagram.com">[INSTAGRAM]</a>
+  </div>
+</Section>
+
+<Section
+  label="Identity_Module"
+  columns={2}
+  as="header"
+  class="header-area"
+  heading="Lars-Erik Bruce"
+  headingLevel="h1"
+>
+  <p>
+    Fullstack menneske og lyddesigner. Denne siden er under konstant (manuell)
+    konstruksjon.
+  </p>
+  <nav>
+    <a href="bio.html">[LES BIOGRAFI]</a>
+  </nav>
+</Section>
+
+<Section label="Files" columns={1} heading="CV">
+  <p>Sist oppdatert: 2026-01-03</p>
+  <a href="cv.pdf" class="btn">DOWNLOAD.PDF</a>
+</Section>

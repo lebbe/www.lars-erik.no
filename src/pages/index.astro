@@ -1,6 +1,15 @@
 ---
+import '../styles/global.css'
 import Section from '../components/section/Section.astro'
-import Articles from '../index/sections/articles.md'
+import Toppings from '../components/Toppings.astro'
+
+// Read articles.md as raw text
+const articlesRaw = await Astro.glob('../index/sections/articles.md')
+const articlesContent = await articlesRaw[0].compiledContent()
+
+// Split by separator and take first 3 entries
+const allArticles = articlesContent.split('<hr>')
+const featuredArticles = allArticles.slice(0, 3).join('<hr>')
 ---
 
 <html lang="en">
@@ -13,35 +22,7 @@ import Articles from '../index/sections/articles.md'
   </head>
   <body>
     <div class="editor-canvas">
-      <Section label="Social_media" columns={3} class="social-area">
-        <div class="social-links">
-          <a href="https://facebook.com">[FACEBOOK]</a>
-          <a href="https://linkedin.com">[LINKEDIN]</a>
-          <a href="https://instagram.com">[INSTAGRAM]</a>
-        </div>
-      </Section>
-
-      <Section
-        label="Identity_Module"
-        columns={2}
-        as="header"
-        class="header-area"
-        heading="Lars-Erik Bruce"
-        headingLevel="h1"
-      >
-        <p>
-          Fullstack menneske og lyddesigner. Denne siden er under konstant
-          (manuell) konstruksjon.
-        </p>
-        <nav>
-          <a href="bio.html">[LES BIOGRAFI]</a>
-        </nav>
-      </Section>
-
-      <Section label="Files" columns={1} heading="CV">
-        <p>Sist oppdatert: 2026-01-03</p>
-        <a href="cv.pdf" class="btn">DOWNLOAD.PDF</a>
-      </Section>
+      <Toppings />
 
       <Section
         label="Written_Content"
@@ -49,7 +30,8 @@ import Articles from '../index/sections/articles.md'
         class="articles-area"
         heading="Artikler"
       >
-        <Articles />
+        <Fragment set:html={featuredArticles} />
+        <a href="/articles" class="source-link">Se alle artikler →</a>
       </Section>
 
       <Section label="Audio_Engine" columns={2} heading="Musikk og Lydlandskap">
@@ -88,170 +70,3 @@ import Articles from '../index/sections/articles.md'
     </div>
   </body>
 </html>
-
-<style>
-  :root {
-    --bg-color: #0f0f0f;
-    --section-bg: #1a1a1a;
-    --section-hover-bg: #242424;
-    --border-color: #333;
-    --active-border-color: #00ff41;
-    --text-color: #d1d1d1;
-    --label-color: #666;
-  }
-
-  body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Courier New', Courier, monospace;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-  }
-
-  .editor-canvas {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
-    max-width: 1000px;
-    width: 100%;
-  }
-
-  /* Grid Placements */
-  .social-area {
-    padding: 10px 20px;
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .articles-area {
-    grid-row: span 2;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  /* Links and Hovers */
-  a {
-    position: relative;
-    color: var(--active-border-color);
-    text-decoration: none;
-    padding: 2px 4px;
-    transition: all 0.1s ease-in-out;
-    display: inline-block;
-  }
-
-  a:hover {
-    background-color: var(--active-border-color);
-    color: #000;
-    box-shadow: 0 0 12px var(--active-border-color);
-  }
-
-  .social-links a {
-    margin-left: 15px;
-    font-size: 0.75rem;
-  }
-
-  /* Article Styling */
-  .article-entry h4 {
-    margin: 0;
-    font-size: 1rem;
-    color: #fff;
-  }
-  .keywords {
-    margin: 4px 0;
-    font-size: 0.7rem;
-    color: #888;
-    font-style: italic;
-  }
-  .source-link {
-    font-size: 0.7rem;
-    border-bottom: 1px solid var(--active-border-color);
-    padding: 0;
-  }
-
-  /* Music Mockup */
-  .track {
-    background: #111;
-    margin: 8px 0;
-    padding: 10px;
-    font-size: 0.8rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .wave-mock {
-    width: 80px;
-    height: 12px;
-    background: repeating-linear-gradient(
-      90deg,
-      var(--active-border-color),
-      var(--active-border-color) 2px,
-      transparent 2px,
-      transparent 4px
-    );
-  }
-
-  /* Status and Indicators */
-  .status-indicator {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.8rem;
-  }
-  .dot {
-    width: 8px;
-    height: 8px;
-    background: #ffcc00;
-    border-radius: 50%;
-  }
-  .pulse {
-    animation: blink 1s infinite;
-  }
-  @keyframes blink {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.3;
-    }
-  }
-
-  .btn {
-    border: 1px solid var(--active-border-color);
-    padding: 8px 12px;
-    font-size: 0.75rem;
-    margin-top: 10px;
-  }
-  blockquote {
-    margin: 0;
-    font-style: italic;
-    border-left: 2px solid var(--active-border-color);
-    padding-left: 10px;
-  }
-  h3 {
-    margin-top: 0;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #fff;
-  }
-
-  /* Responsive Layout */
-  @media (max-width: 768px) {
-    .editor-canvas {
-      grid-template-columns: 1fr;
-      padding: 10px;
-    }
-
-    .social-area {
-      justify-content: center;
-    }
-
-    .header-area {
-      text-align: center;
-    }
-  }
-</style>

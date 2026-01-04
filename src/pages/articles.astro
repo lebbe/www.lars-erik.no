@@ -1,0 +1,30 @@
+---
+import '../styles/global.css'
+import Section from '../components/section/Section.astro'
+import Articles from '../index/sections/articles.md'
+import Toppings from '../components/Toppings.astro'
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Artikler - Lars-Erik Bruce</title>
+  </head>
+  <body>
+    <div class="editor-canvas">
+      <Toppings />
+
+      <Section
+        label="Written_Content"
+        columns={3}
+        class="articles-area"
+        heading="Artikler"
+      >
+        <Articles />
+      </Section>
+    </div>
+  </body>
+</html>
