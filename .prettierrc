@@ -1,0 +1,15 @@
+{
+  "plugins": ["prettier-plugin-astro"],
+  "overrides": [
+    {
+      "files": "*.astro",
+      "options": {
+        "parser": "astro"
+      }
+    }
+  ],
+  "astroAllowShorthand": false,
+  "semi": false,
+  "singleQuote": true,
+  "endOfLine": "lf"
+}
