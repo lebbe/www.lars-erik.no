@@ -6,9 +6,36 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "fix:prettier": "prettier --write .",
+    "fix:lint": "oxlint --fix .",
+    "fix": "npm run fix:prettier && npm run fix:lint",
+    "lint:prettier": "prettier --check .",
+    "lint:ox": "oxlint .",
+    "lint": "npm run lint:prettier && npm run lint:ox"
   },
   "dependencies": {
     "astro": "^5.16.6"
+  },
+  "devDependencies": {
+    "oxlint": "^1.36.0",
+    "prettier": "^3.7.4",
+    "prettier-plugin-astro": "^0.14.1"
+  },
+  "prettier": {
+    "plugins": [
+      "prettier-plugin-astro"
+    ],
+    "overrides": [
+      {
+        "files": "*.astro",
+        "options": {
+          "parser": "astro"
+        }
+      }
+    ],
+    "astroAllowShorthand": false,
+    "semi": false,
+    "singleQuote": true
   }
 }

@@ -1,16 +1,112 @@
 ---
-
+import './style.css'
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body>
+    <div class="editor-canvas">
+      <section class="editable-section social-area">
+        <span class="section-label">Social_media</span>
+        <div class="social-links">
+          <a href="https://facebook.com">[FACEBOOK]</a>
+          <a href="https://linkedin.com">[LINKEDIN]</a>
+          <a href="https://instagram.com">[INSTAGRAM]</a>
+        </div>
+      </section>
+
+      <header class="editable-section header-area">
+        <span class="section-label">Identity_Module</span>
+        <h1>Lars-Erik Bruce</h1>
+        <p>
+          Fullstack menneske og lyddesigner. Denne siden er under konstant
+          (manuell) konstruksjon.
+        </p>
+        <nav>
+          <a href="bio.html">[LES BIOGRAFI]</a>
+        </nav>
+      </header>
+
+      <section class="editable-section cv-area">
+        <span class="section-label">Files</span>
+        <h3>CV</h3>
+        <p>Sist oppdatert: 2026-01-03</p>
+        <a href="cv.pdf" class="btn">DOWNLOAD.PDF</a>
+      </section>
+
+      <section class="editable-section articles-area">
+        <span class="section-label">Written_Content</span>
+        <h3>Artikler</h3>
+
+        <div class="article-entry">
+          <h4>Hvorfor CSS Grid er bedre enn fastfood</h4>
+          <p class="keywords">Layout, Arkitektur, Effektivitet</p>
+          <a href="#" class="source-link">Kilde: kode24</a>
+        </div>
+
+        <div class="article-entry">
+          <h4>Analoge synther i en digital hverdag</h4>
+          <p class="keywords">Audio, Signalbehandling, Hardware</p>
+          <a href="#" class="source-link">Kilde: Musikkultur</a>
+        </div>
+
+        <div class="article-entry">
+          <h4>Kunsten å skrive ingenting</h4>
+          <p class="keywords">Minimalisme, Fokus, Refleksjon</p>
+          <a href="#" class="source-link">Kilde: Medium</a>
+        </div>
+
+        <div class="article-entry">
+          <h4>Kaffebønner og kildekode</h4>
+          <p class="keywords">Utvikling, Koffein, Flytsone</p>
+          <a href="#" class="source-link">Kilde: Tek.no</a>
+        </div>
+      </section>
+
+      <section class="editable-section music-area">
+        <span class="section-label">Audio_Engine</span>
+        <h3>Musikk og Lydlandskap</h3>
+        <div class="music-player-mock">
+          <div class="track">
+            <span>01. Submerged_Visions.mp3</span><div class="wave-mock"></div>
+          </div>
+          <div class="track">
+            <span>02. Echoes_of_Lars.wav</span><div class="wave-mock"></div>
+          </div>
+          <div class="track">
+            <span>03. Distant_Data_Stream.flac</span><div class="wave-mock">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="editable-section fun-stats">
+        <span class="section-label">Nerd_Metrics</span>
+        <p>Kaffeinnhold: 88%</p>
+        <p>Uleste e-poster: 4 201</p>
+        <p>Linjer kode skrevet i dag: 12</p>
+      </section>
+
+      <section class="editable-section random-thought">
+        <span class="section-label">Random_Seed</span>
+        <blockquote>
+          "Hvis det fungerer på første forsøk, har du gjort noe feil."
+        </blockquote>
+      </section>
+
+      <section class="editable-section status-box">
+        <span class="section-label">System_Status</span>
+        <div class="status-indicator">
+          <div class="dot pulse"></div>
+          <span>Søker etter motivasjon...</span>
+        </div>
+      </section>
+    </div>
+  </body>
 </html>
