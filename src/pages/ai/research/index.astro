@@ -1,6 +1,6 @@
 ---
-import '../../styles/global.css'
-import Section from '../../components/section/Section.astro'
+import '../../../styles/global.css'
+import Section from '../../../components/section/Section.astro'
 
 // Load all report markdown files
 const reports = await Astro.glob('./reports/*.md')
@@ -18,7 +18,7 @@ const reportData = reports.map((report: any) => ({
 
 // Extract unique tags and sort
 const allTags = Array.from(
-  new Set(reportData.flatMap((report) => report.tags))
+  new Set(reportData.flatMap((report) => report.tags)),
 ).sort()
 ---
 

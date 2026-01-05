@@ -1,0 +1,444 @@
+---
+import '../../styles/global.css'
+import { ArrowLeftFromLine, ArrowRightFromLine } from '@lucide/astro'
+import metaData from './meta.json'
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Captain Scapegoat Gallery</title>
+    <style>
+      body {
+        background-color: var(--bg-color);
+        color: var(--accent-primary);
+        font-family: 'Courier New', Courier, monospace;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+      }
+
+      .gallery-container {
+        max-width: 1200px;
+        width: 100%;
+        padding: 1rem;
+        margin: 0 auto;
+        box-sizing: border-box;
+      }
+
+      .header {
+        text-align: center;
+        margin: 2rem 0;
+        padding: 0 1rem;
+      }
+
+      .header h1 {
+        font-size: clamp(1.5rem, 5vw, 2.5rem);
+        margin: 0 0 1rem 0;
+        text-shadow: 0 0 10px var(--accent-primary);
+        color: var(--accent-primary);
+      }
+
+      .header p {
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        color: var(--accent-secondary);
+        line-height: 1.6;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .gallery {
+        position: relative;
+        max-width: 900px;
+        margin: 0 auto;
+        background: var(--bg-color);
+        border: 2px solid var(--accent-primary);
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+      }
+
+      .slide-container {
+        position: relative;
+        width: 100%;
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        padding: 1rem;
+        box-sizing: border-box;
+      }
+
+      .slide {
+        display: none;
+        width: 100%;
+      }
+
+      .slide.active {
+        display: block;
+      }
+
+      .slide-image-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .slide img {
+        max-width: 100%;
+        max-height: 70vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+        cursor: pointer;
+        transition: filter 0.3s ease;
+      }
+
+      .slide img:focus {
+        outline: 2px solid var(--accent-primary);
+        outline-offset: 2px;
+      }
+
+      .slide-image-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        box-shadow: none;
+      }
+
+      .slide-image-link:hover {
+        background: none;
+        box-shadow: none;
+      }
+
+      .slide-image-link:focus {
+        outline: none;
+      }
+
+      .slide-image-link img {
+        box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+      }
+
+      .slide-image-link:hover img {
+        box-shadow: 0 0 30px rgba(0, 255, 65, 0.6);
+      }
+
+      .slide-caption {
+        padding: 1rem;
+        background: var(--section-bg);
+        border: 1px solid var(--accent-primary);
+        border-radius: 4px;
+        text-align: center;
+      }
+
+      .slide-caption h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: clamp(1.1rem, 3vw, 1.5rem);
+        color: var(--accent-primary);
+      }
+
+      .slide-caption p {
+        margin: 0;
+        color: var(--accent-secondary);
+        line-height: 1.5;
+        font-size: clamp(0.85rem, 2vw, 1rem);
+      }
+
+      .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1.5rem;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-button {
+        background: var(--bg-color);
+        color: var(--accent-primary);
+        border: 2px solid var(--accent-primary);
+        padding: 0.75rem 1.5rem;
+        font-size: clamp(0.85rem, 2vw, 1rem);
+        font-family: 'Courier New', Courier, monospace;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        font-weight: bold;
+        flex: 1;
+        min-width: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .nav-button:hover,
+      .nav-button:focus {
+        background: var(--accent-primary);
+        color: var(--section-bg);
+        box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+        outline: none;
+      }
+
+      .nav-button:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+
+      .nav-button:disabled:hover {
+        background: var(--bg-color);
+        color: var(--accent-primary);
+        box-shadow: none;
+      }
+
+      .counter {
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        color: var(--accent-primary);
+        font-weight: bold;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .thumbnail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--accent-primary);
+      }
+
+      .thumbnail {
+        aspect-ratio: 1;
+        border: 2px solid var(--border-color);
+        border-radius: 4px;
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: var(--bg-color);
+      }
+
+      .thumbnail:hover,
+      .thumbnail:focus {
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        outline: none;
+        transform: scale(1.05);
+      }
+
+      .thumbnail.active {
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 15px rgba(0, 255, 65, 0.7);
+      }
+
+      .thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
+
+      @media (max-width: 768px) {
+        .gallery-container {
+          padding: 0.5rem;
+        }
+
+        .header {
+          margin: 1rem 0;
+        }
+
+        .gallery {
+          padding: 0.75rem;
+        }
+
+        .slide-container {
+          padding: 0.5rem;
+        }
+
+        .slide img {
+          max-height: 60vh;
+        }
+
+        .controls {
+          margin-top: 1rem;
+        }
+
+        .nav-button {
+          padding: 0.6rem 1rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .thumbnail-grid {
+          grid-template-columns: repeat(5, 1fr);
+        }
+
+        .nav-button {
+          font-size: 0.85rem;
+          padding: 0.5rem 0.75rem;
+          min-width: 90px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="gallery-container">
+      <header class="header">
+        <h1>Captain Scapegoat Gallery</h1>
+      </header>
+
+      <div class="gallery" role="region" aria-label="Image gallery">
+        <div class="slide-container" aria-live="polite">
+          {
+            metaData.bilder.map((image, index) => (
+              <div
+                class={`slide ${index === 0 ? 'active' : ''}`}
+                data-slide={index + 1}
+              >
+                <div class="slide-image-wrapper">
+                  <a
+                    href={image.file}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="slide-image-link"
+                    aria-label={`Open image ${index + 1} in new tab`}
+                  >
+                    <img src={image.file} alt={image.alt} loading="lazy" />
+                  </a>
+                </div>
+                <div class="slide-caption">
+                  <h2>{image.header}</h2>
+                  <p>{image.txt[0]}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="controls">
+          <button class="nav-button" id="prevBtn" aria-label="Previous image">
+            <ArrowLeftFromLine size={20} />
+            <span>Previous</span>
+          </button>
+          <span class="counter" aria-live="polite" aria-atomic="true">
+            <span id="currentSlide">1</span> / <span id="totalSlides">10</span>
+          </span>
+          <button class="nav-button" id="nextBtn" aria-label="Next image">
+            <span>Next</span>
+            <ArrowRightFromLine size={20} />
+          </button>
+        </div>
+
+        <div
+          class="thumbnail-grid"
+          role="navigation"
+          aria-label="Image thumbnails"
+        >
+          {
+            metaData.bilder.map((image, index) => (
+              <button
+                class={`thumbnail ${index === 0 ? 'active' : ''}`}
+                data-thumbnail={index + 1}
+                aria-label={`Go to ${image.header}`}
+                title={image.header}
+              >
+                <img src={image.file} alt="" />
+              </button>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentSlide = 1
+      const totalSlides = 10
+
+      const slides = document.querySelectorAll('.slide')
+      const thumbnails = document.querySelectorAll('.thumbnail')
+      const prevBtn = document.getElementById(
+        'prevBtn',
+      ) as HTMLButtonElement | null
+      const nextBtn = document.getElementById(
+        'nextBtn',
+      ) as HTMLButtonElement | null
+      const currentSlideEl = document.getElementById(
+        'currentSlide',
+      ) as HTMLElement | null
+
+      function showSlide(n: number) {
+        if (n > totalSlides) n = 1
+        if (n < 1) n = totalSlides
+
+        currentSlide = n
+
+        // Update slides
+        slides.forEach((slide, index) => {
+          slide.classList.toggle('active', index === n - 1)
+        })
+
+        // Update thumbnails
+        thumbnails.forEach((thumb, index) => {
+          thumb.classList.toggle('active', index === n - 1)
+        })
+
+        // Update counter
+        if (currentSlideEl) currentSlideEl.textContent = n.toString()
+
+        // Update button states
+        if (prevBtn) prevBtn.disabled = n === 1
+        if (nextBtn) nextBtn.disabled = n === totalSlides
+      }
+
+      function changeSlide(direction: number) {
+        showSlide(currentSlide + direction)
+      }
+
+      // Navigation buttons
+      if (prevBtn) prevBtn.addEventListener('click', () => changeSlide(-1))
+      if (nextBtn) nextBtn.addEventListener('click', () => changeSlide(1))
+
+      // Thumbnail navigation
+      thumbnails.forEach((thumb, index) => {
+        thumb.addEventListener('click', () => {
+          showSlide(index + 1)
+        })
+      })
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+          changeSlide(-1)
+        } else if (e.key === 'ArrowRight') {
+          changeSlide(1)
+        } else if (e.key === 'Home') {
+          showSlide(1)
+        } else if (e.key === 'End') {
+          showSlide(totalSlides)
+        }
+      })
+
+      // Initialize
+      showSlide(1)
+    </script>
+  </body>
+</html>

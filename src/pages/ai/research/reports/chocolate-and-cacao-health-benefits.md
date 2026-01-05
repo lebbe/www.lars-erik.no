@@ -1,10 +1,10 @@
 ---
-layout: ../../../layouts/ReportLayout.astro
+layout: ../../../../layouts/ReportLayout.astro
 title: Chocolate and Cacao Health Benefits
 date: 2025-08-05
 service: Gemini
 tags: [nutrition, health, food-science]
-link: /research/reports/chocolate-and-cacao-health-benefits/
+link: /ai/research/reports/chocolate-and-cacao-health-benefits/
 summary: Kakao og mørk sjokolade inneholder høye nivåer av flavanoler – bioaktive stoffer som virker gjennom sofistikerte cellulære signalmekanismer langt utover enkel antioksidantvirkning. Forskning viser robust effekt på hjerte- og hjernehelse, inkludert bedret blodkarfunksjon, lavere blodtrykk, forbedret kognitiv funksjon og 27% reduksjon i kardiovaskulær død. Imidlertid er fordelene sterkt avhengig av kakaoinnhold og prosessering – industriell behandling (rosting og alkalisering) ødelegger mesteparten av de nyttige komponentene, og eldre og personer med eksisterende helseproblemer opplever betydelig større fordeler enn unge friske individer. <p/> Selv om kakao påvirker relevante biologiske veier, er dagens bevis ikke sterkt nok til å anbefale sjokolade som primær terapeutisk agent – det fungerer best som et støttende matkomponent innen en bredere sunn livsstil. Konklusjonen er at høyt-kakao, minimalt-prosessert mørk sjokolade har legitimate bioaktive stoffer, men fordelene avhenger tungt av produktkvalitet og individuell helsestatus.
 ---
 

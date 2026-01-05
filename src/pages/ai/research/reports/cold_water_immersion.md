@@ -1,10 +1,10 @@
 ---
-layout: ../../../layouts/ReportLayout.astro
+layout: ../../../../layouts/ReportLayout.astro
 title: The Physiological, Metabolic, and Therapeutic Implications of Cold Water Immersion
 date: 2025-12-20
 service: Gemini
 tags: [health, physiology, metabolism, thermoregulation]
-link: /research/reports/cold_water_immersion/
+link: /ai/research/reports/cold_water_immersion/
 summary: Kald vannimmersjon (CWI) induserer en kraftig fysiologisk respons karakterisert ved 530% økning i norepinefrin og 250% økning i dopamin, som aktiverer brunt fettvev og muskelskjelving for termogenese. Forskning viser robust metabolsk effekt med 350% økning i metabolisk rate ved 14°C immersjon, samt klinisk betydning for insulinfølsomhet – pasienter med type 2-diabetes opplevde 43% forbedring etter mild kuldeakklimatisering. <p/>Imidlertid kommer betydelige risiki med CWI, inkludert autonomisk konflikt som kan utløse livsfarlige arytmier, og ikke-frysende kuldeinfeksjoner (NFCI) som oppstår ved vedvarende vasokonstuksjon i 0–15°C vann. Psykologisk sett fungerer CWI som en hornetetisk stressor som forbedrer stressresistens gjennom krysadaptasjon, samt reduserer sykefravær med 29% og viser potensial for depresjonsbehandling. Optimale resultater oppnås gjennom dosespesifiserte protokoller – mild kulde (14–19°C) for metabolisk helse, ekstrem kulde (<15°C) for dopaminutløsning og mentalhelse, eller kontrastterapifor atletisk restitusjon.
 ---
 

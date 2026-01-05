@@ -1,11 +1,13 @@
 :root {
-  --bg-color: #0f0f0f;
+  --bg-color: #050505;
   --section-bg: #1a1a1a;
   --section-hover-bg: #242424;
   --border-color: #333;
   --active-border-color: #00ff41;
   --text-color: #d1d1d1;
   --label-color: #a0a0a0;
+  --accent-primary: #00ff41;
+  --accent-secondary: #88ff88;
 }
 
 body {

@@ -1,10 +1,10 @@
 ---
-layout: ../../../layouts/ReportLayout.astro
+layout: ../../../../layouts/ReportLayout.astro
 title: The Republic on the Brink - A Comparative Analysis of Authoritarian Currents in American History
 date: 2025-12-28
 service: Gemini
 tags: [history, politics, authoritarianism, democracy]
-link: /research/reports/authoritarianism_parallels_1920s_2020s/
+link: /ai/research/reports/authoritarianism_parallels_1920s_2020s/
 summary: Denne omfattende analysen undersøker autoritære strømninger i amerikansk historie gjennom tre kritiske perioder – 1920-tallet, Roosevelt-æraen, og 2020-tallet – og avslører urovekkende paralleller i samfunnsdynamikk og institusjonelle svar. 1920-tallets «Røde skrekk» med Palmer Raids, innvandringsloven av 1924 inspirert av eugenetikk, og den andre Ku Klux Klan sin moralske autoritarisme, gjenspeiles i 2020-tallets autoritære populisme, kulturkriger og ekstrem affektiv polarisering drevet av fragmenterte medieøkosystemer. Franklin D. Roosevelts presidentperiode representerte den mest dyptgripende utfordringen til maktfordelingssystemet i det 20. århundre, hvor New Deal skapte en moderne administrativ stat med enorm makt konsentrert i det utøvende, mens «court-packing»-planen forsøkte å underordne rettsvesenet og Executive Order 9066 resulterte i massefengsling av japansk-amerikanere uten anklager.<p/>Den komplekse etterkrigsperioden demonstrerer at demokratisk resiliens ikke er statisk, men krever kontinuerlig institusjonell vaktsomhet – det 22. tillegget begrenset presidentens makt, mens McCarthyisme viste hvordan antikommunistisk hysteri kunne rettferdiggjøre ny undertrykkelse, selv når borgerrettighetsbevegelsen samtidig kjempet for å avskaffe Jim Crow-segregasjonens hjemlige totalitarisme. Analysen konkluderer med at kampen mot autoritarisme er et permanent og syklisk tema i amerikansk historie, hvor demokratiets overlevelse avhenger av institusjonelle barrierer, politisk mot til å forsvare konstitusjonelle normer på tvers av partiloyalitet, og borgernes vedvarende krav om at nasjonen skal innfri sine høyeste idealer om frihet.
 ---
 
