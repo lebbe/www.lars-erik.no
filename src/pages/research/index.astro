@@ -73,7 +73,11 @@ const allTags = Array.from(
           <div class="reports-container">
             {
               reportData.map((report: any) => (
-                <div class="report-item" tabindex="0" data-tags={report.tags.join(',')}>
+                <div
+                  class="report-item"
+                  tabindex="0"
+                  data-tags={report.tags.join(',')}
+                >
                   <h3 class="report-title">{report.title}</h3>
                   <div class="report-meta">
                     <span class="report-date">{report.date}</span>
