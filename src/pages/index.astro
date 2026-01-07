@@ -1,6 +1,15 @@
 ---
 import '../styles/global.css'
-import { Globe, Guitar, Music, Github } from '@lucide/astro'
+import {
+  Globe,
+  Guitar,
+  Music,
+  Github,
+  FileText,
+  Code2,
+  Blocks,
+  Terminal,
+} from '@lucide/astro'
 import Section from '../components/section/Section.astro'
 import Toppings from '../components/Toppings.astro'
 import MusicPlayer from '../components/MusicPlayer.astro'
@@ -50,7 +59,7 @@ const musicTracks = [
     <meta name="generator" content={Astro.generator} />
     <meta
       name="description"
-      content="Portefølje for Lars-Erik Bruce - utvikler, musiker og kodeentusiast. Utforsk artikler, musikk og digitale prosjekter."
+      content="Lars-Erik Bruce - Senior Software Engineer, filosof, elektronisk musiker og digital kunstner. Ekspert i semantisk kode, tilgjengelighet og pragmatisk webutvikling. Skaper av Synthwave-musikk og 'Small Web' entusiast."
     />
     <title>Lars-Erik Bruce</title>
   </head>
@@ -71,6 +80,31 @@ const musicTracks = [
         </Section>
 
         <Section
+          label="Technical_Philosophy"
+          columns={2}
+          heading="Teknisk Skriving og Filosofi"
+        >
+          <p>
+            Som utvikler med bakgrunn i både informatikk og filosofi, skriver
+            jeg om semantisk kode, tilgjengelighet, og pragmatisk ingeniørkunst.
+            Jeg argumenterer for "kjedelig teknologi" som faktisk fungerer,
+            heller enn å jage de nyeste trendene.
+          </p>
+          <div class="portal-link">
+            <FileText class="portal-icon" size={20} />
+            <a href="https://dev.to/lebbe" target="_blank">DEV.to/@lebbe</a>
+            <span class="portal-desc"
+              >// 18+ artikler om React, semantisk HTML, og API-design</span
+            >
+          </div>
+          <div class="portal-link">
+            <Code2 class="portal-icon" size={20} />
+            <a href="https://github.com/lebbe" target="_blank">GitHub/@lebbe</a>
+            <span class="portal-desc">// 45+ open source repositorier</span>
+          </div>
+        </Section>
+
+        <Section
           label="Audio_Engine"
           columns={2}
           heading="Musikk og Lydlandskap"
@@ -84,29 +118,74 @@ const musicTracks = [
           heading="Mine Andre Hjørner"
         >
           <div class="portal-link">
-            <Globe class="portal-icon" size={20} />
+            <Terminal class="portal-icon" size={20} />
             <a href="https://lebbe.neocities.org/" target="_blank"
               >Lebbes Terminal</a
             >
-            <span class="portal-desc">// Min Neocities-side</span>
+            <span class="portal-desc"
+              >// Min Neocities-side - "Small Web" manifest og ASCII-spill</span
+            >
           </div>
           <div class="portal-link">
             <Guitar class="portal-icon" size={20} />
             <a href="https://lebchen.rocks/" target="_blank">Lebchen Rocks</a>
-            <span class="portal-desc">// Min artist-side</span>
+            <span class="portal-desc"
+              >// Min artist-side - Cinematic Synthwave og Darkwave</span
+            >
           </div>
           <div class="portal-link">
             <Music class="portal-icon" size={20} />
             <a href="https://www.youtube.com/@Lars-ErikBruce" target="_blank"
               >@Lars-Erik Bruce</a
             >
-            <span class="portal-desc">// Mine komposisjoner</span>
+            <span class="portal-desc">// Mine komposisjoner på YouTube</span>
+          </div>
+          <div class="portal-link">
+            <Blocks class="portal-icon" size={20} />
+            <a href="https://www.instagram.com/lebocomics/" target="_blank"
+              >@lebocomics</a
+            >
+            <span class="portal-desc"
+              >// AFOL - Lego-fotografering og narrative comic strips</span
+            >
+          </div>
+          <div class="portal-link">
+            <Globe class="portal-icon" size={20} />
+            <a href="https://spacehey.com/lebchen" target="_blank"
+              >SpaceHey/@lebchen</a
+            >
+            <span class="portal-desc">// Retro sosial nettverking</span>
           </div>
           <div class="portal-link">
             <Github class="portal-icon" size={20} />
             <a href="https://github.com/lebbe/" target="_blank">@lebbe</a>
-            <span class="portal-desc">// Min GitHub</span>
+            <span class="portal-desc">// Min GitHub - Open Source kode</span>
           </div>
+        </Section>
+
+        <Section
+          label="Professional_Journey"
+          columns={2}
+          heading="Profesjonell Erfaring"
+        >
+          <p>
+            <strong>Senior Software Engineer @ Redpill Linpro</strong> (2022–nå)
+            <br />
+            Frontend-utvikling og teknisk ledelse. Fokus på Open Source-løsninger
+            og moderne webarkitektur.
+          </p>
+          <p>
+            <strong>Frontend Techlead @ Tripletex AS</strong> (2012–2022)
+            <br />
+            9+ år med å bygge og skalere enterprise ERP-systemer. Ledet overgangen
+            fra Java-backend til moderne frontend-arkitektur.
+          </p>
+          <p>
+            <strong>Master i Informatikk</strong> - Universitetet i Oslo (2012)
+            <br />
+            Spesialisering i semantisk informasjonsutvinning fra medisinske journaler
+            (NLP/AI). Kombinert med studier i filosofi.
+          </p>
         </Section>
 
         <Section
