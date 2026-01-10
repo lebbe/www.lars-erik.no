@@ -1,15 +1,5 @@
 ---
 import '../styles/global.css'
-import {
-  Globe,
-  Guitar,
-  Music,
-  Github,
-  FileText,
-  Code2,
-  Blocks,
-  Terminal,
-} from '@lucide/astro'
 import Section from '../components/section/Section.astro'
 import Toppings from '../components/Toppings.astro'
 import MusicPlayer from '../components/MusicPlayer.astro'
@@ -22,7 +12,7 @@ const articlesContent = await articlesRaw[0].compiledContent()
 
 // Split by separator and take first 3 entries
 const allArticles = articlesContent.split('<hr>')
-const featuredArticles = allArticles.slice(0, 4).join('<hr>')
+const featuredArticles = allArticles.slice(0, 6).join('<hr>')
 
 // Music tracks
 const musicTracks = [
@@ -81,65 +71,11 @@ const musicTracks = [
         </Section>
 
         <Section
-          label="Technical_Philosophy"
-          columns={2}
-          heading="Teknisk Skriving og Filosofi"
-        >
-          <p>
-            Som utvikler med bakgrunn i både informatikk og filosofi, skriver
-            jeg om semantisk kode, tilgjengelighet, og pragmatisk ingeniørkunst.
-            Jeg argumenterer for "kjedelig teknologi" som faktisk fungerer,
-            heller enn å jage de nyeste trendene.
-          </p>
-          <PortalLink
-            icon="FileText"
-            href="https://dev.to/lebbe"
-            keywords="DEV.to"
-            title="DEV.to/@lebbe"
-          >
-            18+ artikler om React, semantisk HTML, og API-design
-          </PortalLink>
-          <PortalLink
-            icon="Code2"
-            href="https://github.com/lebbe"
-            keywords="GitHub"
-            title="GitHub/@lebbe"
-          >
-            45+ open source repositorier
-          </PortalLink>
-        </Section>
-
-        <Section
           label="Audio_Engine"
           columns={2}
           heading="Musikk og Lydlandskap"
         >
           <MusicPlayer tracks={musicTracks} />
-        </Section>
-
-        <Section label="Discography" columns={2} heading="Diskografi (lebchen)">
-          <p>
-            Som "lebchen" produserer jeg Cinematic Synthwave og Darkwave-musikk.
-            Mitt nyeste album, <strong
-              >CrossSnow Special Edition Original Motion Picture Soundtrack</strong
-            > (2025), er en konseptuell soundtrack til en fiktiv noir-film.
-          </p>
-          <PortalLink
-            icon="Music"
-            href="https://music.apple.com/us/artist/lebchen/1793315594"
-            keywords="Apple Music"
-            title="Apple Music"
-          >
-            CrossSnow (2025), It Came from the MMC (2023), og mer
-          </PortalLink>
-          <PortalLink
-            icon="Music"
-            href="https://www.deezer.com/us/artist/lebchen"
-            keywords="Deezer"
-            title="Deezer"
-          >
-            Stream alle mine album og samarbeid med Sad Alien, Ofat, og Cuneax
-          </PortalLink>
         </Section>
 
         <Section
@@ -199,6 +135,44 @@ const musicTracks = [
           </PortalLink>
         </Section>
 
+        <Section label="Friend_Links" columns={1} heading="Andres Hjørner">
+          <PortalLink
+            icon="Globe"
+            href="https://ninthsymphony.wordpress.com/"
+            keywords="Kunst og illustrasjon"
+            title="Nina Flatnes Bratbak"
+          >
+            Min kones univers av kunst, foto og illustrasjoner.
+          </PortalLink>
+
+          <PortalLink
+            icon="Globe"
+            href="https://steinar.bang.priv.no/"
+            keywords="Teknologiblogg"
+            title="Steinar Bang"
+          >
+            Tidligere kollegas blogg om koding, Linux og web.
+          </PortalLink>
+
+          <PortalLink
+            icon="Globe"
+            href="https://www.tonedarrud.no/"
+            keywords="UX-design portefølje"
+            title="Tone Darrud"
+          >
+            Tidligere kollegas portefølje innen UX-design.
+          </PortalLink>
+
+          <PortalLink
+            icon="Globe"
+            href="https://01101001.net/"
+            keywords="Personlig landingsside"
+            title="David Oftedal"
+          >
+            En venns minimalistiske side om programmering.
+          </PortalLink>
+        </Section>
+
         <Section
           label="Professional_Journey"
           columns={1}
@@ -249,26 +223,6 @@ const musicTracks = [
             />
           </a>
         </Section>
-
-        <!--
-        <Section label="Nerd_Metrics" columns={1}>
-          <p>Kaffeinnhold: 88%</p>
-          <p>Uleste e-poster: 4 201</p>
-          <p>Linjer kode skrevet i dag: 12</p>
-        </Section>
-
-        <Section label="Random_Seed" columns={1}>
-          <blockquote>
-            "Hvis det fungerer på første forsøk, har du gjort noe feil."
-          </blockquote>
-        </Section>
-
-        <Section label="System_Status" columns={1}>
-          <div class="status-indicator">
-            <div class="dot pulse"></div>
-            <span>Søker etter motivasjon...</span>
-          </div>
-        </Section> -->
       </main>
     </div>
   </body>
