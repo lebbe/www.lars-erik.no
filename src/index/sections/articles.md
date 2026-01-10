@@ -30,22 +30,6 @@ _Naturrett, Ludvig Holberg, Rettskunnskap, Vestlige verdier_
 
 ---
 
-### Det frivillige slaveri
-
-_Om den frivillige trelldom, Etienne de La Boétie, tyranni, flertallsstyre_
-
-[Kilde: Liberaleren](https://www.liberaleren.no/2017/05/01/det-frivillige-slaveri/) 29.10.2019
-
----
-
-### Det frivillige slaveri
-
-_Om den frivillige trelldom, Etienne de La Boétie, tyranni, flertallsstyre_
-
-[Kilde: Liberaleren](https://www.liberaleren.no/2017/04/19/gammel-okonom-i-ny-drakt/) 19.04.2019
-
----
-
 ### Det liberale demokratiets konstitusjon
 
 _Grunnloven, Maktbegrensning, Liberalisme, Rettsstat_
@@ -59,3 +43,19 @@ _Grunnloven, Maktbegrensning, Liberalisme, Rettsstat_
 _Solidaritetsbevegelsen, Gdańsk, Kommunisme, Frihetskamp_
 
 [Kilde: Liberaleren](https://www.liberaleren.no/2017/07/10/gdansk-og-nokkelen-til-frihet/) 10.07.2017
+
+---
+
+### Det frivillige slaveri
+
+_Om den frivillige trelldom, Etienne de La Boétie, tyranni, flertallsstyre_
+
+[Kilde: Liberaleren](https://www.liberaleren.no/2017/05/01/det-frivillige-slaveri/) 01.05.2019
+
+---
+
+### Når voldsmonopolet passer barna
+
+_Rettsvern, Barnevernet, Velferdsstaten, Maktbegrensning_
+
+[Kilde: Minerva](https://www.minerva.no/nar-voldsmonopolet-passer-barna/156711)

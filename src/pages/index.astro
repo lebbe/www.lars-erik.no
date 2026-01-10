@@ -1,10 +1,10 @@
 ---
 import '../styles/global.css'
-import { Globe, Guitar, Music, Github } from '@lucide/astro'
 import Section from '../components/section/Section.astro'
 import Toppings from '../components/Toppings.astro'
 import MusicPlayer from '../components/MusicPlayer.astro'
 import CMSToolbar from '../components/CMSToolbar.astro'
+import PortalLink from '../components/PortalLink.astro'
 
 // Read articles.md as raw text
 const articlesRaw = await Astro.glob('../index/sections/articles.md')
@@ -12,7 +12,7 @@ const articlesContent = await articlesRaw[0].compiledContent()
 
 // Split by separator and take first 3 entries
 const allArticles = articlesContent.split('<hr>')
-const featuredArticles = allArticles.slice(0, 3).join('<hr>')
+const featuredArticles = allArticles.slice(0, 6).join('<hr>')
 
 // Music tracks
 const musicTracks = [
@@ -50,7 +50,7 @@ const musicTracks = [
     <meta name="generator" content={Astro.generator} />
     <meta
       name="description"
-      content="Portefølje for Lars-Erik Bruce - utvikler, musiker og kodeentusiast. Utforsk artikler, musikk og digitale prosjekter."
+      content="Lars-Erik Bruce - Senior Software Engineer, filosof, elektronisk musiker og digital kunstner. Ekspert i semantisk kode, tilgjengelighet og pragmatisk webutvikling. Skaper av Synthwave-musikk og 'Small Web' entusiast."
     />
     <title>Lars-Erik Bruce</title>
   </head>
@@ -78,35 +78,120 @@ const musicTracks = [
           <MusicPlayer tracks={musicTracks} />
         </Section>
 
+        <Section label="Digital_Portals" columns={1} heading="Mine Hjørner">
+          <PortalLink
+            icon="Terminal"
+            href="https://lebbe.neocities.org/"
+            keywords="Neocities, Small Web"
+            title="Lebbes Terminal"
+          >
+            Mitt personlige hjørne på nettet med "Small Web" manifest og
+            ASCII-spill.
+          </PortalLink>
+          <PortalLink
+            icon="Guitar"
+            href="https://lebchen.rocks/"
+            keywords="Artist-side"
+            title="Lebchen Rocks"
+          >
+            Min offisielle artist-side med Cinematic Synthwave og
+            Darkwave-musikk.
+          </PortalLink>
+          <PortalLink
+            icon="Music"
+            href="https://www.youtube.com/@Lars-ErikBruce"
+            keywords="YouTube"
+            title="@Lars-Erik Bruce"
+          >
+            Mine musikkvideoer og komposisjoner.
+          </PortalLink>
+          <PortalLink
+            icon="Blocks"
+            href="https://www.instagram.com/lebocomics/"
+            keywords="AFOL, Instagram"
+            title="@lebocomics"
+          >
+            Lego-fotografering og narrative comic strips.
+          </PortalLink>
+          <PortalLink
+            icon="Globe"
+            href="https://spacehey.com/lebchen"
+            keywords="SpaceHey"
+            title="SpaceHey/@lebchen"
+          >
+            Min profil på det retro-inspirerte sosiale nettverket.
+          </PortalLink>
+          <PortalLink
+            icon="Github"
+            href="https://github.com/lebbe/"
+            keywords="GitHub"
+            title="@lebbe"
+          >
+            Open Source-prosjekter og eksperimenter.
+          </PortalLink>
+        </Section>
+
+        <Section label="Friend_Links" columns={1} heading="Andres Hjørner">
+          <PortalLink
+            icon="Globe"
+            href="https://ninthsymphony.wordpress.com/"
+            keywords="Kunst og illustrasjon"
+            title="Nina Flatnes Bratbak"
+          >
+            Min kones univers av kunst, foto og illustrasjoner.
+          </PortalLink>
+
+          <PortalLink
+            icon="Globe"
+            href="https://steinar.bang.priv.no/"
+            keywords="Teknologiblogg"
+            title="Steinar Bang"
+          >
+            Tidligere kollegas blogg om koding, Linux og web.
+          </PortalLink>
+
+          <PortalLink
+            icon="Globe"
+            href="https://www.tonedarrud.no/"
+            keywords="UX-design portefølje"
+            title="Tone Darrud"
+          >
+            Tidligere kollegas portefølje innen UX-design.
+          </PortalLink>
+
+          <PortalLink
+            icon="Globe"
+            href="https://01101001.net/"
+            keywords="Personlig landingsside"
+            title="David Oftedal"
+          >
+            En venns minimalistiske side om programmering.
+          </PortalLink>
+        </Section>
+
         <Section
-          label="Digital_Portals"
-          columns={2}
-          heading="Mine Andre Hjørner"
+          label="Professional_Journey"
+          columns={1}
+          heading="Profesjonell Erfaring"
         >
-          <div class="portal-link">
-            <Globe class="portal-icon" size={20} />
-            <a href="https://lebbe.neocities.org/" target="_blank"
-              >Lebbes Terminal</a
-            >
-            <span class="portal-desc">// Min Neocities-side</span>
-          </div>
-          <div class="portal-link">
-            <Guitar class="portal-icon" size={20} />
-            <a href="https://lebchen.rocks/" target="_blank">Lebchen Rocks</a>
-            <span class="portal-desc">// Min artist-side</span>
-          </div>
-          <div class="portal-link">
-            <Music class="portal-icon" size={20} />
-            <a href="https://www.youtube.com/@Lars-ErikBruce" target="_blank"
-              >@Lars-Erik Bruce</a
-            >
-            <span class="portal-desc">// Mine komposisjoner</span>
-          </div>
-          <div class="portal-link">
-            <Github class="portal-icon" size={20} />
-            <a href="https://github.com/lebbe/" target="_blank">@lebbe</a>
-            <span class="portal-desc">// Min GitHub</span>
-          </div>
+          <p>
+            <strong>Senior Software Engineer @ Redpill Linpro</strong> (2022–nå)
+            <br />
+            Frontend-utvikling og teknisk ledelse. Fokus på Open Source-løsninger
+            og moderne webarkitektur.
+          </p>
+          <p>
+            <strong>Frontend Techlead @ Tripletex AS</strong> (2012–2022)
+            <br />
+            9+ år med å bygge og skalere enterprise ERP-systemer. Ledet overgangen
+            fra Java-backend til moderne frontend-arkitektur.
+          </p>
+          <p>
+            <strong>Master i Informatikk</strong> - Universitetet i Oslo (2012)
+            <br />
+            Spesialisering i semantisk informasjonsutvinning fra medisinske journaler
+            (NLP/AI). Kombinert med studier i filosofi.
+          </p>
         </Section>
 
         <Section
@@ -134,26 +219,6 @@ const musicTracks = [
             />
           </a>
         </Section>
-
-        <!--
-        <Section label="Nerd_Metrics" columns={1}>
-          <p>Kaffeinnhold: 88%</p>
-          <p>Uleste e-poster: 4 201</p>
-          <p>Linjer kode skrevet i dag: 12</p>
-        </Section>
-
-        <Section label="Random_Seed" columns={1}>
-          <blockquote>
-            "Hvis det fungerer på første forsøk, har du gjort noe feil."
-          </blockquote>
-        </Section>
-
-        <Section label="System_Status" columns={1}>
-          <div class="status-indicator">
-            <div class="dot pulse"></div>
-            <span>Søker etter motivasjon...</span>
-          </div>
-        </Section> -->
       </main>
     </div>
   </body>
