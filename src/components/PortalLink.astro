@@ -22,7 +22,7 @@ try {
     IconComponent = (module as any)[icon]
   } catch (innerError) {
     throw new Error(
-      `Icon "${icon}" not found in @lucide/astro. Make sure the icon name is correct (e.g., "Terminal", "Github", "Music").`
+      `Icon "${icon}" not found in @lucide/astro. Make sure the icon name is correct (e.g., "Terminal", "Github", "Music").`,
     )
   }
 }
