@@ -8,22 +8,41 @@ interface Props {
 
 const { icon, href, keywords, title } = Astro.props
 
-// Dynamically import icon from lucide/astro
+// List of brand icons that should use Simple Icons
+const simpleIconsBrands = ['Github', 'Facebook', 'Instagram']
+
+// Dynamically import icon from simple-icons-astro or lucide/astro
 let IconComponent
-try {
-  const module = await import(
-    `@lucide/astro/icons/${icon.charAt(0).toLowerCase() + icon.slice(1)}`
-  )
-  IconComponent = (module as any)[icon]
-} catch {
-  // Fallback: try importing from main lucide/astro export
+if (simpleIconsBrands.includes(icon)) {
+  // Try importing from simple-icons-astro for brand icons
   try {
-    const module = await import(`@lucide/astro`)
+    const module = await import(`simple-icons-astro`)
     IconComponent = (module as any)[icon]
-  } catch (innerError) {
+    if (!IconComponent) {
+      throw new Error(`Icon "${icon}" not found in simple-icons-astro`)
+    }
+  } catch (error) {
     throw new Error(
-      `Icon "${icon}" not found in @lucide/astro. Make sure the icon name is correct (e.g., "Terminal", "Github", "Music").`,
+      `Brand icon "${icon}" not found in simple-icons-astro. Simple Icons package may need to be updated.`,
     )
+  }
+} else {
+  // Import from lucide/astro for non-brand icons
+  try {
+    const module = await import(
+      `@lucide/astro/icons/${icon.charAt(0).toLowerCase() + icon.slice(1)}`
+    )
+    IconComponent = (module as any)[icon]
+  } catch {
+    // Fallback: try importing from main lucide/astro export
+    try {
+      const module = await import(`@lucide/astro`)
+      IconComponent = (module as any)[icon]
+    } catch (innerError) {
+      throw new Error(
+        `Icon "${icon}" not found in @lucide/astro. Make sure the icon name is correct (e.g., "Terminal", "Github", "Music").`,
+      )
+    }
   }
 }
 ---

@@ -16,11 +16,13 @@
   },
   "dependencies": {
     "@lucide/astro": "^0.562.0",
-    "astro": "^5.16.6"
+    "astro": "^5.16.6",
+    "simple-icons-astro": "^16.1.0"
   },
   "devDependencies": {
     "oxlint": "^1.36.0",
     "prettier": "^3.7.4",
-    "prettier-plugin-astro": "^0.14.1"
+    "prettier-plugin-astro": "^0.14.1",
+    "simple-icons": "^16.4.0"
   }
 }
