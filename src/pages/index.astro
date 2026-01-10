@@ -14,6 +14,7 @@ import Section from '../components/section/Section.astro'
 import Toppings from '../components/Toppings.astro'
 import MusicPlayer from '../components/MusicPlayer.astro'
 import CMSToolbar from '../components/CMSToolbar.astro'
+import PortalLink from '../components/PortalLink.astro'
 
 // Read articles.md as raw text
 const articlesRaw = await Astro.glob('../index/sections/articles.md')
@@ -21,7 +22,7 @@ const articlesContent = await articlesRaw[0].compiledContent()
 
 // Split by separator and take first 3 entries
 const allArticles = articlesContent.split('<hr>')
-const featuredArticles = allArticles.slice(0, 3).join('<hr>')
+const featuredArticles = allArticles.slice(0, 4).join('<hr>')
 
 // Music tracks
 const musicTracks = [
@@ -90,18 +91,22 @@ const musicTracks = [
             Jeg argumenterer for "kjedelig teknologi" som faktisk fungerer,
             heller enn å jage de nyeste trendene.
           </p>
-          <div class="portal-link">
-            <FileText class="portal-icon" size={20} />
-            <a href="https://dev.to/lebbe" target="_blank">DEV.to/@lebbe</a>
-            <span class="portal-desc"
-              >// 18+ artikler om React, semantisk HTML, og API-design</span
-            >
-          </div>
-          <div class="portal-link">
-            <Code2 class="portal-icon" size={20} />
-            <a href="https://github.com/lebbe" target="_blank">GitHub/@lebbe</a>
-            <span class="portal-desc">// 45+ open source repositorier</span>
-          </div>
+          <PortalLink
+            icon="FileText"
+            href="https://dev.to/lebbe"
+            keywords="DEV.to"
+            title="DEV.to/@lebbe"
+          >
+            18+ artikler om React, semantisk HTML, og API-design
+          </PortalLink>
+          <PortalLink
+            icon="Code2"
+            href="https://github.com/lebbe"
+            keywords="GitHub"
+            title="GitHub/@lebbe"
+          >
+            45+ open source repositorier
+          </PortalLink>
         </Section>
 
         <Section
@@ -119,101 +124,79 @@ const musicTracks = [
               >CrossSnow Special Edition Original Motion Picture Soundtrack</strong
             > (2025), er en konseptuell soundtrack til en fiktiv noir-film.
           </p>
-          <div class="portal-link">
-            <Music class="portal-icon" size={20} />
-            <a
-              href="https://music.apple.com/us/artist/lebchen/1793315594"
-              target="_blank">Apple Music</a
-            >
-            <span class="portal-desc"
-              >// CrossSnow (2025), It Came from the MMC (2023), og mer</span
-            >
-          </div>
-          <div class="portal-link">
-            <Music class="portal-icon" size={20} />
-            <a href="https://www.deezer.com/us/artist/lebchen" target="_blank"
-              >Deezer</a
-            >
-            <span class="portal-desc"
-              >// Stream alle mine album og samarbeid med Sad Alien, Ofat, og
-              Cuneax</span
-            >
-          </div>
-        </Section>
-
-        <Section
-          label="Small_Web_Philosophy"
-          columns={1}
-          heading="The Small Web og Digital Uavhengighet"
-        >
-          <p>
-            Jeg er en talsmann for "Small Web" - en tilbakevending til det frie,
-            kreative, og ikke-kommersielle internett fra før "Eternal
-            September". Gjennom Neocities og egenprodusert innhold, avviser jeg
-            Web 2.0-siloer og algoritmisk homogenitet. Mine prosjekter
-            inkluderer ASCII-baserte nettleserspill, AI-generert fiksjon, og
-            retro-web estetikk.
-          </p>
-          <div class="portal-link">
-            <Terminal class="portal-icon" size={20} />
-            <a href="https://lebbe.neocities.org/" target="_blank"
-              >Lebbes Terminal</a
-            >
-            <span class="portal-desc"
-              >// DOS-Burd, Ollie, og andre "demake" nettleserspill</span
-            >
-          </div>
+          <PortalLink
+            icon="Music"
+            href="https://music.apple.com/us/artist/lebchen/1793315594"
+            keywords="Apple Music"
+            title="Apple Music"
+          >
+            CrossSnow (2025), It Came from the MMC (2023), og mer
+          </PortalLink>
+          <PortalLink
+            icon="Music"
+            href="https://www.deezer.com/us/artist/lebchen"
+            keywords="Deezer"
+            title="Deezer"
+          >
+            Stream alle mine album og samarbeid med Sad Alien, Ofat, og Cuneax
+          </PortalLink>
         </Section>
 
         <Section
           label="Digital_Portals"
-          columns={3}
+          columns={1}
           heading="Mine Andre Hjørner"
         >
-          <div class="portal-link">
-            <Terminal class="portal-icon" size={20} />
-            <a href="https://lebbe.neocities.org/" target="_blank"
-              >Lebbes Terminal</a
-            >
-            <span class="portal-desc"
-              >// Min Neocities-side - "Small Web" manifest og ASCII-spill</span
-            >
-          </div>
-          <div class="portal-link">
-            <Guitar class="portal-icon" size={20} />
-            <a href="https://lebchen.rocks/" target="_blank">Lebchen Rocks</a>
-            <span class="portal-desc"
-              >// Min artist-side - Cinematic Synthwave og Darkwave</span
-            >
-          </div>
-          <div class="portal-link">
-            <Music class="portal-icon" size={20} />
-            <a href="https://www.youtube.com/@Lars-ErikBruce" target="_blank"
-              >@Lars-Erik Bruce</a
-            >
-            <span class="portal-desc">// Mine komposisjoner på YouTube</span>
-          </div>
-          <div class="portal-link">
-            <Blocks class="portal-icon" size={20} />
-            <a href="https://www.instagram.com/lebocomics/" target="_blank"
-              >@lebocomics</a
-            >
-            <span class="portal-desc"
-              >// AFOL - Lego-fotografering og narrative comic strips</span
-            >
-          </div>
-          <div class="portal-link">
-            <Globe class="portal-icon" size={20} />
-            <a href="https://spacehey.com/lebchen" target="_blank"
-              >SpaceHey/@lebchen</a
-            >
-            <span class="portal-desc">// Retro sosial nettverking</span>
-          </div>
-          <div class="portal-link">
-            <Github class="portal-icon" size={20} />
-            <a href="https://github.com/lebbe/" target="_blank">@lebbe</a>
-            <span class="portal-desc">// Min GitHub - Open Source kode</span>
-          </div>
+          <PortalLink
+            icon="Terminal"
+            href="https://lebbe.neocities.org/"
+            keywords="Neocities, Small Web"
+            title="Lebbes Terminal"
+          >
+            Min personlige hjørne på nettet med "Small Web" manifest og
+            ASCII-spill.
+          </PortalLink>
+          <PortalLink
+            icon="Guitar"
+            href="https://lebchen.rocks/"
+            keywords="Artist-side"
+            title="Lebchen Rocks"
+          >
+            Min offisielle artist-side med Cinematic Synthwave og
+            Darkwave-musikk.
+          </PortalLink>
+          <PortalLink
+            icon="Music"
+            href="https://www.youtube.com/@Lars-ErikBruce"
+            keywords="YouTube"
+            title="@Lars-Erik Bruce"
+          >
+            Mine musikkvideoer og komposisjoner.
+          </PortalLink>
+          <PortalLink
+            icon="Blocks"
+            href="https://www.instagram.com/lebocomics/"
+            keywords="AFOL, Instagram"
+            title="@lebocomics"
+          >
+            Lego-fotografering og narrative comic strips.
+          </PortalLink>
+          <PortalLink
+            icon="Globe"
+            href="https://spacehey.com/lebchen"
+            keywords="SpaceHey"
+            title="SpaceHey/@lebchen"
+          >
+            Min profil på det retro-inspirerte sosiale nettverket.
+          </PortalLink>
+          <PortalLink
+            icon="Github"
+            href="https://github.com/lebbe/"
+            keywords="GitHub"
+            title="@lebbe"
+          >
+            Open Source-prosjekter og eksperimenter.
+          </PortalLink>
         </Section>
 
         <Section
@@ -239,30 +222,6 @@ const musicTracks = [
             Spesialisering i semantisk informasjonsutvinning fra medisinske journaler
             (NLP/AI). Kombinert med studier i filosofi.
           </p>
-        </Section>
-
-        <Section
-          label="Political_Philosophy"
-          columns={2}
-          heading="Politisk Filosofi og Skriving"
-        >
-          <p>
-            Jeg har skrevet omfattende politiske essays for <strong
-              >Liberaleren</strong
-            > om temaer som konstitusjonell republikanisme, privatisering av helsetjenester,
-            og narkotikaavkriminalisering. Min politiske filosofi er forankret i klassisk
-            liberalisme og laissez-faire kapitalisme.
-          </p>
-          <div class="portal-link">
-            <FileText class="portal-icon" size={20} />
-            <a
-              href="https://www.liberaleren.no/author/lars-erik-bruce/"
-              target="_blank">Liberaleren.no</a
-            >
-            <span class="portal-desc"
-              >// Artikler om konstitusjon, frihet, og individuelle rettigheter</span
-            >
-          </div>
         </Section>
 
         <Section

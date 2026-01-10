@@ -1,0 +1,81 @@
+---
+interface Props {
+  icon: string
+  href: string
+  keywords: string
+  title: string
+}
+
+const { icon, href, keywords, title } = Astro.props
+
+// Dynamically import icon from lucide/astro
+let IconComponent
+try {
+  const module = await import(
+    `@lucide/astro/icons/${icon.charAt(0).toLowerCase() + icon.slice(1)}`
+  )
+  IconComponent = (module as any)[icon]
+} catch {
+  // Fallback: try importing from main lucide/astro export
+  try {
+    const module = await import(`@lucide/astro`)
+    IconComponent = (module as any)[icon]
+  } catch (innerError) {
+    throw new Error(
+      `Icon "${icon}" not found in @lucide/astro. Make sure the icon name is correct (e.g., "Terminal", "Github", "Music").`
+    )
+  }
+}
+---
+
+<div class="portal-link">
+  <span class="portal-keywords">// {keywords}</span>
+  <IconComponent class="portal-icon" size={20} />
+  <a href={href} target="_blank">
+    {title}
+  </a>
+  <span class="portal-desc">
+    <slot />
+  </span>
+</div>
+
+<style>
+  .portal-link {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto auto;
+    column-gap: 8px;
+    row-gap: 4px;
+    margin: 8px 0;
+    font-size: 0.85rem;
+  }
+
+  .portal-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    grid-column: 1;
+    grid-row: 2;
+    color: #a0a0a0;
+  }
+
+  .portal-keywords {
+    color: #999;
+    font-size: 0.7rem;
+    font-style: italic;
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  :global(a) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .portal-desc {
+    color: #d1d1d1;
+    font-size: 0.85rem;
+    grid-column: 2;
+    grid-row: 3;
+    margin-top: 4px;
+  }
+</style>
