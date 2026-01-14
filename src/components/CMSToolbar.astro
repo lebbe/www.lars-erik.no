@@ -236,7 +236,7 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
     }
 
     const editBtn = document.querySelector(
-      '.edit-btn',
+      '.edit-btn'
     ) as HTMLButtonElement | null
     let editMode = false
 
@@ -245,7 +245,7 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
 
       // Dispatch custom event that Section components can listen to
       window.dispatchEvent(
-        new CustomEvent('cms-edit-mode-changed', { detail: { editMode } }),
+        new CustomEvent('cms-edit-mode-changed', { detail: { editMode } })
       )
 
       // Toggle visual indicator on button
@@ -259,7 +259,7 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
           section.classList.add('edit-mode-active')
           // Make all child elements that aren't labels editable
           const content = section.querySelector(
-            '.editable-content',
+            '.editable-content'
           ) as HTMLElement | null
           if (content) {
             content.contentEditable = 'true'
@@ -268,7 +268,7 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
         } else {
           section.classList.remove('edit-mode-active')
           const content = section.querySelector(
-            '.editable-content',
+            '.editable-content'
           ) as HTMLElement | null
           if (content) {
             content.contentEditable = 'false'
@@ -313,7 +313,7 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
           '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="12 3 20.12 3.12 21.84 4.84 22 12M3 12.07v8.93a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"></polyline><path d="M7 7h12v6"></path></svg>'
         editBtn.addEventListener('click', () => {
           const label = section.querySelector(
-            '.section-label',
+            '.section-label'
           ) as HTMLElement | null
           const heading = section.querySelector('h2') as HTMLElement | null
           const colsAttr = section.style.getPropertyValue('--columns')
@@ -382,10 +382,10 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
           const canvas = section.parentElement
           if (canvas) {
             const allSections = Array.from(
-              canvas.querySelectorAll('.editable-section'),
+              canvas.querySelectorAll('.editable-section')
             )
             const draggedIdx = allSections.findIndex(
-              (el) => (el as HTMLElement).draggable,
+              (el) => (el as HTMLElement).draggable
             )
             const targetIdx = allSections.indexOf(section as any)
             if (draggedIdx !== targetIdx && draggedIdx !== -1) {
@@ -408,22 +408,22 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
 
     // Theme Picker Dialog
     const themeBtn = document.querySelector(
-      '.theme-btn',
+      '.theme-btn'
     ) as HTMLButtonElement | null
     const themeDialog = document.querySelector(
-      '.theme-dialog-overlay',
+      '.theme-dialog-overlay'
     ) as HTMLElement | null
     const closeBtn = document.querySelector(
-      '.close-btn',
+      '.close-btn'
     ) as HTMLButtonElement | null
     const colorInputs = document.querySelectorAll(
-      '.color-input',
+      '.color-input'
     ) as NodeListOf<HTMLInputElement>
     const themeSelect = document.getElementById(
-      'theme-select',
+      'theme-select'
     ) as HTMLSelectElement | null
     const resetBtn = document.querySelector(
-      '.reset-btn',
+      '.reset-btn'
     ) as HTMLButtonElement | null
 
     const themes: Record<string, Record<string, string>> = {
@@ -435,6 +435,8 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
         '--active-border-color': '#00ff41',
         '--text-color': '#d1d1d1',
         '--label-color': '#a0a0a0',
+        '--accent-primary': '#00ff41',
+        '--accent-secondary': '#88ff88',
       },
       cyan: {
         '--bg-color': '#0a0e27',
@@ -444,6 +446,8 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
         '--active-border-color': '#00d4ff',
         '--text-color': '#e0f2ff',
         '--label-color': '#7db3d1',
+        '--accent-primary': '#00d4ff',
+        '--accent-secondary': '#00f0ff',
       },
       purple: {
         '--bg-color': '#1a0f2e',
@@ -453,6 +457,8 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
         '--active-border-color': '#ff006e',
         '--text-color': '#f0e0ff',
         '--label-color': '#b88dd9',
+        '--accent-primary': '#ff006e',
+        '--accent-secondary': '#ff1a8f',
       },
       orange: {
         '--bg-color': '#2a1810',
@@ -462,6 +468,8 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
         '--active-border-color': '#ff8c00',
         '--text-color': '#ffe0c0',
         '--label-color': '#d4a080',
+        '--accent-primary': '#ff8c00',
+        '--accent-secondary': '#ffaa33',
       },
       'cool-blue': {
         '--bg-color': '#0f1419',
@@ -471,6 +479,8 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
         '--active-border-color': '#00bfff',
         '--text-color': '#c0e0ff',
         '--label-color': '#80b0d0',
+        '--accent-primary': '#00bfff',
+        '--accent-secondary': '#33d4ff',
       },
     }
 
@@ -490,7 +500,7 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
 
     const updateColorInput = (varName: string, color: string) => {
       const input = document.querySelector(
-        `[data-var="${varName}"]`,
+        `[data-var="${varName}"]`
       ) as HTMLInputElement | null
       if (input) {
         input.value = color
@@ -592,22 +602,22 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
 
     // Edit Section Dialog
     const editSectionDialog = document.querySelector(
-      '.edit-section-dialog-overlay',
+      '.edit-section-dialog-overlay'
     ) as HTMLElement | null
     const editSectionCloseBtn = document.querySelector(
-      '.edit-section-close-btn',
+      '.edit-section-close-btn'
     ) as HTMLButtonElement | null
     const editSectionLabelInput = document.getElementById(
-      'edit-section-label',
+      'edit-section-label'
     ) as HTMLInputElement | null
     const editSectionHeadingInput = document.getElementById(
-      'edit-section-heading',
+      'edit-section-heading'
     ) as HTMLInputElement | null
     const editSectionColsSelect = document.getElementById(
-      'edit-section-cols',
+      'edit-section-cols'
     ) as HTMLSelectElement | null
     const editSectionSubmitBtn = document.querySelector(
-      '.edit-section-submit',
+      '.edit-section-submit'
     ) as HTMLButtonElement | null
 
     if (editSectionCloseBtn) {
@@ -643,7 +653,7 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
 
         // Update label
         const labelEl = section.querySelector(
-          '.section-label',
+          '.section-label'
         ) as HTMLElement | null
         if (labelEl) {
           labelEl.textContent = newLabel
@@ -700,25 +710,25 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
 
     // Add Element Dialog
     const addElementBtn = document.querySelector(
-      '.add-element-btn',
+      '.add-element-btn'
     ) as HTMLButtonElement | null
     const addElementDialog = document.querySelector(
-      '.add-element-dialog-overlay',
+      '.add-element-dialog-overlay'
     ) as HTMLElement | null
     const addElementCloseBtn = document.querySelector(
-      '.add-element-close-btn',
+      '.add-element-close-btn'
     ) as HTMLButtonElement | null
     const submitBtn = document.querySelector(
-      '.submit-btn',
+      '.submit-btn'
     ) as HTMLButtonElement | null
     const sectionLabelInput = document.getElementById(
-      'section-label',
+      'section-label'
     ) as HTMLInputElement | null
     const sectionHeadingInput = document.getElementById(
-      'section-heading',
+      'section-heading'
     ) as HTMLInputElement | null
     const sectionColsSelect = document.getElementById(
-      'section-cols',
+      'section-cols'
     ) as HTMLSelectElement | null
 
     if (addElementBtn) {
@@ -764,7 +774,7 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
 
         // Copy Astro component ID from existing section for styling
         const existingSection = document.querySelector(
-          '.editable-section',
+          '.editable-section'
         ) as HTMLElement | null
         const copyAstroAttributes = (element: HTMLElement) => {
           if (existingSection) {
