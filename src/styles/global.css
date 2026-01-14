@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap');
+
 :root {
   --bg-color: #050505;
   --section-bg: #1a1a1a;
@@ -13,11 +15,24 @@
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Merriweather', serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: 'wdth' 100;
   margin: 0;
   padding: 20px;
   display: flex;
   justify-content: center;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .editor-canvas {

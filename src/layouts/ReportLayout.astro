@@ -1,4 +1,5 @@
 ---
+import '../styles/global.css'
 import CMSToolbar from '../components/CMSToolbar.astro'
 
 interface Props {
@@ -70,23 +71,6 @@ const { frontmatter } = Astro.props
 </html>
 
 <style>
-  :root {
-    --bg-color: #121212;
-    --text-color: #e0e0e0;
-    --border-color: #444;
-    --active-border-color: #1db954;
-    --label-color: #888;
-    --section-bg: #1a1a1a;
-  }
-
-  :global(body) {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Courier New', Courier, monospace;
-    margin: 0;
-    padding: 20px;
-  }
-
   .report-container {
     max-width: 900px;
     margin: 0 auto;
@@ -146,22 +130,24 @@ const { frontmatter } = Astro.props
   :global(.report-content h2) {
     margin-top: 30px;
     margin-bottom: 15px;
-    font-size: 1.5rem;
-    color: var(--active-border-color);
+    font-size: 22px;
     border-left: 3px solid var(--active-border-color);
     padding-left: 10px;
   }
 
   :global(.report-content h3) {
-    font-size: 1.1rem;
-    color: var(--active-border-color);
+    font-size: 18px;
     margin-top: 20px;
     margin-bottom: 10px;
   }
 
+  :global(.report-content h4) {
+    font-size: 18px;
+  }
+
   :global(.report-content p) {
     margin: 12px 0;
-    font-size: 0.95rem;
+    font-size: 18px;
   }
 
   :global(.report-content ul),
