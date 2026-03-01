@@ -3,13 +3,8 @@ import '../../../styles/global.css'
 import Section from '../../../components/section/Section.astro'
 
 // Load all report markdown files
-const reportModules = import.meta.glob('./reports/*.md', {
-  query: '?astrometadata',
-  import: 'default',
-})
-const reports = Object.values(reportModules).map(
-  (module: any) => module.default,
-)
+const reportModules = import.meta.glob('./reports/*.md', { eager: true })
+const reports = Object.values(reportModules).filter((m: any) => m)
 
 // Extract frontmatter and create report objects
 const reportData = reports.map((report: any) => ({

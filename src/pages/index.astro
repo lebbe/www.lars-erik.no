@@ -8,13 +8,10 @@ import PortalLink from '../components/PortalLink.astro'
 
 // Read articles.md as raw text
 const articlesModules = import.meta.glob('../index/sections/articles.md', {
-  query: '?astrometadata',
-  import: 'default',
+  eager: true,
 })
-const articlesRaw = Object.values(articlesModules).map(
-  (module: any) => module.default,
-)
-const articlesContent = articlesRaw[0]?.compiledContent?.()
+const articlesRaw = Object.values(articlesModules).filter((m: any) => m)
+const articlesContent = await (articlesRaw[0] as any)?.compiledContent?.()
 
 // Split by separator and take first 3 entries
 const allArticles = articlesContent?.split('<hr>')
