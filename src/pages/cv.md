@@ -22,7 +22,7 @@ layout: null
 .cv-pdf h3 {
   font-family: 'Merriweather', serif;
   font-weight: 700;
-  margin-top: 2.2em;
+  margin-top: 1.2em;
   margin-bottom: 0.5em;
   color: #222;
 }
@@ -73,16 +73,21 @@ layout: null
   line-height: 1.6;
 }
 
-/* Date range tags — subtler style */
-.cv-pdf h3 + p > code,
-.cv-pdf h3 > code,
-.cv-pdf p > strong ~ code {
-  background: #f5f5f5;
-  color: #555;
-  border-color: #ddd;
-  font-weight: 500;
-  font-size: 0.82rem;
+/* Date range tags — inline with headlines */
+.cv-pdf h4 > code,
+.cv-pdf h3 > code {
+  background: none;
+  color: #666;
+  border: none;
+  font-weight: 400;
+  font-size: 0.95rem;
+  padding: 0;
+  border-radius: 0;
+  font-family: inherit;
+  margin: 0 0 0 1em;
+  float: right;
 }
+
 
 /* Table styling */
 .cv-pdf table {
@@ -108,7 +113,8 @@ layout: null
 }
 
 /* H3 job titles */
-.cv-pdf h3 {
+.cv-pdf h3,
+.cv-pdf h4 {
   font-size: 1.1rem;
   margin-top: 1.5em;
   margin-bottom: 0.3em;
@@ -182,9 +188,7 @@ layout: null
 
   /* Skjul horisontale linjer som ikke trengs i print */
   .cv-pdf hr {
-    visibility: hidden;
-    margin: 0.5em 0;
-    height: 0;
+    display: none;
   }
 
   /* Klasse for eksplisitt sideskift i markdown */
@@ -199,19 +203,14 @@ layout: null
 </style>
 
 <div class="cv-pdf">
+
 # Lars-Erik Bruce
 
 **Senior Systemutvikler · Frontend-spesialist**
 
-Oslo, Norge
-
----
-
 ## Profil
 
 Over 12 års erfaring med web- og systemutvikling, med frontend som spesialfelt og UI-arkitektur som kjernekompetanse. Har hatt roller som utvikler, arkitekt og techlead — og trives best der det er høye krav til både teknisk kvalitet og brukeropplevelse. Akademisk bakgrunn i språkteknologi og NLP gjør AI-arbeidet intuitivt, og de siste årene har dette kommet til nytte i arbeid med LLM, RAG og agentbaserte systemer.
-
----
 
 ## Nøkkelkompetanse
 
@@ -224,17 +223,11 @@ Over 12 års erfaring med web- og systemutvikling, med frontend som spesialfelt 
 | **Metode**   | Scrum, Kanban, DevOps, WCAG/Universell utforming                                   |
 | **AI/ML**    | LLM-integrasjon, RAG-systemer, semantiske embeddings, MCP-servere                  |
 
----
-
 ## Arbeidserfaring
 
-### Senior Software Engineer — _Redpill Linpro_
+### Senior Software Engineer — _Redpill Linpro_ `Januar 2022 – nå`
 
-`Januar 2022 – nå`
-
-**Telenor — Agentic AI Platform**
-
-`April 2025 – nå`
+#### Telenor — Agentic AI Platform `April 2025 – nå`
 
 - Konsulent på et team som fasiliterer verktøy og infrastruktur for AI-agenter i Telenor kundesupport
 - Frontend-utvikling i Vue for chatbot og agentverktøy
@@ -242,9 +235,7 @@ Over 12 års erfaring med web- og systemutvikling, med frontend som spesialfelt 
 
 `Vue · Pinia · TypeScript · LLM · RAG · MCP · Node.js`
 
-**Skatteetaten — Skatteprosessen**
-
-`Januar 2022 – Mars 2025`
+#### Skatteetaten — Skatteprosessen, Min skatt `Januar 2022 – Mars 2025`
 
 - Fullstack-utvikling på tvers av flere team, med spesielt ansvar for frontend-arkitektur og WCAG/UU-compliance
 - Modernisering av web-applikasjoner med React, TypeScript og Node/Express
@@ -253,11 +244,7 @@ Over 12 års erfaring med web- og systemutvikling, med frontend som spesialfelt 
 
 `React · TypeScript · Node.js · Java · OpenShift · PostgreSQL · Playwright`
 
----
-
-### Frontend Techlead — _Tripletex (Visma)_
-
-`Oktober 2012 – Desember 2021`
+### Frontend Techlead — _Tripletex (Visma)_ `Oktober 2012 – Desember 2021`
 
 - Teknisk leder for frontend-utvikling i et stort team bak en SaaS-plattform for regnskap, lønn og prosjektstyring
 - Startet og drev innføringen av React og TypeScript i en stor Java/JSP-kodebase — over 1 500 komponenter og 400+ sider gradvis modernisert
@@ -267,50 +254,32 @@ Over 12 års erfaring med web- og systemutvikling, med frontend som spesialfelt 
 
 `React · Redux · TypeScript · Java · Node.js · Docker · DevOps · Scrum/Kanban`
 
----
-
-### Systemutvikler (sommerintern) — _cXense_
-
-`Mai – August 2011`
+### Systemutvikler (sommerintern) — _cXense_ `Mai – August 2011`
 
 - Implementerte JavaScript-basert parser for RDF/A-syntax i HTML-dokumenter
 - Bygget grafmodell over metadata brukt som input til AI-plattform for kontekstuell annonsering
 
 `JavaScript · jQuery · RDF · AI`
 
----
-
-### Forskningsassistent / Gruppelærer / Sensor — _Universitetet i Oslo_
-
-`2009 – 2011`
+### Forskningsassistent / Gruppelærer / Sensor — _Universitetet i Oslo_ `2009 – 2011`
 
 - Utforsket bruk av semantiske teknologier for visualisering av Statistikkbanken (samarbeid UiO, DNV, SSB, Cambridge Semantics)
 - Underviste i Logikk og beregninger og Introduksjon til kognitive vitenskaper; medsensor i eksamen
 
----
-
 ## Utdanning
 
-**Master of Computer Science** — Universitetet i Oslo
-
-`2010 – 2012`
+### Master of Computer Science — _Universitetet i Oslo_ `2010 – 2012`
 
 Fordypning: språkteknologi og informasjonsuttrekk. Masteroppgave: automatisk diagnostisering med NLP og ontologier.
 
-**Bachelor of Science, Computer Science** — Universitetet i Oslo
-
-`2007 – 2010`
+#### Bachelor of Science, Computer Science — _Universitetet i Oslo_ `2007 – 2010`
 
 Objektorientert (Java) og funksjonell programmering (Scheme, Common Lisp), språkteknologi og filosofi.
-
----
 
 ## Annet
 
 - **Publikasjoner:** Leserinnlegg i [Kode24](https://kode24.no) om moderne HTML og teknisk vedlikehold av kodebasen
 - **Språk:** Norsk (morsmål), Engelsk (flytende)
-
----
 
 _Referanser oppgis ved forespørsel · Oppdatert mars 2026_
 

@@ -7,12 +7,18 @@ import CMSToolbar from '../components/CMSToolbar.astro'
 import PortalLink from '../components/PortalLink.astro'
 
 // Read articles.md as raw text
-const articlesRaw = await Astro.glob('../index/sections/articles.md')
-const articlesContent = await articlesRaw[0].compiledContent()
+const articlesModules = import.meta.glob('../index/sections/articles.md', {
+  query: '?astrometadata',
+  import: 'default',
+})
+const articlesRaw = Object.values(articlesModules).map(
+  (module: any) => module.default,
+)
+const articlesContent = articlesRaw[0]?.compiledContent?.()
 
 // Split by separator and take first 3 entries
-const allArticles = articlesContent.split('<hr>')
-const featuredArticles = allArticles.slice(0, 6).join('<hr>')
+const allArticles = articlesContent?.split('<hr>')
+const featuredArticles = allArticles?.slice(0, 6).join('<hr>')
 
 // Music tracks
 const musicTracks = [

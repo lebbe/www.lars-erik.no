@@ -30,6 +30,7 @@ if (simpleIconsBrands.includes(icon)) {
   // Import from lucide/astro for non-brand icons
   try {
     const module = await import(
+      /* @vite-ignore */
       `@lucide/astro/icons/${icon.charAt(0).toLowerCase() + icon.slice(1)}`
     )
     IconComponent = (module as any)[icon]
