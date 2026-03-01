@@ -4,7 +4,198 @@ layout: null
 ---
 
 <style>
-@import url('/src/styles/cv.css');
+/* Print/PDF style for CV page */
+.cv-pdf {
+  max-width: 800px;
+  margin: 40px auto;
+  background: #fff;
+  color: #222;
+  font-family: 'Merriweather', serif;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  padding: 48px 56px;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+.cv-pdf h1,
+.cv-pdf h2,
+.cv-pdf h3 {
+  font-family: 'Merriweather', serif;
+  font-weight: 700;
+  margin-top: 2.2em;
+  margin-bottom: 0.5em;
+  color: #222;
+}
+.cv-pdf h1 {
+  font-size: 2.2rem;
+  margin-top: 0;
+}
+.cv-pdf h2 {
+  font-size: 1.3rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.2em;
+}
+.cv-pdf ul,
+.cv-pdf ol {
+  margin-left: 1.2em;
+}
+.cv-pdf hr {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 2em 0;
+}
+.cv-pdf strong {
+  color: #111;
+}
+.cv-pdf a {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Cool tech tags */
+.cv-pdf code {
+  font-family:
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, #e8f4f8, #dceef6);
+  color: #1a5276;
+  border: 1px solid #b8d8e8;
+  border-radius: 999px;
+  padding: 3px 12px;
+  display: inline-block;
+  margin: 2px 2px;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+/* Date range tags — subtler style */
+.cv-pdf h3 + p > code,
+.cv-pdf h3 > code,
+.cv-pdf p > strong ~ code {
+  background: #f5f5f5;
+  color: #555;
+  border-color: #ddd;
+  font-weight: 500;
+  font-size: 0.82rem;
+}
+
+/* Table styling */
+.cv-pdf table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 0.95rem;
+}
+.cv-pdf thead th {
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 2px solid #ccc;
+  padding: 8px 12px;
+  color: #333;
+}
+.cv-pdf tbody td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+.cv-pdf tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* H3 job titles */
+.cv-pdf h3 {
+  font-size: 1.1rem;
+  margin-top: 1.5em;
+  margin-bottom: 0.3em;
+  border-bottom: none;
+}
+.cv-pdf h3 em {
+  font-weight: 400;
+  color: #555;
+}
+
+@media print {
+  /* Fjern nettleserens over-/undertekster (URL, dato, sidetall) */
+  @page {
+    margin: 18mm 15mm;
+    size: A4;
+  }
+
+  body {
+    background: #fff !important;
+    color: #222 !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cv-pdf {
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Naturlige sideskift — hold overskrifter og innhold sammen */
+  .cv-pdf h2,
+  .cv-pdf h3 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .cv-pdf h2 + *,
+  .cv-pdf h3 + *,
+  .cv-pdf h3 + * + * {
+    page-break-before: avoid;
+    break-before: avoid;
+  }
+
+  /* Ikke bryt midt i en jobb-seksjon, tabell eller liste */
+  .cv-pdf ul,
+  .cv-pdf ol,
+  .cv-pdf table,
+  .cv-pdf blockquote {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* La store seksjoner (h2) starte på ny side om de havner nær bunnen */
+  .cv-pdf h2 {
+    page-break-before: auto;
+    break-before: auto;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Unngå enkeltlinjer alene øverst/nederst */
+  .cv-pdf p,
+  .cv-pdf li {
+    orphans: 2;
+    widows: 2;
+  }
+
+  /* Skjul horisontale linjer som ikke trengs i print */
+  .cv-pdf hr {
+    visibility: hidden;
+    margin: 0.5em 0;
+    height: 0;
+  }
+
+  /* Klasse for eksplisitt sideskift i markdown */
+  .page-break {
+    page-break-before: always;
+    break-before: always;
+    height: 0;
+    margin: 0;
+    border: none;
+  }
+}
 </style>
 
 <div class="cv-pdf">
