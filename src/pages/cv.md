@@ -210,7 +210,7 @@ layout: null
 
 ## Profil
 
-Over 12 års erfaring med web- og systemutvikling, med frontend som spesialfelt og UI-arkitektur som kjernekompetanse. Har hatt roller som utvikler, arkitekt og techlead — og trives best der det er høye krav til både teknisk kvalitet og brukeropplevelse. Akademisk bakgrunn i språkteknologi og NLP gjør AI-arbeidet intuitivt, og de siste årene har dette kommet til nytte i arbeid med LLM, RAG og agentbaserte systemer.
+Over 13 års erfaring med web- og systemutvikling, med frontend som spesialfelt og UI-arkitektur som kjernekompetanse. Har hatt roller som utvikler, arkitekt og techlead — og trives best der det er høye krav til både teknisk kvalitet og brukeropplevelse. Akademisk bakgrunn i språkteknologi og NLP gjør AI-arbeidet intuitivt, og de siste årene har dette kommet til nytte i arbeid med LLM, RAG og agentbaserte systemer.
 
 ## Nøkkelkompetanse
 
