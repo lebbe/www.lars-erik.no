@@ -1,6 +1,7 @@
 ---
 import '../../styles/global.css'
-import { ArrowLeftFromLine, ArrowRightFromLine } from '@lucide/astro'
+import LucideIcon from '../../components/LucideIcon.astro'
+import { ArrowLeftFromLine, ArrowRightFromLine } from 'lucide'
 import metaData from './meta.json'
 ---
 
@@ -336,7 +337,7 @@ import metaData from './meta.json'
 
         <div class="controls">
           <button class="nav-button" id="prevBtn" aria-label="Previous image">
-            <ArrowLeftFromLine size={20} />
+            <LucideIcon icon={ArrowLeftFromLine} size={20} />
             <span>Previous</span>
           </button>
           <span class="counter" aria-live="polite" aria-atomic="true">
@@ -344,7 +345,7 @@ import metaData from './meta.json'
           </span>
           <button class="nav-button" id="nextBtn" aria-label="Next image">
             <span>Next</span>
-            <ArrowRightFromLine size={20} />
+            <LucideIcon icon={ArrowRightFromLine} size={20} />
           </button>
         </div>
 

@@ -11,10 +11,15 @@ const { icon, href, keywords, title } = Astro.props
 // List of brand icons that should use Simple Icons
 const simpleIconsBrands = ['Github', 'Facebook', 'Instagram']
 
-// Dynamically import icon from simple-icons-astro or lucide/astro
-let IconComponent
+import LucideIcon from './LucideIcon.astro'
+import type { IconNode } from 'lucide'
+import * as lucideIcons from 'lucide'
+
+// Dynamically resolve icon component
+let IconComponent: any
+let lucideIconData: IconNode | null = null
+
 if (simpleIconsBrands.includes(icon)) {
-  // Try importing from simple-icons-astro for brand icons
   try {
     const module = await import(`simple-icons-astro`)
     IconComponent = (module as any)[icon]
@@ -27,30 +32,24 @@ if (simpleIconsBrands.includes(icon)) {
     )
   }
 } else {
-  // Import from lucide/astro for non-brand icons
-  try {
-    const module = await import(
-      /* @vite-ignore */
-      `@lucide/astro/icons/${icon.charAt(0).toLowerCase() + icon.slice(1)}`
+  lucideIconData = (lucideIcons as any)[icon]
+  if (!lucideIconData) {
+    throw new Error(
+      `Icon "${icon}" not found in lucide. Make sure the icon name is correct (e.g., "Terminal", "Github", "Music").`,
     )
-    IconComponent = (module as any)[icon]
-  } catch {
-    // Fallback: try importing from main lucide/astro export
-    try {
-      const module = await import(`@lucide/astro`)
-      IconComponent = (module as any)[icon]
-    } catch (innerError) {
-      throw new Error(
-        `Icon "${icon}" not found in @lucide/astro. Make sure the icon name is correct (e.g., "Terminal", "Github", "Music").`,
-      )
-    }
   }
 }
 ---
 
 <div class="portal-link">
   <span class="portal-keywords">// {keywords}</span>
-  <IconComponent class="portal-icon" size={20} />
+  {
+    lucideIconData ? (
+      <LucideIcon icon={lucideIconData} class="portal-icon" size={20} />
+    ) : (
+      <IconComponent class="portal-icon" size={20} />
+    )
+  }
   <a href={href} target="_blank">
     {title}
   </a>

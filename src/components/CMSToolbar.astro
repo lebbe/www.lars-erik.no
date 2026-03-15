@@ -1,16 +1,17 @@
 ---
-import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
+import LucideIcon from './LucideIcon.astro'
+import { FilePenLine, SquarePlus, Palette, X } from 'lucide'
 ---
 
 <div class="cms-toolbar" data-js-enabled="false">
   <button class="toolbar-btn edit-btn" title="Edit Content">
-    <FilePenLine size={20} />
+    <LucideIcon icon={FilePenLine} size={20} />
   </button>
   <button class="toolbar-btn theme-btn" title="Color picker">
-    <Palette size={20} />
+    <LucideIcon icon={Palette} size={20} />
   </button>
   <button class="toolbar-btn add-element-btn" title="Add Element">
-    <SquarePlus size={20} />
+    <LucideIcon icon={SquarePlus} size={20} />
   </button>
 </div>
 
@@ -20,7 +21,7 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
     <div class="dialog-header">
       <h3>Color Palette</h3>
       <button class="close-btn" title="Close">
-        <X size={20} />
+        <LucideIcon icon={X} size={20} />
       </button>
     </div>
 
@@ -143,7 +144,7 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
     <div class="dialog-header">
       <h3>Add New Section</h3>
       <button class="close-btn add-element-close-btn" title="Close">
-        <X size={20} />
+        <LucideIcon icon={X} size={20} />
       </button>
     </div>
 
@@ -188,7 +189,7 @@ import { FilePenLine, SquarePlus, Palette, X } from '@lucide/astro'
     <div class="dialog-header">
       <h3>Edit Section</h3>
       <button class="close-btn edit-section-close-btn" title="Close">
-        <X size={20} />
+        <LucideIcon icon={X} size={20} />
       </button>
     </div>
 
