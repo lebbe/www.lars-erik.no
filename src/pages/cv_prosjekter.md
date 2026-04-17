@@ -265,7 +265,7 @@ Tilpasset GUI-et for chatklienten Telmi til å tilfredsstille WCAG 2.2 AA-kraven
 Designet og implementerte en pipeline som automatisk genererer knowledge base-artikler fra kundeserviceinnhold. Pipelinen bruker temaekstraksjon og deduplisering for å identifisere unike kunnskapsområder, og genererer deretter strukturerte artikler tilpasset agentenes behov.
 
 - Vertex AI Gemini batch inference for temaekstraksjon i stor skala
-- Dedupliseringslogikk basert på string-likhet og LLM-raffinering
+- Dedupliseringslogikk basert på stringlikhet og LLM-raffinering
 - TypeScript, @google/genai SDK, Google Cloud (Vertex AI, GCS)
 
 **Prosjekt: RAG-systemer og MCP-servere**
@@ -311,7 +311,7 @@ Oppsett og vedlikehold av automatiserte testløsninger med Playwright og Cucumbe
 
 ---
 
-### Frontend Techlead — *Tripletex (Visma)*
+### Frontend Techlead — *Tripletex*
 
 `Oktober 2012 – Desember 2021`
 
@@ -371,7 +371,7 @@ Initierte og ledet arbeidet med å innføre React som ny frontend-teknologi i Tr
 Som Frontend Techlead og leder av frontend-forumet hadde jeg ansvar for faglig retning og kompetanseutvikling:
 
 - Ledet et tverrfaglig frontend-forum med medlemmer fra flere produktteam
-- Bisto utviklere som satt fast i egne prosjekter — feilsøking, arkitekturvalg, code reviews
+- Bistod utviklere som satt fast i egne prosjekter — feilsøking, arkitekturvalg, code reviews
 - Holdt interne presentasjoner og workshops om frontend-teknologier
 - Deltok i arkitekturgruppen med ansvar for tekniske beslutninger på tvers
 
@@ -419,7 +419,6 @@ Objektorientert (Java) og funksjonell programmering (Scheme, Common Lisp), språ
 
 - Publikasjoner: Leserinnlegg i [Kode24](https://kode24.no/) om moderne HTML og teknisk vedlikehold av kodebasen
 - Workshop om RAG og semantiske embeddings (internt, Redpill Linpro)
-- Skribent for [Individet](https://individet.no/) — essays om individuell frihet og samfunn
 - Språk: Norsk (morsmål), Engelsk (flytende)
 
 ---
