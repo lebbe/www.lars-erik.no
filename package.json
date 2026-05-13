@@ -12,7 +12,8 @@
     "fix": "npm run fix:prettier && npm run fix:lint",
     "lint:prettier": "prettier --check .",
     "lint:ox": "oxlint .",
-    "lint": "npm run lint:prettier && npm run lint:ox"
+    "lint": "npm run lint:prettier && npm run lint:ox",
+    "blog": "node scripts/new-blog-post.js"
   },
   "dependencies": {
     "astro": "^6.0.4",

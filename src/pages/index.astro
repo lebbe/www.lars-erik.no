@@ -17,6 +17,35 @@ const articlesContent = await (articlesRaw[0] as any)?.compiledContent?.()
 const allArticles = articlesContent?.split('<hr>')
 const featuredArticles = allArticles?.slice(0, 6).join('<hr>')
 
+// Load blog posts
+const blogModules = import.meta.glob('./blog/*/*.md', { eager: true })
+
+function parseBlogDate(dateStr: string): Date {
+  const [day, month, year] = dateStr.split('.')
+  return new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
+}
+
+const allBlogPosts = await Promise.all(
+  Object.entries(blogModules).map(async ([path, module]: [string, any]) => {
+    const content = await module.compiledContent()
+    const parts = content.split('<hr>')
+    return {
+      frontmatter: module.frontmatter,
+      url: `/blog/${path.replace(/^\.\/blog\//, '').replace(/\.md$/, '')}`,
+      excerpt: parts[0],
+    }
+  }),
+)
+
+const sortedBlogPosts = allBlogPosts.sort(
+  (a, b) =>
+    parseBlogDate(b.frontmatter.date).getTime() -
+    parseBlogDate(a.frontmatter.date).getTime(),
+)
+
+const featuredBlogPost = sortedBlogPosts[0]
+const moreBlogPosts = sortedBlogPosts.slice(1, 5)
+
 // Music tracks
 const musicTracks = [
   {
@@ -63,6 +92,56 @@ const musicTracks = [
       <Toppings />
 
       <main>
+        {
+          featuredBlogPost && (
+            <Section
+              label="Blog_Latest"
+              columns={2}
+              class="blog-featured-area"
+              heading="Siste blogginnlegg"
+            >
+              <div class="featured-post-meta">
+                <time>{featuredBlogPost.frontmatter.date}</time>
+                {featuredBlogPost.frontmatter.category && (
+                  <span class="featured-post-category">
+                    {featuredBlogPost.frontmatter.category}
+                  </span>
+                )}
+              </div>
+              <div
+                class="featured-post-content"
+                set:html={featuredBlogPost.excerpt}
+              />
+              <a href={featuredBlogPost.url} class="read-more-link">
+                Les hele innlegget →
+              </a>
+              {moreBlogPosts.length > 0 && (
+                <div class="more-posts">
+                  <hr class="more-posts-divider" />
+                  {moreBlogPosts.map((post) => (
+                    <div class="more-post-item">
+                      <time class="more-post-date">
+                        {post.frontmatter.date}
+                      </time>
+                      {post.frontmatter.description && (
+                        <p class="more-post-description">
+                          {post.frontmatter.description}
+                        </p>
+                      )}
+                      <a href={post.url} class="more-post-link">
+                        Les innlegget →
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <a href="/blog" class="all-posts-link">
+                Se alle blogginnlegg →
+              </a>
+            </Section>
+          )
+        }
+
         <Section
           label="Written_Content"
           columns={1}
@@ -226,3 +305,72 @@ const musicTracks = [
     </div>
   </body>
 </html>
+
+<style>
+  .featured-post-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 0.75rem;
+    color: var(--label-color);
+    margin-bottom: 10px;
+  }
+
+  .featured-post-category {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .featured-post-content {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .read-more-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.8rem;
+  }
+
+  .more-posts-divider {
+    margin: 16px 0;
+  }
+
+  .more-posts {
+    margin-top: 4px;
+  }
+
+  .more-post-item {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--border-color);
+  }
+
+  .more-post-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 8px;
+  }
+
+  .more-post-date {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--label-color);
+    margin-bottom: 4px;
+  }
+
+  .more-post-description {
+    margin: 0 0 4px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .more-post-link {
+    font-size: 0.75rem;
+  }
+
+  .all-posts-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 0.8rem;
+  }
+</style>

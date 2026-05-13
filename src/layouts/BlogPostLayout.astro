@@ -1,0 +1,222 @@
+---
+import CMSToolbar from '../components/CMSToolbar.astro'
+
+interface Props {
+  frontmatter: {
+    title?: string
+    date: string
+    tags?: string[]
+    category?: string
+    description?: string
+    slug: string
+  }
+}
+
+const { frontmatter } = Astro.props
+---
+
+<html lang="no">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    {
+      frontmatter.description && (
+        <meta name="description" content={frontmatter.description} />
+      )
+    }
+    <title>{frontmatter.title || frontmatter.slug} - Lars-Erik Bruce</title>
+  </head>
+  <body>
+    <CMSToolbar />
+    <div class="blog-container">
+      <div class="blog-header">
+        <div class="blog-meta">
+          {frontmatter.date && <time>{frontmatter.date}</time>}
+          {
+            frontmatter.category && (
+              <span class="category">{frontmatter.category}</span>
+            )
+          }
+        </div>
+        {
+          frontmatter.tags && frontmatter.tags.length > 0 && (
+            <div class="tags">
+              {frontmatter.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      <div class="blog-content">
+        <slot />
+      </div>
+
+      <a href="/blog" class="back-link">← Tilbake til bloggen</a>
+    </div>
+  </body>
+</html>
+
+<style>
+  :root {
+    --bg-color: #050505;
+    --section-bg: #1a1a1a;
+    --border-color: #333;
+    --active-border-color: #00ff41;
+    --text-color: #d1d1d1;
+    --label-color: #a0a0a0;
+  }
+
+  :global(body) {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .blog-container {
+    max-width: 760px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .blog-header {
+    margin-bottom: 30px;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 15px;
+  }
+
+  .blog-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.85rem;
+    color: var(--label-color);
+    margin-bottom: 8px;
+  }
+
+  .category {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    background: var(--border-color);
+    color: var(--text-color);
+    padding: 2px 6px;
+  }
+
+  .blog-content {
+    margin: 20px 0;
+  }
+
+  :global(.blog-content h1) {
+    margin-top: 0;
+    font-size: 1.8rem;
+    color: var(--active-border-color);
+    letter-spacing: 1px;
+  }
+
+  :global(.blog-content h2) {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    color: #fff;
+    border-left: 2px solid var(--active-border-color);
+    padding-left: 8px;
+  }
+
+  :global(.blog-content h3) {
+    font-size: 1rem;
+    color: #fff;
+    margin-top: 20px;
+  }
+
+  :global(.blog-content p) {
+    margin: 14px 0;
+    font-size: 0.95rem;
+  }
+
+  :global(.blog-content ul),
+  :global(.blog-content ol) {
+    margin: 14px 0;
+    padding-left: 20px;
+  }
+
+  :global(.blog-content li) {
+    margin: 6px 0;
+    font-size: 0.95rem;
+  }
+
+  :global(.blog-content a) {
+    color: var(--active-border-color);
+    text-decoration: none;
+    padding: 1px 3px;
+    transition: all 0.1s;
+  }
+
+  :global(.blog-content a:hover) {
+    background-color: var(--active-border-color);
+    color: #000;
+  }
+
+  :global(.blog-content blockquote) {
+    margin: 16px 0;
+    border-left: 2px solid var(--active-border-color);
+    padding-left: 12px;
+    font-style: italic;
+    color: var(--label-color);
+  }
+
+  :global(.blog-content hr) {
+    border: none;
+    border-top: 1px dashed var(--border-color);
+    margin: 28px 0;
+  }
+
+  :global(.blog-content code) {
+    background: var(--section-bg);
+    padding: 1px 5px;
+    font-size: 0.85em;
+    border: 1px solid var(--border-color);
+  }
+
+  :global(.blog-content pre) {
+    background: var(--section-bg);
+    border: 1px dashed var(--border-color);
+    padding: 14px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+  }
+
+  :global(.blog-content pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 30px;
+    color: var(--label-color);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.1s;
+    padding: 2px 4px;
+  }
+
+  .back-link:hover {
+    color: var(--active-border-color);
+    background: none;
+  }
+</style>

@@ -1,0 +1,156 @@
+---
+import '../../styles/global.css'
+import Section from '../../components/section/Section.astro'
+import Toppings from '../../components/Toppings.astro'
+
+const blogModules = import.meta.glob('./*/*.md', { eager: true })
+
+function parseDate(dateStr: string): Date {
+  const [day, month, year] = dateStr.split('.')
+  return new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
+}
+
+const blogPosts = await Promise.all(
+  Object.entries(blogModules).map(async ([path, module]: [string, any]) => {
+    const content = await module.compiledContent()
+    const parts = content.split('<hr>')
+    return {
+      frontmatter: module.frontmatter,
+      url: `/blog/${path.replace(/^\.\//, '').replace(/\.md$/, '')}`,
+      excerpt: parts[0],
+    }
+  }),
+)
+
+const sortedPosts = blogPosts.sort(
+  (a, b) =>
+    parseDate(b.frontmatter.date).getTime() -
+    parseDate(a.frontmatter.date).getTime(),
+)
+---
+
+<html lang="no">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="description"
+      content="Blogginnlegg av Lars-Erik Bruce – tanker om teknologi, filosofi, musikk og livet generelt."
+    />
+    <title>Blogg - Lars-Erik Bruce</title>
+  </head>
+  <body>
+    <div class="editor-canvas">
+      <Toppings />
+
+      <main>
+        <Section label="Blog_Header" as="header" heading="Blogg" columns={3}>
+          <p>
+            Tanker og refleksjoner om teknologi, filosofi, musikk og alt annet
+            som interesserer meg.
+          </p>
+        </Section>
+
+        <Section label="Blog_Posts" columns={3} heading="Innlegg">
+          <div class="posts-list">
+            {
+              sortedPosts.map((post) => (
+                <article class="post-item">
+                  <div class="post-meta">
+                    <time class="post-date">{post.frontmatter.date}</time>
+                    {post.frontmatter.category && (
+                      <span class="post-category">
+                        {post.frontmatter.category}
+                      </span>
+                    )}
+                  </div>
+                  {post.frontmatter.tags &&
+                    post.frontmatter.tags.length > 0 && (
+                      <div class="post-tags">
+                        {post.frontmatter.tags.map((tag: string) => (
+                          <span class="post-tag">{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                  <div class="post-excerpt" set:html={post.excerpt} />
+                  {post.frontmatter.description && (
+                    <p class="post-description">
+                      {post.frontmatter.description}
+                    </p>
+                  )}
+                  <a href={post.url} class="post-link">
+                    Les innlegget →
+                  </a>
+                </article>
+              ))
+            }
+          </div>
+        </Section>
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .post-item {
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 24px;
+  }
+
+  .post-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .post-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 0.75rem;
+    color: var(--label-color);
+    margin-bottom: 6px;
+  }
+
+  .post-category {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .post-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .post-tag {
+    font-size: 0.65rem;
+    background: var(--border-color);
+    padding: 2px 6px;
+  }
+
+  .post-excerpt {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .post-description {
+    font-size: 0.85rem;
+    color: var(--label-color);
+    margin: 6px 0 8px;
+    font-style: italic;
+  }
+
+  .post-link {
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-top: 6px;
+  }
+</style>
