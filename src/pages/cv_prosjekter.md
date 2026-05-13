@@ -219,21 +219,21 @@ Senior utvikler med over 13 års erfaring med web- og systemutvikling, med front
 
 ## Nøkkelkompetanse
 
-| Kategori | Teknologier |
-|---|---|
-| **Frontend** | React, Vue 3, TypeScript, JavaScript, HTML5, CSS/SCSS |
-| **State management** | Redux, Pinia |
-| **Backend** | Node.js/Express, Java (Tomcat/Spring/JSP), REST, Microservices, PostgreSQL/SQL |
-| **Testing** | Playwright, Cypress, Cucumber, JUnit, Vitest |
-| **Verktøy** | Git, Docker, OpenShift, Vite, Webpack/Gulp, Jenkins, CI/CD, GitHub Copilot, Claude |
-| **Metode** | Scrum, Kanban, DevOps, WCAG/Universell utforming |
-| **AI/ML** | LLM-integrasjon, RAG-systemer, semantiske embeddings, MCP-servere, Vertex AI |
+| Kategori             | Teknologier                                                                        |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| **Frontend**         | React, Vue 3, TypeScript, JavaScript, HTML5, CSS/SCSS                              |
+| **State management** | Redux, Pinia                                                                       |
+| **Backend**          | Node.js/Express, Java (Tomcat/Spring/JSP), REST, Microservices, PostgreSQL/SQL     |
+| **Testing**          | Playwright, Cypress, Cucumber, JUnit, Vitest                                       |
+| **Verktøy**          | Git, Docker, OpenShift, Vite, Webpack/Gulp, Jenkins, CI/CD, GitHub Copilot, Claude |
+| **Metode**           | Scrum, Kanban, DevOps, WCAG/Universell utforming                                   |
+| **AI/ML**            | LLM-integrasjon, RAG-systemer, semantiske embeddings, MCP-servere, Vertex AI       |
 
 ---
 
 ## Arbeidserfaring
 
-### Senior Software Engineer — *Redpill Linpro*
+### Senior Software Engineer — _Redpill Linpro_
 
 `Januar 2022 – nå`
 
@@ -311,7 +311,7 @@ Oppsett og vedlikehold av automatiserte testløsninger med Playwright og Cucumbe
 
 ---
 
-### Frontend Techlead — *Tripletex*
+### Frontend Techlead — _Tripletex_
 
 `Oktober 2012 – Desember 2021`
 
@@ -379,7 +379,7 @@ Som Frontend Techlead og leder av frontend-forumet hadde jeg ansvar for faglig r
 
 ---
 
-### Systemutvikler (sommerintern) — *cXense*
+### Systemutvikler (sommerintern) — _cXense_
 
 `Mai – August 2011`
 
@@ -389,7 +389,7 @@ Implementerte en JavaScript-basert parser for RDF/A-syntax i HTML-dokumenter. By
 
 ---
 
-### Forskningsassistent / Gruppelærer / Sensor — *Universitetet i Oslo*
+### Forskningsassistent / Gruppelærer / Sensor — _Universitetet i Oslo_
 
 `2009 – 2011`
 
@@ -401,13 +401,13 @@ Utforsket bruk av semantiske teknologier for visualisering av Statistikkbanken i
 
 ## Utdanning
 
-### Master of Computer Science — *Universitetet i Oslo*
+### Master of Computer Science — _Universitetet i Oslo_
 
 `2010 – 2012`
 
 Fordypning: språkteknologi og informasjonsuttrekk. Masteroppgave: automatisk diagnostisering med NLP og ontologier.
 
-### Bachelor of Science, Computer Science — *Universitetet i Oslo*
+### Bachelor of Science, Computer Science — _Universitetet i Oslo_
 
 `2007 – 2010`
 
@@ -424,4 +424,5 @@ Objektorientert (Java) og funksjonell programmering (Scheme, Common Lisp), språ
 ---
 
 Referanser oppgis ved forespørsel · Oppdatert april 2026
+
 </div>
