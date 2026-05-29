@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPS BOOTCAMP // From Frontend to Fireproof</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=JetBrains+Mono:wght@400;500;700;800&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0c;
+    --panel:#121317;
+    --panel-2:#16181d;
+    --ink:#e8e4d8;
+    --muted:#8a8578;
+    --amber:#ffb627;
+    --amber-bright:#ffd23f;
+    --hazard:#ff5714;
+    --danger:#ff2d2d;
+    --go:#4ade80;
+    --cyan:#3fd0ff;
+    --line:#26282f;
+    --tape:#ffd23f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"JetBrains Mono",monospace;
+    overflow-x:hidden;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* atmosphere: grain + scanlines + vignette */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:60;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay;
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:61;pointer-events:none;
+    background:repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,.18) 3px, rgba(0,0,0,0) 4px);
+    opacity:.5;
+  }
+  #fx{position:fixed;inset:0;z-index:2;pointer-events:none}
+  #shell{position:relative;z-index:3;will-change:transform}
+
+  /* ---- HUD ---- */
+  #hud{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;gap:18px;
+    padding:10px 18px;
+    background:linear-gradient(180deg,rgba(10,10,12,.96),rgba(10,10,12,.72));
+    border-bottom:1px solid var(--line);
+    backdrop-filter:blur(6px);
+  }
+  #hud .badge{font-family:"Bungee";font-size:13px;letter-spacing:1px;color:var(--amber-bright);text-shadow:0 0 12px rgba(255,182,39,.5)}
+  #hud .badge small{display:block;font-family:"JetBrains Mono";font-weight:700;font-size:9px;letter-spacing:3px;color:var(--muted);text-shadow:none}
+  .meter{flex:1;max-width:420px}
+  .meter .lbl{display:flex;justify-content:space-between;font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:4px}
+  .bar{height:10px;background:#000;border:1px solid var(--line);position:relative;overflow:hidden}
+  .bar i{position:absolute;inset:0;width:0;background:repeating-linear-gradient(45deg,var(--amber) 0 8px,var(--hazard) 8px 16px);transition:width .6s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 14px rgba(255,87,20,.6)}
+  #sysCount{font-family:"Bungee";font-size:13px;color:var(--go);white-space:nowrap;text-shadow:0 0 10px rgba(74,222,128,.4)}
+
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+
+  /* ---- HERO ---- */
+  #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:60px;position:relative}
+  .tape{
+    display:inline-block;background:var(--tape);color:#1a1305;font-family:"Bungee";font-size:12px;
+    letter-spacing:2px;padding:6px 14px;transform:rotate(-1.4deg);
+    box-shadow:6px 6px 0 rgba(0,0,0,.5);margin-bottom:26px;
+  }
+  h1.title{
+    font-family:"Bungee";line-height:.92;letter-spacing:-1px;
+    font-size:clamp(44px,9.5vw,108px);
+    color:var(--ink);
+    text-shadow:0 0 1px #000, 5px 5px 0 var(--hazard);
+  }
+  h1.title em{font-style:normal;color:var(--amber-bright);display:block;text-shadow:0 0 1px #000,5px 5px 0 #6b1f00}
+  .sub{margin-top:22px;max-width:640px;font-size:15px;color:var(--muted)}
+  .sub b{color:var(--ink)}
+  .launch{
+    margin-top:38px;align-self:flex-start;cursor:pointer;
+    font-family:"Bungee";font-size:20px;letter-spacing:1px;color:#1a1305;
+    background:var(--amber-bright);border:none;padding:18px 34px;
+    box-shadow:7px 7px 0 var(--hazard), 0 0 30px rgba(255,210,63,.35);
+    transition:transform .08s, box-shadow .08s;position:relative;
+  }
+  .launch:hover{transform:translate(-2px,-2px);box-shadow:11px 11px 0 var(--hazard),0 0 40px rgba(255,210,63,.5)}
+  .launch:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--hazard)}
+  .scrolltip{margin-top:40px;font-size:11px;letter-spacing:3px;color:var(--muted);opacity:0;transition:opacity .5s}
+  .scrolltip.show{opacity:1;animation:blink 1.6s steps(2) infinite}
+  @keyframes blink{50%{opacity:.25}}
+
+  /* ---- MODULES ---- */
+  section.mod{padding:64px 0;border-top:1px dashed var(--line)}
+  .modhead{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;flex-wrap:wrap}
+  .num{font-family:"Bungee";font-size:13px;color:var(--bg);background:var(--amber);padding:3px 9px;letter-spacing:1px}
+  .modhead h2{font-family:"Bungee";font-size:clamp(24px,4.4vw,40px);line-height:1;color:var(--ink)}
+  .tag{font-size:10px;letter-spacing:3px;color:var(--cyan);border:1px solid var(--line);padding:3px 8px;border-radius:2px}
+  .lede{color:var(--muted);max-width:720px;margin:14px 0 8px;font-size:14.5px}
+  .lede b{color:var(--amber-bright)}
+  .analogy{
+    border-left:3px solid var(--cyan);background:rgba(63,208,255,.06);
+    padding:12px 16px;margin:18px 0;font-size:14px;color:#cfe9f5;border-radius:0 4px 4px 0;
+  }
+  .analogy strong{color:var(--cyan);font-family:"Bungee";font-size:11px;letter-spacing:2px;display:block;margin-bottom:4px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px}
+  .card h3{font-size:13px;letter-spacing:1px;color:var(--amber);margin-bottom:8px;text-transform:uppercase}
+  .card p{font-size:13.5px;color:var(--muted)}
+  .card code,code.inl{background:#000;color:var(--amber-bright);padding:1px 6px;border-radius:3px;font-size:12.5px}
+
+  /* interactive console shell */
+  .console{
+    background:linear-gradient(180deg,#0d0e12,#0a0b0e);
+    border:1px solid var(--line);border-radius:8px;margin-top:22px;overflow:hidden;
+    box-shadow:inset 0 0 60px rgba(0,0,0,.6);
+  }
+  .console .topbar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#08090b;border-bottom:1px solid var(--line)}
+  .dot{width:10px;height:10px;border-radius:50%}
+  .console .topbar .title{margin-left:8px;font-size:11px;letter-spacing:2px;color:var(--muted)}
+  .console .body{padding:20px}
+
+  .btn{
+    cursor:pointer;font-family:"JetBrains Mono";font-weight:700;font-size:13px;letter-spacing:1px;
+    color:#0c0d0f;background:var(--amber);border:none;padding:11px 18px;border-radius:4px;
+    transition:transform .07s,box-shadow .1s,filter .1s;box-shadow:0 3px 0 #8a5f00;
+  }
+  .btn:hover{filter:brightness(1.08)}
+  .btn:active{transform:translateY(3px);box-shadow:0 0 0 #8a5f00}
+  .btn.ghost{background:transparent;color:var(--amber);border:1px solid var(--amber);box-shadow:none}
+  .btn.ghost:active{transform:translateY(2px)}
+  .btn.danger{background:var(--hazard);color:#fff;box-shadow:0 3px 0 #7a2400}
+  .btn.go{background:var(--go);box-shadow:0 3px 0 #1d6b3a}
+  .btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none;transform:none}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+  .done-stamp{
+    display:none;margin-top:16px;font-family:"Bungee";font-size:13px;letter-spacing:2px;color:var(--go);
+    border:2px solid var(--go);padding:6px 12px;width:max-content;transform:rotate(-3deg);
+    text-shadow:0 0 10px rgba(74,222,128,.5);box-shadow:0 0 20px rgba(74,222,128,.15)
+  }
+  .done-stamp.show{display:block;animation:slam .35s cubic-bezier(.2,1.4,.4,1)}
+  @keyframes slam{0%{transform:scale(2.4) rotate(-3deg);opacity:0}100%{transform:scale(1) rotate(-3deg);opacity:1}}
+
+  /* AZURE hierarchy */
+  .azbox{border:1px solid var(--line);border-radius:6px;padding:12px;cursor:pointer;transition:.15s;margin-bottom:8px;background:var(--panel-2)}
+  .azbox:hover{border-color:var(--amber);background:#1b1d23}
+  .azbox .az-t{display:flex;justify-content:space-between;align-items:center}
+  .azbox .az-name{font-weight:700;color:var(--ink);font-size:13.5px}
+  .azbox .az-meta{font-size:11px;color:var(--muted)}
+  .azbox .az-kids{margin:10px 0 0 16px;border-left:2px dashed var(--line);padding-left:14px;display:none}
+  .azbox.open>.az-kids{display:block}
+  .az-chev{color:var(--amber);transition:transform .2s}
+  .azbox.open>.az-t .az-chev{transform:rotate(90deg)}
+
+  /* K8S pods */
+  .clusterwrap{display:grid;grid-template-columns:1fr;gap:14px}
+  .nodecard{background:#0e0f13;border:1px solid var(--line);border-radius:8px;padding:14px}
+  .pods{display:flex;flex-wrap:wrap;gap:10px;min-height:64px;margin-top:10px}
+  .pod{
+    width:62px;height:62px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 35%,#1b3a2a,#0c1a12);border:1px solid #2f6b48;
+    color:var(--go);font-size:9px;letter-spacing:1px;position:relative;cursor:pointer;
+    animation:popin .3s cubic-bezier(.2,1.6,.4,1);transition:.15s
+  }
+  .pod:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(74,222,128,.18)}
+  .pod .icn{font-size:20px;line-height:1}
+  .pod.dying{animation:die .35s forwards}
+  @keyframes popin{0%{transform:scale(0) rotate(20deg);opacity:0}100%{transform:scale(1);opacity:1}}
+  @keyframes die{100%{transform:scale(0) rotate(-25deg);opacity:0}}
+  .statline{font-size:12px;color:var(--muted);margin-top:12px}
+  .statline b{color:var(--amber-bright)}
+  .desired-ctrl{display:flex;align-items:center;gap:8px}
+  .stepper{width:34px;height:34px;font-family:"Bungee";font-size:16px}
+
+  /* PIM */
+  .rolecard{border:1px solid var(--line);border-radius:6px;padding:14px;background:var(--panel-2);margin-bottom:12px}
+  .pill{font-size:10px;letter-spacing:1px;padding:3px 8px;border-radius:20px;font-weight:700}
+  .pill.elig{background:rgba(255,182,39,.15);color:var(--amber);border:1px solid var(--amber)}
+  .pill.active{background:rgba(74,222,128,.15);color:var(--go);border:1px solid var(--go)}
+  .resultline{margin-top:14px;font-family:"VT323";font-size:22px;letter-spacing:1px;min-height:28px}
+  .resultline.deny{color:var(--danger);text-shadow:0 0 14px rgba(255,45,45,.5)}
+  .resultline.grant{color:var(--go);text-shadow:0 0 14px rgba(74,222,128,.5)}
+  .timer{font-family:"Bungee";color:var(--amber-bright);font-size:14px}
+  .actbox{display:none;margin-top:14px;border:1px dashed var(--amber);border-radius:6px;padding:14px;background:rgba(255,182,39,.04)}
+  .actbox.show{display:block;animation:popin .25s}
+  .inp{width:100%;background:#000;border:1px solid var(--line);color:var(--ink);padding:9px 12px;border-radius:4px;font-family:"JetBrains Mono";font-size:13px;margin-top:6px}
+  .inp:focus{outline:none;border-color:var(--amber)}
+  .gotcha{border-left:3px solid var(--danger);background:rgba(255,45,45,.07);padding:10px 14px;margin-top:14px;font-size:13px;color:#ffd2d2;border-radius:0 4px 4px 0}
+  .gotcha strong{color:var(--danger);font-family:"Bungee";font-size:10px;letter-spacing:2px;display:block;margin-bottom:3px}
+
+  /* VAULT */
+  .vault-door{
+    width:120px;height:120px;margin:0 auto 6px;border-radius:12px;
+    background:radial-gradient(circle at 50% 50%,#23262e,#0c0d11);border:3px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;transition:.4s
+  }
+  .vault-door.open{border-color:var(--go);box-shadow:0 0 40px rgba(74,222,128,.4)}
+  .vault-door.breach{border-color:var(--danger);box-shadow:0 0 40px rgba(255,45,45,.5)}
+  .opt{display:block;border:1px solid var(--line);border-radius:6px;padding:12px;margin-bottom:8px;cursor:pointer;transition:.15s}
+  .opt:hover{border-color:var(--amber)}
+  .opt input{margin-right:8px;accent-color:var(--amber)}
+  .opt.sel{border-color:var(--amber);background:rgba(255,182,39,.06)}
+  .opt .o-t{font-weight:700;font-size:13.5px}
+  .opt .o-d{font-size:11.5px;color:var(--muted);margin-top:3px;margin-left:22px}
+
+  /* GITOPS */
+  .gitwrap{display:grid;grid-template-columns:1fr 60px 1fr;gap:8px;align-items:center}
+  @media(max-width:620px){.gitwrap{grid-template-columns:1fr;gap:14px}.arrowcol{transform:rotate(90deg)}}
+  .statebox{border:1px solid var(--line);border-radius:8px;padding:16px;background:var(--panel-2);text-align:center}
+  .statebox .sb-h{font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px}
+  .statebox .val{font-family:"Bungee";font-size:22px;color:var(--go);transition:.2s}
+  .statebox.drift .val{color:var(--danger);text-shadow:0 0 12px rgba(255,45,45,.4)}
+  .arrowcol{text-align:center;color:var(--amber);font-size:22px}
+
+  /* ISSUEOPS terminal */
+  .issue{background:#0d0e12;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .issue .ih{padding:10px 14px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
+  .issue .ih b{color:var(--ink)}
+  .term{font-family:"VT323";font-size:18px;padding:14px;min-height:150px;color:#9ff5b0;white-space:pre-wrap;line-height:1.35}
+  .term .sys{color:var(--muted)}
+  .term .ok{color:var(--go)}
+  .term .warn{color:var(--amber-bright)}
+  .term .cmd{color:var(--cyan)}
+  .cmdrow{display:flex;border-top:1px solid var(--line)}
+  .cmdrow span{padding:10px 4px 10px 14px;color:var(--amber);font-family:"VT323";font-size:20px}
+  .cmdrow input{flex:1;background:transparent;border:none;color:var(--ink);font-family:"VT323";font-size:20px;padding:10px 14px 10px 4px}
+  .cmdrow input:focus{outline:none}
+  .hintchips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .chip{font-size:11px;color:var(--cyan);border:1px solid var(--line);border-radius:20px;padding:4px 10px;cursor:pointer;font-family:"VT323";font-size:16px}
+  .chip:hover{border-color:var(--cyan);background:rgba(63,208,255,.08)}
+
+  /* QUIZ */
+  .q{border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:14px;background:var(--panel)}
+  .q .qt{font-weight:700;font-size:14px;margin-bottom:10px}
+  .q .qt span{color:var(--amber)}
+  .qa{display:block;border:1px solid var(--line);border-radius:5px;padding:10px 12px;margin-bottom:7px;cursor:pointer;font-size:13px;transition:.12s}
+  .qa:hover{border-color:var(--amber)}
+  .qa.correct{border-color:var(--go);background:rgba(74,222,128,.1);color:var(--go)}
+  .qa.wrong{border-color:var(--danger);background:rgba(255,45,45,.1);color:#ffb4b4}
+  .qa.locked{pointer-events:none}
+
+  .cert{
+    display:none;margin-top:30px;text-align:center;border:3px double var(--amber);border-radius:10px;
+    padding:34px 20px;background:radial-gradient(circle at 50% 0%,rgba(255,182,39,.08),transparent);
+  }
+  .cert.show{display:block;animation:slam .4s cubic-bezier(.2,1.4,.4,1)}
+  .cert .seal{font-family:"Bungee";font-size:13px;letter-spacing:3px;color:var(--amber)}
+  .cert h3{font-family:"Bungee";font-size:clamp(22px,5vw,38px);margin:10px 0;color:var(--ink);text-shadow:3px 3px 0 var(--hazard)}
+  .cert p{color:var(--muted);font-size:13px}
+  .cert .who{color:var(--amber-bright);font-weight:700}
+
+  footer{padding:50px 0 80px;text-align:center;color:var(--muted);font-size:12px;border-top:1px dashed var(--line)}
+  .ticker{font-family:"VT323";font-size:15px;color:var(--amber);opacity:.7}
+  a{color:var(--cyan)}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+
+<div id="hud">
+  <div class="badge">OPS BOOTCAMP<small>CLEARANCE PROTOCOL</small></div>
+  <div class="meter">
+    <div class="lbl"><span>SECURITY CLEARANCE</span><span id="clrPct">0%</span></div>
+    <div class="bar"><i id="clrBar"></i></div>
+  </div>
+  <div id="sysCount">0 / 7 SYSTEMS ONLINE</div>
+</div>
+
+<div id="shell">
+
+  <!-- HERO -->
+  <header id="hero" class="wrap">
+    <div class="tape">⚠ AUTHORIZED PERSONNEL ONLY ⚠</div>
+    <h1 class="title">FROM FRONTEND<em>TO FIREPROOF</em></h1>
+    <p class="sub">Yesterday you were shipping React components. Today someone handed you a <b>YAML file</b>, a <b>Kubernetes cluster</b>, and a Slack message that just says <b>"open a PR"</b>. Breathe. This console will get you from confused to dangerous across Azure, AKS, PIM, Key Vault, GitOps &amp; IssueOps — with as many explosions as the material can reasonably justify.</p>
+    <button class="launch" id="launchBtn">⟢ INITIATE SEQUENCE</button>
+    <div class="scrolltip" id="scrolltip">▼ SCROLL TO PROCEED ▼</div>
+  </header>
+
+  <!-- MODULE 0: BRIEFING -->
+  <section class="mod wrap" id="m-brief">
+    <div class="modhead"><span class="num">00</span><h2>MISSION BRIEFING</h2><span class="tag">GITOPS · ISSUEOPS</span></div>
+    <p class="lede">Two words keep getting thrown at you. Here's the whole philosophy in one breath: <b>stop clicking buttons, start declaring intent.</b></p>
+    <div class="grid2">
+      <div class="card">
+        <h3>GitOps</h3>
+        <p><b style="color:var(--ink)">Git is the single source of truth.</b> You don't change infrastructure by poking a portal — you change a file, open a pull request, merge it, and a robot (an "operator") makes the real world match the file. The repo describes <em>desired state</em>; reality is just a cache of the repo.</p>
+      </div>
+      <div class="card">
+        <h3>IssueOps</h3>
+        <p>You drive operations from <b style="color:var(--ink)">GitHub Issues &amp; comments</b>. Type a slash command, a GitHub Action fires, the work happens, and the issue thread becomes your audit log + approval record. ChatOps' tidier, paper-trailed cousin.</p>
+      </div>
+    </div>
+    <div class="analogy">
+      <strong>FRONTEND TRANSLATION</strong>
+      You already live this. In React you don't manually append DOM nodes — you declare what the UI <em>should</em> look like and let the reconciler diff &amp; patch. GitOps is React's <code class="inl">render()</code> for your entire cloud: declare the desired state, let automation converge reality to match.
+    </div>
+    <div class="done-stamp" id="done-brief">✓ BRIEFED</div>
+  </section>
+
+  <!-- MODULE 1: AZURE -->
+  <section class="mod wrap" id="m-azure">
+    <div class="modhead"><span class="num">01</span><h2>AZURE: THE LAY OF THE LAND</h2><span class="tag">CLOUD TOPOLOGY</span></div>
+    <p class="lede">Before you touch anything, learn the nesting dolls. Everything in Azure lives inside a strict hierarchy. <b>Tap a layer to drill in.</b></p>
+    <div class="console">
+      <div class="topbar"><span class="dot" style="background:#ff5f56"></span><span class="dot" style="background:#ffbd2e"></span><span class="dot" style="background:#27c93f"></span><span class="title">portal.azure.com — resource explorer</span></div>
+      <div class="body" id="azExplorer"></div>
+    </div>
+    <div class="grid2" style="margin-top:18px">
+      <div class="card"><h3>Entra ID</h3><p>Formerly "Azure AD". The identity layer — it decides <em>who you are</em>. Every login, every service principal, every managed identity is registered here. PIM (module 03) lives inside it.</p></div>
+      <div class="card"><h3>RBAC</h3><p>Role-Based Access Control = <em>who can do what, where</em>. A role assignment binds a <code>principal</code> + a <code>role</code> + a <code>scope</code>. Reader, Contributor, Owner are the classics. Scope can be a subscription, a resource group, or one resource.</p></div>
+    </div>
+    <div class="done-stamp" id="done-azure">✓ TOPOLOGY MAPPED</div>
+  </section>
+
+  <!-- MODULE 2: KUBERNETES -->
+  <section class="mod wrap" id="m-k8s">
+    <div class="modhead"><span class="num">02</span><h2>KUBERNETES (AKS)</h2><span class="tag">ORCHESTRATION</span></div>
+    <p class="lede">The scary one that isn't. AKS = Azure's managed Kubernetes. The core idea is gloriously simple once you see the trick.</p>
+    <div class="analogy">
+      <strong>FRONTEND TRANSLATION — this is the whole game</strong>
+      Kubernetes is <em>React for infrastructure</em>. You don't imperatively "start a server". You write a <code class="inl">Deployment</code> that says <em>"I want 3 replicas of this container"</em> — that's your desired state, like JSX. A control loop constantly diffs desired-vs-actual and patches reality. Kill a pod? It notices the diff and re-renders a new one. <b>You never manage the steps, only the destination.</b>
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>The vocabulary</h3><p><b style="color:var(--ink)">Node</b> = a worker VM. <b style="color:var(--ink)">Pod</b> = smallest unit, wraps your container(s). <b style="color:var(--ink)">Deployment</b> = keeps N pods alive. <b style="color:var(--ink)">Service</b> = stable address + load balancing. <b style="color:var(--ink)">Namespace</b> = isolation walls. <code>kubectl</code> = the remote control.</p></div>
+      <div class="card"><h3>The reconciliation loop</h3><p>desired state → controller observes actual → computes diff → acts to close the gap → repeat forever. Self-healing falls out of this for free. Crashes, evictions, node death — the loop just keeps re-converging.</p></div>
+    </div>
+    <div class="console">
+      <div class="topbar"><span class="dot" style="background:#ff5f56"></span><span class="dot" style="background:#ffbd2e"></span><span class="dot" style="background:#27c93f"></span><span class="title">kubectl — live cluster // deployment: web-frontend</span></div>
+      <div class="body">
+        <div class="nodecard">
+          <div class="row" style="justify-content:space-between">
+            <div class="desired-ctrl">
+              <span style="font-size:12px;color:var(--muted)">DESIRED REPLICAS</span>
+              <button class="btn ghost stepper" id="podDown">–</button>
+              <span id="podDesired" style="font-family:Bungee;font-size:20px;color:var(--amber-bright);width:24px;text-align:center">3</span>
+              <button class="btn ghost stepper" id="podUp">+</button>
+            </div>
+            <span style="font-size:11px;color:var(--muted)">click a pod to 💀 kill it</span>
+          </div>
+          <div class="pods" id="pods"></div>
+          <div class="statline">running: <b id="podRunning">3</b> / desired: <b id="podDesired2">3</b> &nbsp; · &nbsp; <span id="reconMsg" style="color:var(--cyan)">cluster converged ✓</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="done-stamp" id="done-k8s">✓ CLUSTER COMMANDED</div>
+  </section>
+
+  <!-- MODULE 3: PIM -->
+  <section class="mod wrap" id="m-pim">
+    <div class="modhead"><span class="num">03</span><h2>PIM — PRIVILEGED IDENTITY MGMT</h2><span class="tag">JUST-IN-TIME ACCESS</span></div>
+    <p class="lede">The single biggest source of "but I <em>have</em> permission, why is it 403?!" confusion. Learn this and you'll out-debug half the team.</p>
+    <p class="lede">The big idea: <b>nobody walks around with admin powers all day.</b> You're <em>eligible</em> for a role — not permanently holding it. When you need it, you <em>activate</em> it just-in-time (justification, MFA, sometimes approval), and it auto-expires.</p>
+    <div class="console">
+      <div class="topbar"><span class="dot" style="background:#ff5f56"></span><span class="dot" style="background:#ffbd2e"></span><span class="dot" style="background:#27c93f"></span><span class="title">Entra ID — PIM // role: Contributor @ rg-genesys-prod</span></div>
+      <div class="body">
+        <div class="rolecard" id="pimCard">
+          <div class="row" style="justify-content:space-between">
+            <div><b>Contributor</b> <span style="color:var(--muted);font-size:12px">— scope: rg-genesys-prod</span></div>
+            <span class="pill elig" id="pimPill">● ELIGIBLE</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-top:8px">Assignment present in policy. <b style="color:var(--amber)">Eligible ≠ active.</b></div>
+        </div>
+        <div class="row">
+          <button class="btn danger" id="pimAccess">⚡ ACCESS RESOURCE</button>
+          <button class="btn go" id="pimActivate">🔓 ACTIVATE ROLE</button>
+          <span class="timer" id="pimTimer"></span>
+        </div>
+        <div class="resultline" id="pimResult"></div>
+
+        <div class="actbox" id="pimActBox">
+          <div style="font-size:12px;letter-spacing:1px;color:var(--amber)">ACTIVATION REQUEST</div>
+          <input class="inp" id="pimReason" placeholder="Business justification (required)…">
+          <div class="row" style="margin-top:10px">
+            <button class="btn go" id="pimConfirm">CONFIRM + MFA ✓</button>
+            <button class="btn ghost" id="pimCancel">cancel</button>
+          </div>
+        </div>
+
+        <div class="gotcha">
+          <strong>⚠ THE 403 TRAP</strong>
+          Your role assignment can look <em>perfect</em> in the portal / <code class="inl">get-iam-policy</code> output and you'll still get 403 — because it's <b>eligible, not activated</b>. Permissions <em>present</em> ≠ permissions <em>active</em>. When access mysteriously fails and the bindings look right, <b>check PIM activation first.</b> (Same trap bites JIT bindings on the GCP side.)
+        </div>
+      </div>
+    </div>
+    <div class="done-stamp" id="done-pim">✓ CLEARED + ARMED</div>
+  </section>
+
+  <!-- MODULE 4: KEY VAULT -->
+  <section class="mod wrap" id="m-vault">
+    <div class="modhead"><span class="num">04</span><h2>AZURE KEY VAULT</h2><span class="tag">SECRETS</span></div>
+    <p class="lede">Secrets, keys and certificates live in the vault — <b>never in your code, never in your repo.</b> Your app proves <em>who it is</em>, and the vault decides whether it hands over the secret. Pick how your app authenticates, then deploy. Choose wisely.</p>
+    <div class="console">
+      <div class="topbar"><span class="dot" style="background:#ff5f56"></span><span class="dot" style="background:#ffbd2e"></span><span class="dot" style="background:#27c93f"></span><span class="title">kv-genesys.vault.azure.net — secret: DB_PASSWORD</span></div>
+      <div class="body">
+        <div class="vault-door" id="vaultDoor">🔒</div>
+        <div style="text-align:center;font-size:11px;color:var(--muted);margin-bottom:14px" id="vaultStatus">SEALED — awaiting auth method</div>
+        <label class="opt" data-v="hard"><input type="radio" name="vauth"><span class="o-t">A · Hardcode the secret in the source</span><div class="o-d"><code class="inl">const pw = "Pr0d!2024"</code> — ships in your bundle &amp; lives in git history forever.</div></label>
+        <label class="opt" data-v="env"><input type="radio" name="vauth"><span class="o-t">B · Connection string in .env, committed to git</span><div class="o-d">"It's just config." It's a leaked credential the moment the repo is cloned.</div></label>
+        <label class="opt" data-v="mi"><input type="radio" name="vauth"><span class="o-t">C · Managed Identity + DefaultAzureCredential</span><div class="o-d">The pod gets a platform-issued identity. No stored secret anywhere. <code class="inl">@azure/keyvault-secrets</code> fetches at runtime.</div></label>
+        <div class="row" style="margin-top:6px"><button class="btn" id="vaultDeploy" disabled>🚀 DEPLOY &amp; FETCH SECRET</button></div>
+        <div class="resultline" id="vaultResult"></div>
+      </div>
+    </div>
+    <div class="analogy">
+      <strong>WHY DefaultAzureCredential IS THE MOVE</strong>
+      It walks a chain of credential sources and just works in both worlds: locally it picks up your <code class="inl">az login</code>; in the cluster it picks up the pod's <b>workload identity / managed identity</b>. Same code, zero secrets in the repo. That's the entire point — your app never <em>holds</em> a credential, it <em>borrows</em> an identity.
+    </div>
+    <div class="done-stamp" id="done-vault">✓ VAULT SECURED</div>
+  </section>
+
+  <!-- MODULE 5: GITOPS IN PRACTICE -->
+  <section class="mod wrap" id="m-gitops">
+    <div class="modhead"><span class="num">05</span><h2>GITOPS IN PRACTICE</h2><span class="tag">DRIFT CONTROL</span></div>
+    <p class="lede">The daily loop: <b>edit YAML → open PR → get review → merge → operator reconciles.</b> Git is truth; the live cluster is a cache of git. Hand-edit the cluster and an operator will <em>revert your change</em> — that's drift detection, and it's a feature.</p>
+    <div class="console">
+      <div class="topbar"><span class="dot" style="background:#ff5f56"></span><span class="dot" style="background:#ffbd2e"></span><span class="dot" style="background:#27c93f"></span><span class="title">drift-operator — reconciling cluster ↔ git</span></div>
+      <div class="body">
+        <div class="gitwrap">
+          <div class="statebox" id="gitState"><div class="sb-h">📦 GIT (DESIRED)</div><div class="val" id="gitVal">v1.4.0</div></div>
+          <div class="arrowcol">→<br><span style="font-size:10px;color:var(--muted)">reconcile</span></div>
+          <div class="statebox" id="clusterState"><div class="sb-h">☸ CLUSTER (ACTUAL)</div><div class="val" id="clusterVal">v1.4.0</div></div>
+        </div>
+        <div class="row" style="margin-top:16px">
+          <button class="btn danger" id="tamperBtn">😈 hotfix the cluster by hand (tamper)</button>
+          <button class="btn ghost" id="prBtn">📝 ship a change the right way (PR)</button>
+        </div>
+        <div class="resultline" id="gitResult" style="font-size:18px"></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>The drift lesson</h3><p>Manual changes don't survive. The operator continuously diffs the cluster against git and squashes anything that doesn't match. If you "fixed prod" in the portal at 2am, congratulations — it'll be gone by the next reconcile.</p></div>
+      <div class="card"><h3>Get the YAML right the FIRST time</h3><p>PRs to infra repos often need a separate platform/drift team's approval. Roundtrips are <em>expensive</em>. Copy an existing reference manifest as a template, match the house style, and submit it clean.</p></div>
+    </div>
+    <div class="done-stamp" id="done-gitops">✓ DRIFT NEUTRALIZED</div>
+  </section>
+
+  <!-- MODULE 6: ISSUEOPS -->
+  <section class="mod wrap" id="m-issueops">
+    <div class="modhead"><span class="num">06</span><h2>ISSUEOPS</h2><span class="tag">CHATOPS · GH ACTIONS</span></div>
+    <p class="lede">A GitHub Issue becomes a control panel. You type a <b>slash command</b> in a comment → a GitHub Action triggers on the issue event → it runs the op and reports back in the thread. The issue is the audit trail <em>and</em> the approval record. <b>Try a command below.</b></p>
+    <div class="issue">
+      <div class="ih"><b>#247 · Self-service ops</b> &nbsp;·&nbsp; opened by @lebchen &nbsp;·&nbsp; <span style="color:var(--go)">● open</span></div>
+      <div class="term" id="term"><span class="sys">🤖 ops-bot: ready. type a slash command and hit enter.</span>
+</div>
+      <div class="cmdrow"><span>❯</span><input id="cmdInput" placeholder="/deploy staging" autocomplete="off"></div>
+    </div>
+    <div class="hintchips">
+      <span class="chip" data-cmd="/deploy staging">/deploy staging</span>
+      <span class="chip" data-cmd="/grant-access prod">/grant-access prod</span>
+      <span class="chip" data-cmd="/scale web-frontend 5">/scale web-frontend 5</span>
+      <span class="chip" data-cmd="/help">/help</span>
+    </div>
+    <div class="done-stamp" id="done-issueops">✓ OPS AUTOMATED</div>
+  </section>
+
+  <!-- CERTIFICATION -->
+  <section class="mod wrap" id="m-cert">
+    <div class="modhead"><span class="num">07</span><h2>FINAL CLEARANCE EXAM</h2><span class="tag">CERTIFICATION</span></div>
+    <p class="lede">Five questions. Get them all and the console arms the finale. No pressure. (Some pressure.)</p>
+    <div id="quiz"></div>
+    <div class="row"><button class="btn go" id="gradeBtn">⟢ SUBMIT FOR CLEARANCE</button><span id="quizScore" style="font-family:Bungee;color:var(--amber)"></span></div>
+
+    <div class="cert" id="cert">
+      <div class="seal">★ ANTHROPIC OPS DIVISION ★ CLEARANCE GRANTED ★</div>
+      <h3>CERTIFIED CLOUD OPERATOR</h3>
+      <p>This certifies that <span class="who">a recovering frontend developer</span> has demonstrated working command of Azure topology, Kubernetes reconciliation, PIM just-in-time access, Key Vault identity, GitOps drift control, and IssueOps automation.</p>
+      <p style="margin-top:10px;font-family:VT323;font-size:18px;color:var(--go)">go forth and stop clicking buttons.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="ticker" id="ticker">// systems nominal // declare intent // trust the reconciler //</div>
+    <div style="margin-top:14px">Built as a single self-contained file. View source — it's all here, no servers, no MCP, very on-theme.</div>
+  </footer>
+
+</div>
+
+<script>
+/* ============================================================
+   PARTICLE / EXPLOSION ENGINE
+   ============================================================ */
+(function(){
+  const cv = document.getElementById('fx');
+  const cx = cv.getContext('2d');
+  let DPR = Math.min(window.devicePixelRatio||1, 2);
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio||1, 2);
+    cv.width = innerWidth*DPR; cv.height = innerHeight*DPR;
+    cv.style.width = innerWidth+'px'; cv.style.height = innerHeight+'px';
+    cx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  resize(); addEventListener('resize', resize);
+
+  const P = [], RINGS = [];
+  let smokeAcc = 0;
+  const rnd = (a,b)=>a+Math.random()*(b-a);
+
+  const shell = document.getElementById('shell');
+  let shakeMag = 0;
+  window.shake = a => { shakeMag = Math.max(shakeMag, a); };
+
+  const PAL = {
+    boom:  ['#ff5714','#ffb627','#ffd23f','#ff2d00','#fff1c2'],
+    green: ['#4ade80','#9ff5b0','#22c55e','#bbf7d0'],
+    blue:  ['#3fd0ff','#8ee9ff','#0ea5e9','#d6f5ff'],
+    red:   ['#ff2d2d','#ff5714','#ff8a8a','#ffd23f']
+  };
+
+  window.boom = function(x, y, opts={}){
+    const pal = PAL[opts.type] || PAL.boom;
+    const n = opts.count || 64;
+    RINGS.push({x,y,r:5,vr:opts.ringSpeed||7,a:1,color:pal[2]});
+    if(opts.big) RINGS.push({x,y,r:5,vr:14,a:.7,color:pal[0]});
+    for(let i=0;i<n;i++){
+      const ang = Math.random()*Math.PI*2;
+      const sp = rnd(1.2, opts.power||10);
+      const smoke = Math.random()<0.34;
+      P.push({
+        x,y,
+        vx:Math.cos(ang)*sp,
+        vy:Math.sin(ang)*sp - rnd(0,2.4),
+        a:1, dec:rnd(0.006,0.018),
+        sz: smoke ? rnd(6,14) : rnd(1.6,4.5),
+        gr: smoke ? -0.03 : (opts.grav ?? 0.16),
+        col: pal[(Math.random()*pal.length)|0],
+        smoke
+      });
+    }
+    if(opts.shake!==false) shake(opts.big?22:11);
+  };
+
+  window.boomEl = function(el, opts){
+    if(!el) return;
+    const r = el.getBoundingClientRect();
+    boom(r.left + r.width/2, r.top + r.height/2, opts);
+  };
+
+  // ambient smoke
+  function ambient(dt){
+    smokeAcc += dt;
+    if(smokeAcc > 220){
+      smokeAcc = 0;
+      const x = rnd(0, innerWidth);
+      P.push({
+        x, y: innerHeight+20,
+        vx: rnd(-0.15,0.15), vy: rnd(-0.35,-0.75),
+        a: rnd(.05,.12), dec: rnd(0.0015,0.004),
+        sz: rnd(40,90), gr:-0.004, col:'#2a2620', smoke:true, ambient:true
+      });
+    }
+  }
+
+  let last = performance.now();
+  function loop(now){
+    const dt = Math.min(now-last, 40); last = now;
+    cx.clearRect(0,0,innerWidth,innerHeight);
+    ambient(dt);
+
+    // smoke first (normal blend)
+    cx.globalCompositeOperation = 'source-over';
+    for(let i=P.length-1;i>=0;i--){
+      const p = P[i];
+      p.x += p.vx; p.y += p.vy; p.vy += p.gr;
+      p.vx *= 0.985;
+      p.a -= p.dec;
+      if(p.smoke) p.sz += p.ambient ? 0.35 : 0.18;
+      if(p.a<=0){ P.splice(i,1); continue; }
+      if(p.smoke){
+        cx.globalAlpha = Math.max(0,p.a);
+        cx.fillStyle = p.col;
+        cx.beginPath(); cx.arc(p.x,p.y,p.sz,0,7); cx.fill();
+      }
+    }
+    // sparks (additive glow)
+    cx.globalCompositeOperation = 'lighter';
+    for(const p of P){
+      if(p.smoke) continue;
+      cx.globalAlpha = Math.max(0,p.a);
+      cx.fillStyle = p.col;
+      cx.beginPath(); cx.arc(p.x,p.y,p.sz,0,7); cx.fill();
+      // streak
+      cx.strokeStyle = p.col; cx.lineWidth = p.sz*0.6;
+      cx.beginPath(); cx.moveTo(p.x,p.y); cx.lineTo(p.x-p.vx*1.5,p.y-p.vy*1.5); cx.stroke();
+    }
+    // rings
+    for(let i=RINGS.length-1;i>=0;i--){
+      const r = RINGS[i];
+      r.r += r.vr; r.vr *= 0.93; r.a -= 0.03;
+      if(r.a<=0){ RINGS.splice(i,1); continue; }
+      cx.globalAlpha = Math.max(0,r.a);
+      cx.strokeStyle = r.color; cx.lineWidth = 3;
+      cx.beginPath(); cx.arc(r.x,r.y,r.r,0,7); cx.stroke();
+    }
+    cx.globalAlpha = 1;
+    cx.globalCompositeOperation = 'source-over';
+
+    // screen shake
+    if(shakeMag > 0.3){
+      const dx = rnd(-shakeMag,shakeMag), dy = rnd(-shakeMag,shakeMag);
+      shell.style.transform = `translate(${dx}px,${dy}px)`;
+      shakeMag *= 0.86;
+    } else if(shell.style.transform){
+      shell.style.transform = '';
+      shakeMag = 0;
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+/* ============================================================
+   PROGRESS TRACKER
+   ============================================================ */
+const MODULES = ['brief','azure','k8s','pim','vault','gitops','issueops'];
+const completed = new Set();
+function complete(id){
+  if(completed.has(id)) return;
+  completed.add(id);
+  const stamp = document.getElementById('done-'+id);
+  if(stamp){ stamp.classList.add('show'); boomEl(stamp,{type:'green',count:46,power:8}); }
+  const pct = Math.round(completed.size/MODULES.length*100);
+  document.getElementById('clrBar').style.width = pct+'%';
+  document.getElementById('clrPct').textContent = pct+'%';
+  document.getElementById('sysCount').textContent = completed.size+' / 7 SYSTEMS ONLINE';
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+document.getElementById('launchBtn').addEventListener('click', function(){
+  boomEl(this,{type:'boom',count:90,power:13,big:true});
+  complete('brief');
+  document.getElementById('scrolltip').classList.add('show');
+  setTimeout(()=>document.getElementById('m-azure').scrollIntoView({behavior:'smooth'}), 650);
+});
+
+/* ============================================================
+   01 — AZURE HIERARCHY
+   ============================================================ */
+(function(){
+  const tree = {
+    name:'Tenant: telenor.onmicrosoft.com', meta:'Entra ID directory — the root of identity', kids:[
+      {name:'Management Group: CTI', meta:'policy + access grouping across subscriptions', kids:[
+        {name:'Subscription: genesys-prod', meta:'billing + access boundary', kids:[
+          {name:'Resource Group: rg-genesys-prod', meta:'a "folder" — shared lifecycle, deploy/delete together', kids:[
+            {name:'AKS cluster: aks-genesys', meta:'resource — your Kubernetes cluster'},
+            {name:'Key Vault: kv-genesys', meta:'resource — secrets & certs'},
+            {name:'Storage Account: stgenesys', meta:'resource — blobs & files'}
+          ]}
+        ]}
+      ]}
+    ]
+  };
+  let opened = 0;
+  function render(node){
+    const box = document.createElement('div');
+    box.className = 'azbox';
+    const head = document.createElement('div');
+    head.className = 'az-t';
+    head.innerHTML = `<div><div class="az-name">${node.name}</div><div class="az-meta">${node.meta}</div></div>`+
+                     (node.kids?`<span class="az-chev">▸</span>`:`<span class="az-meta" style="color:var(--go)">● leaf</span>`);
+    box.appendChild(head);
+    if(node.kids){
+      const kids = document.createElement('div'); kids.className='az-kids';
+      node.kids.forEach(k=>kids.appendChild(render(k)));
+      box.appendChild(kids);
+      head.addEventListener('click', e=>{
+        e.stopPropagation();
+        box.classList.toggle('open');
+        if(box.classList.contains('open')){ boomEl(head,{type:'blue',count:18,power:5,shake:false}); opened++; if(opened>=3) complete('azure'); }
+      });
+    }
+    return box;
+  }
+  document.getElementById('azExplorer').appendChild(render(tree));
+})();
+
+/* ============================================================
+   02 — KUBERNETES PODS
+   ============================================================ */
+(function(){
+  let desired = 3;
+  let pods = [];
+  let uid = 0;
+  let reconciling = false;
+  const wrap = document.getElementById('pods');
+  const desiredEl = document.getElementById('podDesired');
+  const desired2 = document.getElementById('podDesired2');
+  const runningEl = document.getElementById('podRunning');
+  const msg = document.getElementById('reconMsg');
+  let touched = false;
+
+  function spawn(){
+    const id = ++uid;
+    pods.push(id);
+    const el = document.createElement('div');
+    el.className='pod'; el.dataset.id=id;
+    el.innerHTML=`<div class="icn">📦</div>pod-${String(id).padStart(2,'0')}`;
+    el.addEventListener('click', ()=>kill(id, el));
+    wrap.appendChild(el);
+    const r = el.getBoundingClientRect();
+    boom(r.left+r.width/2, r.top+r.height/2, {type:'green',count:12,power:4,shake:false});
+  }
+  function kill(id, el){
+    if(reconciling) return;
+    el.classList.add('dying');
+    const r = el.getBoundingClientRect();
+    boom(r.left+r.width/2, r.top+r.height/2, {type:'boom',count:30,power:7});
+    pods = pods.filter(p=>p!==id);
+    setTimeout(()=>{ el.remove(); update(); reconcile(); }, 320);
+    update();
+    touched = true; complete('k8s');
+  }
+  function update(){
+    desiredEl.textContent = desired;
+    desired2.textContent = desired;
+    runningEl.textContent = pods.length;
+  }
+  function reconcile(){
+    if(pods.length === desired){ msg.textContent='cluster converged ✓'; msg.style.color='var(--cyan)'; return; }
+    reconciling = true;
+    msg.textContent = '⟳ reconciling — control loop closing the diff…';
+    msg.style.color = 'var(--amber)';
+    const step = ()=>{
+      if(pods.length < desired){ spawn(); }
+      else if(pods.length > desired){
+        const id = pods[pods.length-1];
+        const el = wrap.querySelector(`[data-id="${id}"]`);
+        if(el){ el.classList.add('dying'); const r=el.getBoundingClientRect(); boom(r.left+r.width/2,r.top+r.height/2,{type:'boom',count:22,power:6}); pods=pods.filter(p=>p!==id); setTimeout(()=>el.remove(),300); }
+      }
+      update();
+      if(pods.length !== desired){ setTimeout(step, 380); }
+      else { reconciling=false; msg.textContent='cluster converged ✓'; msg.style.color='var(--cyan)'; }
+    };
+    setTimeout(step, 420);
+  }
+  document.getElementById('podUp').addEventListener('click', ()=>{ if(reconciling)return; desired=Math.min(8,desired+1); update(); reconcile(); touched=true; complete('k8s'); });
+  document.getElementById('podDown').addEventListener('click', ()=>{ if(reconciling)return; desired=Math.max(0,desired-1); update(); reconcile(); touched=true; complete('k8s'); });
+  for(let i=0;i<3;i++) spawn();
+  update();
+})();
+
+/* ============================================================
+   03 — PIM
+   ============================================================ */
+(function(){
+  let active = false;
+  let timeLeft = 0;
+  let timerInt = null;
+  const pill = document.getElementById('pimPill');
+  const result = document.getElementById('pimResult');
+  const timerEl = document.getElementById('pimTimer');
+  const box = document.getElementById('pimActBox');
+
+  document.getElementById('pimAccess').addEventListener('click', function(){
+    if(active){
+      result.className='resultline grant'; result.textContent='200 OK — access granted ✓';
+      boomEl(this,{type:'green',count:40,power:8});
+    } else {
+      result.className='resultline deny'; result.textContent='403 FORBIDDEN — role is ELIGIBLE, not ACTIVE';
+      boomEl(this,{type:'red',count:46,power:9,big:true});
+    }
+  });
+  document.getElementById('pimActivate').addEventListener('click', ()=>{
+    if(active) return;
+    box.classList.add('show');
+    document.getElementById('pimReason').focus();
+  });
+  document.getElementById('pimCancel').addEventListener('click', ()=> box.classList.remove('show'));
+  document.getElementById('pimConfirm').addEventListener('click', function(){
+    const reason = document.getElementById('pimReason').value.trim();
+    if(!reason){ document.getElementById('pimReason').placeholder='⚠ justification is required'; return; }
+    box.classList.remove('show');
+    active = true;
+    pill.className='pill active'; pill.textContent='● ACTIVE (JIT)';
+    result.className='resultline grant'; result.textContent='✓ activated — now hit ACCESS RESOURCE';
+    boomEl(this,{type:'green',count:70,power:11,big:true});
+    timeLeft = 30;
+    clearInterval(timerInt);
+    timerInt = setInterval(()=>{
+      timeLeft--;
+      timerEl.textContent = '⏱ expires in '+timeLeft+'s';
+      if(timeLeft<=0){
+        clearInterval(timerInt);
+        active=false; timerEl.textContent='';
+        pill.className='pill elig'; pill.textContent='● ELIGIBLE';
+        result.className='resultline deny'; result.textContent='⏱ activation expired — back to eligible';
+      }
+    },1000);
+    complete('pim');
+  });
+})();
+
+/* ============================================================
+   04 — KEY VAULT
+   ============================================================ */
+(function(){
+  let choice = null;
+  const door = document.getElementById('vaultDoor');
+  const status = document.getElementById('vaultStatus');
+  const result = document.getElementById('vaultResult');
+  const deploy = document.getElementById('vaultDeploy');
+  document.querySelectorAll('.opt').forEach(o=>{
+    o.addEventListener('click', ()=>{
+      document.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
+      o.classList.add('sel'); o.querySelector('input').checked=true;
+      choice = o.dataset.v; deploy.disabled=false;
+      status.textContent='auth method selected — ready to deploy';
+    });
+  });
+  deploy.addEventListener('click', function(){
+    door.className='vault-door';
+    if(choice==='mi'){
+      door.classList.add('open'); door.textContent='🔓';
+      status.textContent='IDENTITY VERIFIED'; status.style.color='var(--go)';
+      result.className='resultline grant'; result.textContent='✓ secret fetched at runtime — nothing stored. clean.';
+      boomEl(door,{type:'green',count:80,power:11,big:true});
+      complete('vault');
+    } else {
+      door.classList.add('breach'); door.textContent='💥';
+      status.textContent= choice==='hard' ? 'SECRET SHIPPED IN BUNDLE' : 'CREDENTIAL LEAKED TO GIT'; status.style.color='var(--danger)';
+      result.className='resultline deny';
+      result.textContent = choice==='hard'
+        ? '💀 BREACH — the secret is in your build output forever.'
+        : '💀 LEAK — anyone who clones the repo owns prod.';
+      boomEl(door,{type:'boom',count:100,power:14,big:true});
+      shake(26);
+    }
+  });
+})();
+
+/* ============================================================
+   05 — GITOPS DRIFT
+   ============================================================ */
+(function(){
+  const versions = ['v1.4.0','v1.5.0','v1.6.0','v1.7.0'];
+  let idx = 0;
+  let drifted = false;
+  let busy = false;
+  const clusterState = document.getElementById('clusterState');
+  const clusterVal = document.getElementById('clusterVal');
+  const gitVal = document.getElementById('gitVal');
+  const result = document.getElementById('gitResult');
+
+  document.getElementById('tamperBtn').addEventListener('click', function(){
+    if(busy) return;
+    busy = true; drifted = true;
+    clusterVal.textContent = 'v9.9.9-hotfix';
+    clusterState.classList.add('drift');
+    result.style.color='var(--danger)';
+    result.textContent='⚠ manual change detected on the cluster… drift!';
+    boomEl(clusterState,{type:'red',count:30,power:7});
+    setTimeout(()=>{
+      result.style.color='var(--amber)';
+      result.textContent='⟳ drift-operator reconciling cluster back to git…';
+    }, 1100);
+    setTimeout(()=>{
+      clusterVal.textContent = versions[idx];
+      clusterState.classList.remove('drift');
+      result.style.color='var(--go)';
+      result.textContent='✓ drift squashed. cluster matches git again. your hotfix is gone.';
+      boomEl(clusterState,{type:'boom',count:60,power:10,big:true});
+      drifted=false; busy=false;
+      complete('gitops');
+    }, 2300);
+  });
+
+  document.getElementById('prBtn').addEventListener('click', function(){
+    if(busy) return;
+    busy=true;
+    const next = Math.min(idx+1, versions.length-1);
+    result.style.color='var(--cyan)';
+    result.textContent='📝 PR opened → ✅ reviewed by platform team → merged to main…';
+    boomEl(this,{type:'blue',count:24,power:6,shake:false});
+    setTimeout(()=>{
+      idx = next; gitVal.textContent = versions[idx];
+      result.textContent='⟳ operator reconciling — pulling desired state from git…';
+    }, 1300);
+    setTimeout(()=>{
+      clusterVal.textContent = versions[idx];
+      result.style.color='var(--go)';
+      result.textContent='✓ rolled out the right way. git changed → cluster converged.';
+      boomEl(clusterState,{type:'green',count:50,power:9});
+      busy=false;
+      complete('gitops');
+    }, 2400);
+  });
+})();
+
+/* ============================================================
+   06 — ISSUEOPS TERMINAL
+   ============================================================ */
+(function(){
+  const term = document.getElementById('term');
+  const input = document.getElementById('cmdInput');
+  let runIdx = 0;
+  function line(html){ term.innerHTML += html + '\n'; term.scrollTop = term.scrollHeight; }
+  function feed(lines, done){
+    let i=0;
+    const t = setInterval(()=>{
+      if(i>=lines.length){ clearInterval(t); if(done)done(); return; }
+      line(lines[i]); i++;
+    }, 420);
+  }
+  function run(raw){
+    const cmd = raw.trim();
+    if(!cmd) return;
+    line(`<span class="cmd">@lebchen: ${cmd}</span>`);
+    const parts = cmd.split(/\s+/);
+    const r = term.getBoundingClientRect();
+    if(parts[0]==='/deploy'){
+      const env = parts[1]||'staging';
+      feed([
+        `<span class="sys">🤖 ops-bot: triggering workflow deploy.yml (event: issue_comment)…</span>`,
+        `<span class="sys">  → checkout · build · push image ghcr.io/individet/web:sha-9f2a1c</span>`,
+        `<span class="sys">  → kubectl apply -f k8s/${env}/ …</span>`,
+        `<span class="ok">  ✓ rollout complete — web-frontend healthy in ${env}</span>`
+      ], ()=>{ boom(r.left+r.width-40, r.top+30,{type:'green',count:50,power:9,big:true}); complete('issueops'); });
+    } else if(parts[0]==='/grant-access'){
+      const env = parts[1]||'prod';
+      feed([
+        `<span class="sys">🤖 ops-bot: access request for ${env} logged to this issue (audit trail ✓)</span>`,
+        `<span class="warn">  ⏳ awaiting approval reaction (👍) from @platform-team…</span>`,
+        `<span class="ok">  ✓ approved → PIM-eligible role assigned. activate it JIT when needed.</span>`
+      ], ()=>{ boom(r.left+r.width-40, r.top+30,{type:'blue',count:36,power:7}); complete('issueops'); });
+    } else if(parts[0]==='/scale'){
+      const svc = parts[1]||'web-frontend', n = parts[2]||'5';
+      feed([
+        `<span class="sys">🤖 ops-bot: patching deployment ${svc} → replicas=${n}…</span>`,
+        `<span class="ok">  ✓ scaled. control loop converging to ${n} pods.</span>`
+      ], ()=>{ boom(r.left+r.width-40, r.top+30,{type:'green',count:30,power:7}); complete('issueops'); });
+    } else if(parts[0]==='/help'){
+      feed([
+        `<span class="sys">🤖 ops-bot: available commands —</span>`,
+        `<span class="warn">  /deploy &lt;env&gt;        ship the current build</span>`,
+        `<span class="warn">  /grant-access &lt;env&gt;  request scoped access (logged + approved here)</span>`,
+        `<span class="warn">  /scale &lt;svc&gt; &lt;n&gt;     change desired replica count</span>`
+      ]);
+    } else {
+      line(`<span class="warn">🤖 ops-bot: unknown command "${parts[0]}". try /help</span>`);
+    }
+  }
+  input.addEventListener('keydown', e=>{ if(e.key==='Enter'){ run(input.value); input.value=''; } });
+  document.querySelectorAll('.chip').forEach(c=>{
+    c.addEventListener('click', ()=>{ input.value=c.dataset.cmd; run(input.value); input.value=''; input.focus(); });
+  });
+})();
+
+/* ============================================================
+   07 — CERTIFICATION QUIZ
+   ============================================================ */
+(function(){
+  const QS = [
+    { q:'You hand-edited a resource in the Azure Portal to fix prod at 2am. By morning it had reverted. Why?',
+      a:['Azure auto-rolls-back any change after 8 hours','A GitOps operator reconciled the live state back to what git declares','Your PIM activation expired','The Key Vault revoked your token'], c:1 },
+    { q:'Your role assignment looks correct in the policy, but you still get 403. Most likely cause?',
+      a:['DNS','The role is PIM-eligible but not activated (JIT)','The pod is CrashLooping','Wrong region'], c:1 },
+    { q:'In Kubernetes you delete a running pod from a Deployment. What happens?',
+      a:['The app goes down until you redeploy','The control loop notices the diff and spawns a replacement','Nothing, pods are permanent','The whole node restarts'], c:1 },
+    { q:'Best way for your AKS app to read a Key Vault secret?',
+      a:['Hardcode it in the container image','Commit it to .env in the repo','Managed/Workload Identity + DefaultAzureCredential — no stored secret','Email it to yourself'], c:2 },
+    { q:'In GitOps, what is the single source of truth?',
+      a:['The running cluster','The Azure Portal','The git repository','Whoever has Owner role'], c:2 }
+  ];
+  const wrap = document.getElementById('quiz');
+  const answers = new Array(QS.length).fill(-1);
+  QS.forEach((item, qi)=>{
+    const q = document.createElement('div'); q.className='q';
+    q.innerHTML = `<div class="qt"><span>Q${qi+1}.</span> ${item.q}</div>`;
+    item.a.forEach((txt, ai)=>{
+      const a = document.createElement('div'); a.className='qa'; a.textContent = txt;
+      a.addEventListener('click', ()=>{
+        if(a.classList.contains('locked')) return;
+        q.querySelectorAll('.qa').forEach(x=>x.style.borderColor='var(--line)');
+        a.style.borderColor='var(--amber)';
+        answers[qi]=ai;
+      });
+      q.appendChild(a);
+    });
+    wrap.appendChild(q);
+  });
+  document.getElementById('gradeBtn').addEventListener('click', function(){
+    let score=0;
+    document.querySelectorAll('.q').forEach((q, qi)=>{
+      const opts = q.querySelectorAll('.qa');
+      opts.forEach(o=>o.classList.add('locked'));
+      const chosen = answers[qi], correct = QS[qi].c;
+      if(chosen===correct){ score++; opts[chosen].classList.add('correct'); }
+      else { if(chosen>=0) opts[chosen].classList.add('wrong'); opts[correct].classList.add('correct'); }
+    });
+    const out = document.getElementById('quizScore');
+    out.textContent = score+' / '+QS.length;
+    if(score===QS.length){
+      out.style.color='var(--go)';
+      const cert = document.getElementById('cert');
+      cert.classList.add('show');
+      complete('cert' in {} ? 'cert':'cert'); // no-op safety
+      // finale
+      boomEl(cert,{type:'boom',count:120,power:16,big:true});
+      let bursts=0;
+      const seq = setInterval(()=>{
+        boom(rndScreenX(), rndScreenY(), {type: ['boom','green','blue','red'][bursts%4], count:70, power:13, big:true});
+        if(++bursts>=8) clearInterval(seq);
+      }, 280);
+      setTimeout(()=>cert.scrollIntoView({behavior:'smooth',block:'center'}), 300);
+    } else {
+      out.style.color='var(--danger)';
+      boomEl(this,{type:'red',count:30,power:7});
+    }
+    function rndScreenX(){ return 80 + Math.random()*(innerWidth-160); }
+    function rndScreenY(){ return innerHeight*0.25 + Math.random()*innerHeight*0.4; }
+  });
+})();
+
+/* ============================================================
+   FOOTER TICKER
+   ============================================================ */
+(function(){
+  const phrases = [
+    '// systems nominal // declare intent // trust the reconciler //',
+    '// eligible ≠ active // check PIM first // stop clicking buttons //',
+    '// git is truth // the cluster is a cache // drift gets squashed //',
+    '// no secrets in the repo // borrow an identity //'
+  ];
+  let i=0;
+  setInterval(()=>{ i=(i+1)%phrases.length; document.getElementById('ticker').textContent = phrases[i]; }, 3500);
+})();
+</script>
+</body>
+</html>
