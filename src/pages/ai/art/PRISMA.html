@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>PRISMA · SDF Renderer</title>
+<style>
+  :root{
+    --bg:#06070b; --ink:#d2dbe3; --dim:#6c7783;
+    --line:rgba(255,255,255,.10); --panel:rgba(10,13,18,.55);
+    --accent:#74e0ff; --accent2:#ffd27a;
+    --mono:ui-monospace,'SF Mono','Cascadia Code','JetBrains Mono',Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:var(--bg);overflow:hidden;color:var(--ink);font-family:var(--mono)}
+  #stage{position:fixed;inset:0}
+  canvas{display:block;width:100%;height:100%;background:var(--bg);
+    opacity:0;animation:fade 1.6s ease .15s forwards;touch-action:none;cursor:grab}
+  canvas.drag{cursor:grabbing}
+  @keyframes fade{to{opacity:1}}
+
+  /* grain + vignette overlay */
+  #grain{position:fixed;inset:0;pointer-events:none;mix-blend-mode:overlay;opacity:.045;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* wordmark */
+  #brand{position:fixed;top:22px;left:24px;pointer-events:none;
+    animation:rise .9s cubic-bezier(.2,.7,.2,1) .4s both}
+  #brand .name{font-size:15px;letter-spacing:.42em;font-weight:600;color:var(--ink);text-indent:.42em}
+  #brand .sub{margin-top:6px;font-size:10px;letter-spacing:.26em;color:var(--dim);text-transform:uppercase}
+
+  /* control panel */
+  #panel{position:fixed;left:24px;bottom:24px;z-index:5;
+    background:var(--panel);border:1px solid var(--line);border-radius:13px;
+    padding:14px 14px 12px;backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);
+    box-shadow:0 18px 50px -20px rgba(0,0,0,.8);
+    animation:rise .9s cubic-bezier(.2,.7,.2,1) .55s both}
+  .lab{font-size:9px;letter-spacing:.28em;color:var(--dim);text-transform:uppercase;margin:0 2px 8px}
+  .row{display:flex;gap:7px;flex-wrap:wrap}
+  .chip{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--dim);background:transparent;border:1px solid var(--line);border-radius:999px;
+    padding:7px 13px;cursor:pointer;transition:.22s ease;user-select:none;white-space:nowrap}
+  .chip:hover{color:var(--ink);border-color:rgba(255,255,255,.25)}
+  .chip.on{color:#04161c;background:var(--accent);border-color:var(--accent);
+    box-shadow:0 0 0 1px var(--accent),0 0 18px -2px var(--accent)}
+  .chip.on.warm{color:#1c1402;background:var(--accent2);border-color:var(--accent2);
+    box-shadow:0 0 0 1px var(--accent2),0 0 18px -2px var(--accent2)}
+  .sep{height:1px;background:var(--line);margin:13px 2px 11px}
+  .chip[data-disabled="1"]{opacity:.32;pointer-events:none}
+
+  /* readout */
+  #read{position:fixed;right:24px;bottom:24px;text-align:right;pointer-events:none;
+    font-size:10px;letter-spacing:.12em;color:var(--dim);line-height:1.85;
+    animation:rise .9s cubic-bezier(.2,.7,.2,1) .65s both}
+  #read b{color:var(--ink);font-weight:500}
+  #read .acc{color:var(--accent)}
+
+  #hint{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);pointer-events:none;
+    font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);
+    opacity:0;animation:hint 7s ease 1.2s forwards}
+  @keyframes hint{0%{opacity:0}14%{opacity:.85}72%{opacity:.85}100%{opacity:0}}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  #err{position:fixed;inset:0;display:none;place-items:center;text-align:center;padding:40px;
+    font-size:13px;letter-spacing:.05em;color:var(--dim);line-height:1.7}
+  @media (max-width:560px){
+    #brand{top:16px;left:16px} #panel{left:14px;right:14px;bottom:14px}
+    #read{right:16px;bottom:84px}
+  }
+</style>
+</head>
+<body>
+<div id="stage"><canvas id="gl"></canvas></div>
+<div id="grain"></div>
+
+<div id="brand">
+  <div class="name">PRISMA</div>
+  <div class="sub">real-time sdf renderer · 0 dependencies</div>
+</div>
+
+<div id="panel">
+  <div class="lab">Material</div>
+  <div class="row" id="mats">
+    <button class="chip on" data-mat="0">Glass</button>
+    <button class="chip" data-mat="1">Chrome</button>
+    <button class="chip warm" data-mat="2">Gold</button>
+    <button class="chip" data-mat="3">Obsidian</button>
+  </div>
+  <div class="sep"></div>
+  <div class="row">
+    <button class="chip on" id="auto">Auto-orbit</button>
+    <button class="chip on" id="disp">Dispersion</button>
+    <button class="chip" id="reset">Reset view</button>
+  </div>
+</div>
+
+<div id="read">
+  <div><span class="acc">▮</span> <b id="r-mat">GLASS</b></div>
+  <div><b id="r-fps">––</b> fps · <b id="r-res">–</b>px</div>
+  <div>march <b id="r-steps">–</b> · q <b id="r-q">–</b></div>
+</div>
+
+<div id="hint">drag to orbit — scroll to zoom — 1·2·3·4 swap material</div>
+<div id="err">WebGL is unavailable in this browser.<br>Try a recent Chrome, Safari, Firefox or Edge.</div>
+
+<!-- ============ vertex shader ============ -->
+<script id="vert" type="x-shader/x-vertex">
+attribute vec2 p;
+void main(){ gl_Position = vec4(p,0.0,1.0); }
+</script>
+
+<!-- ============ fragment shader (the whole renderer) ============ -->
+<script id="frag" type="x-shader/x-fragment">
+precision highp float;
+
+uniform vec2  uRes;
+uniform float uTime;
+uniform vec3  uCamPos;
+uniform vec3  uTarget;
+uniform float uMat;        // 0 glass · 1 chrome · 2 gold · 3 obsidian
+uniform float uMaxSteps;   // dynamic quality
+uniform float uDisp;       // dispersion on/off
+
+const float FLOOR_Y = -1.25;
+const float MAXD    = 40.0;
+const int   HARD    = 170;
+const vec3  SUN     = vec3(0.7011, 0.6210, 0.3505); // pre-normalized
+
+mat2 rot(float a){ float c=cos(a), s=sin(a); return mat2(c,-s,s,c); }
+float sdSphere(vec3 p,float r){ return length(p)-r; }
+float sdTorus(vec3 p,vec2 t){ vec2 q=vec2(length(p.xz)-t.x,p.y); return length(q)-t.y; }
+float smin(float a,float b,float k){ float h=clamp(0.5+0.5*(b-a)/k,0.0,1.0); return mix(b,a,h)-k*h*(1.0-h); }
+
+// ---- the hero form (object space, centred at origin) ----
+float mapObj(vec3 p){
+  float t = uTime*0.35;
+  vec3 q = p;
+  q.xz = rot(t*0.60)*q.xz;
+  q.xy = rot(t*0.27)*q.xy;
+  float d = sdSphere(q, 0.66);
+  for(int i=0;i<3;i++){
+    float fi = float(i);
+    float ph = fi*2.0944 + t;
+    vec3  c  = vec3(cos(ph)*0.95, sin(ph*1.3+fi)*0.55, sin(ph)*0.95);
+    float r  = 0.30 + 0.12*sin(t*1.7 + fi*1.7);
+    d = smin(d, sdSphere(q-c, r), 0.45);
+  }
+  vec3 tp = q; tp.yz = rot(1.1)*tp.yz; tp.xy = rot(t*0.5)*tp.xy;
+  d = smin(d, sdTorus(tp, vec2(0.95,0.16)), 0.35);
+  return d;
+}
+
+vec2 map(vec3 p){
+  float o = mapObj(p);
+  float f = p.y - FLOOR_Y;
+  if(o < f) return vec2(o,1.0);
+  return vec2(f,2.0);
+}
+
+vec3 nrmObj(vec3 p){
+  vec2 e = vec2(0.0008,0.0);
+  return normalize(vec3(
+    mapObj(p+e.xyy)-mapObj(p-e.xyy),
+    mapObj(p+e.yxy)-mapObj(p-e.yxy),
+    mapObj(p+e.yyx)-mapObj(p-e.yyx)));
+}
+
+vec2 march(vec3 ro,vec3 rd){
+  float t=0.02, id=-1.0;
+  for(int i=0;i<HARD;i++){
+    if(float(i)>=uMaxSteps) break;
+    vec2 h = map(ro+rd*t);
+    if(h.x < 0.0006*t){ id=h.y; break; }
+    t += h.x;
+    if(t > MAXD) break;
+  }
+  return vec2(t,id);
+}
+
+float marchObj(vec3 ro,vec3 rd){       // object only (reflections)
+  float t=0.02;
+  for(int i=0;i<HARD;i++){
+    if(float(i)>=uMaxSteps) break;
+    float h = mapObj(ro+rd*t);
+    if(h < 0.0006*t) return t;
+    t += h;
+    if(t > 20.0) break;
+  }
+  return -1.0;
+}
+
+float marchInside(vec3 ro,vec3 rd){    // inside glass: travel on -mapObj
+  float t=0.01;
+  for(int i=0;i<HARD;i++){
+    if(float(i)>=uMaxSteps) break;
+    float h = -mapObj(ro+rd*t);
+    if(h < 0.0006) return t;
+    t += h;
+    if(t > 12.0) break;
+  }
+  return t;
+}
+
+float softShadow(vec3 ro,vec3 rd){
+  float res=1.0, t=0.03;
+  for(int i=0;i<56;i++){
+    float h = mapObj(ro+rd*t);
+    res = min(res, 11.0*h/t);
+    t  += clamp(h,0.02,0.40);
+    if(h<0.0005 || t>11.0) break;
+  }
+  return clamp(res,0.0,1.0);
+}
+
+float ao(vec3 p,vec3 n){
+  float occ=0.0, sca=1.0;
+  for(int i=0;i<5;i++){
+    float hr = 0.02 + 0.13*float(i);
+    occ += (hr - mapObj(p+n*hr))*sca;
+    sca *= 0.82;
+  }
+  return clamp(1.0 - 2.4*occ, 0.0, 1.0);
+}
+
+vec3 sky(vec3 rd){
+  float h  = clamp(rd.y*0.5+0.5, 0.0, 1.0);
+  vec3 col = mix(vec3(0.020,0.030,0.052), vec3(0.060,0.095,0.150), pow(h,0.8));
+  // colored studio lights -> rich metal reflections
+  float w = pow(max(dot(rd,normalize(vec3( 0.80,0.30, 0.55))),0.0),3.0);
+  col += vec3(0.95,0.45,0.26)*w*0.45;
+  float c = pow(max(dot(rd,normalize(vec3(-0.60,0.45,-0.60))),0.0),3.0);
+  col += vec3(0.22,0.58,0.95)*c*0.40;
+  // sun disc + glow
+  float s = max(dot(rd,SUN),0.0);
+  col += vec3(1.00,0.93,0.80)*pow(s,2200.0)*7.0;
+  col += vec3(1.00,0.82,0.62)*pow(s,12.0)*0.30;
+  return col;
+}
+
+vec3 floorAlbedo(vec3 p){
+  vec3 base = vec3(0.018,0.022,0.028);
+  vec2 g = abs(fract(p.xz*0.5)-0.5);
+  float line = smoothstep(0.47,0.5,max(g.x,g.y));
+  base += vec3(0.03,0.045,0.065)*line*0.6;
+  base *= mix(1.0,0.32,smoothstep(2.0,16.0,length(p.xz)));
+  return base;
+}
+
+vec3 floorSimple(vec3 p,vec3 rd){      // no object-reflection (cheap)
+  vec3 n = vec3(0.0,1.0,0.0);
+  float sh  = softShadow(p+n*0.02, SUN);
+  float dif = max(dot(n,SUN),0.0);
+  vec3 col  = floorAlbedo(p)*(0.25 + 0.7*dif*sh);
+  vec3 r    = reflect(rd,n);
+  float fr  = pow(1.0-max(dot(-rd,n),0.0),5.0);
+  col = mix(col, sky(r), 0.22+0.5*fr);
+  return col;
+}
+
+vec3 envFloor(vec3 ro,vec3 rd){        // sky + analytic floor along a ray
+  vec3 col = sky(rd);
+  if(rd.y < -0.0015){
+    float tp = (FLOOR_Y-ro.y)/rd.y;
+    if(tp>0.0 && tp<60.0){
+      vec3 fp  = ro+rd*tp;
+      float fog = 1.0 - exp(-tp*tp*0.0009);
+      col = mix(floorSimple(fp,rd), col, clamp(fog,0.0,1.0));
+    }
+  }
+  return col;
+}
+
+vec3 shadeOpaque(vec3 p,vec3 n,vec3 rd){
+  vec3  r    = reflect(rd,n);
+  float fr   = pow(clamp(1.0-max(dot(-rd,n),0.0),0.0,1.0),5.0);
+  vec3  env  = envFloor(p+n*0.01, r);
+  float sh   = softShadow(p+n*0.02, SUN);
+  float occ  = ao(p,n);
+  float dif  = max(dot(n,SUN),0.0);
+  float spec = pow(max(dot(r,SUN),0.0),80.0);
+  vec3  col;
+  if(uMat<1.5){                                   // chrome
+    col  = env*vec3(0.92,0.95,1.0)*occ;
+    col += vec3(1.0)*spec*sh*1.3;
+    col  = mix(col, col*1.18, fr);
+  } else if(uMat<2.5){                            // gold
+    col  = env*vec3(1.0,0.76,0.33)*occ;
+    col += vec3(1.0,0.9,0.7)*spec*sh;
+    col *= (0.72+0.30*dif);
+  } else {                                        // obsidian
+    col  = vec3(0.012,0.013,0.016)*(0.2+0.8*dif*sh)*occ;
+    col  = mix(col, env*vec3(0.5,0.55,0.65), 0.10+0.5*fr);
+    col += vec3(1.0)*spec*sh*0.85;
+  }
+  return col;
+}
+
+vec3 reflProxy(vec3 p,vec3 n,vec3 rd){          // cheap stand-in for floor reflections
+  vec3  r   = reflect(rd,n);
+  vec3  env = envFloor(p+n*0.01, r);
+  float fr  = pow(1.0-max(dot(-rd,n),0.0),5.0);
+  vec3 tint = (uMat<0.5)? vec3(0.85,0.92,1.0)
+            : (uMat<1.5)? vec3(0.92,0.95,1.0)
+            : (uMat<2.5)? vec3(1.0,0.76,0.33)
+                        : vec3(0.10,0.12,0.16);
+  return env*tint*(0.55+0.45*fr) + vec3(1.0)*pow(max(dot(r,SUN),0.0),120.0)*0.6;
+}
+
+vec3 shadeGlass(vec3 p,vec3 n,vec3 rd){
+  float ior = 1.45;
+  float fr  = 0.04 + 0.96*pow(clamp(1.0-max(dot(-rd,n),0.0),0.0,1.0),5.0);
+  vec3  rr  = reflect(rd,n);
+  vec3  reflCol = envFloor(p+n*0.01, rr);
+
+  vec3 ri = refract(rd,n,1.0/ior);
+  vec3 refrCol;
+  if(length(ri) < 0.001){
+    refrCol = reflCol;                            // total internal reflection
+  } else {
+    vec3  entry = p - n*0.01;
+    float di    = marchInside(entry, ri);
+    vec3  p2    = entry + ri*di;
+    vec3  n2    = -nrmObj(p2);
+    vec3  ex    = refract(ri,n2,ior);
+    if(length(ex) < 0.001){                       // TIR at exit
+      vec3 rin = reflect(ri,n2);
+      refrCol  = envFloor(p2+rin*0.01, rin);
+    } else if(uDisp>0.5){                          // chromatic dispersion
+      vec3 cR = refract(ri,n2, ior+0.022); if(length(cR)<0.001) cR=ex;
+      vec3 cB = refract(ri,n2, ior-0.022); if(length(cB)<0.001) cB=ex;
+      refrCol = vec3(
+        envFloor(p2+cR*0.01, cR).r,
+        envFloor(p2+ex*0.01, ex).g,
+        envFloor(p2+cB*0.01, cB).b);
+    } else {
+      refrCol = envFloor(p2+ex*0.01, ex);
+    }
+    refrCol *= exp(-vec3(0.55,0.30,0.22)*di*1.4);  // Beer-Lambert tint
+  }
+  vec3 col = mix(refrCol, reflCol, fr);
+  col += vec3(1.0)*pow(max(dot(rr,SUN),0.0),200.0)*1.3;  // glint
+  return col;
+}
+
+vec3 render(vec3 ro,vec3 rd){
+  vec2 h = march(ro,rd);
+  if(h.y < 0.0) return envFloor(ro,rd);
+
+  vec3 p = ro + rd*h.x;
+  if(h.y > 1.5){                                   // floor (primary): reflect the object
+    vec3  n   = vec3(0.0,1.0,0.0);
+    float sh  = softShadow(p+n*0.02, SUN);
+    float dif = max(dot(n,SUN),0.0);
+    vec3  base = floorAlbedo(p)*(0.22 + 0.7*dif*sh);
+    vec3  r   = reflect(rd,n);
+    vec3  rc;
+    float to  = marchObj(p+r*0.02, r);
+    if(to > 0.0){
+      vec3 rp = p + r*(to+0.02);
+      rc = reflProxy(rp, nrmObj(rp), r);
+    } else {
+      rc = envFloor(p, r);
+    }
+    float fr  = pow(1.0-max(dot(-rd,n),0.0),5.0);
+    vec3 col  = mix(base, rc, 0.22+0.55*fr);
+    float fog = 1.0 - exp(-h.x*h.x*0.0009);
+    return mix(col, sky(rd), clamp(fog,0.0,1.0));
+  }
+
+  vec3 n = nrmObj(p);                              // the object
+  return (uMat<0.5) ? shadeGlass(p,n,rd) : shadeOpaque(p,n,rd);
+}
+
+vec3 aces(vec3 x){
+  return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14), 0.0, 1.0);
+}
+
+void main(){
+  vec2 uv = (gl_FragCoord.xy - 0.5*uRes)/uRes.y;
+  vec3 ro = uCamPos;
+  vec3 ww = normalize(uTarget-ro);
+  vec3 uu = normalize(cross(vec3(0.0,1.0,0.0), ww));
+  vec3 vv = cross(ww,uu);
+  vec3 rd = normalize(uv.x*uu + uv.y*vv + 1.45*ww);
+
+  vec3 col = render(ro,rd)*1.25;
+  col = aces(col);
+
+  vec2 q = gl_FragCoord.xy/uRes;
+  col *= mix(0.78,1.0, pow(16.0*q.x*q.y*(1.0-q.x)*(1.0-q.y),0.18));   // vignette
+  col += (fract(sin(dot(gl_FragCoord.xy+uTime, vec2(12.9898,78.233)))*43758.545)-0.5)*0.022;
+  col = pow(clamp(col,0.0,1.0), vec3(0.4545));                        // gamma
+  gl_FragColor = vec4(col,1.0);
+}
+</script>
+
+<script>
+(function(){
+  "use strict";
+  const canvas = document.getElementById('gl');
+  const gl = canvas.getContext('webgl', {antialias:false, alpha:false, powerPreference:'high-performance'})
+          || canvas.getContext('experimental-webgl');
+  if(!gl){ document.getElementById('err').style.display='grid'; return; }
+
+  // ---- compile ----
+  function sh(type,src){
+    const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s);
+    if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  let prog;
+  try{
+    prog=gl.createProgram();
+    gl.attachShader(prog, sh(gl.VERTEX_SHADER,   document.getElementById('vert').textContent));
+    gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, document.getElementById('frag').textContent));
+    gl.linkProgram(prog);
+    if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+  }catch(e){ console.error(e); document.getElementById('err').style.display='grid'; return; }
+  gl.useProgram(prog);
+
+  // fullscreen triangle
+  const buf=gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1, 3,-1, -1,3]),gl.STATIC_DRAW);
+  const loc=gl.getAttribLocation(prog,'p');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+
+  const U={};
+  ['uRes','uTime','uCamPos','uTarget','uMat','uMaxSteps','uDisp']
+    .forEach(n=>U[n]=gl.getUniformLocation(prog,n));
+
+  // ---- state ----
+  const isTouch = matchMedia('(pointer:coarse)').matches;
+  const state = {
+    mat:0, disp:1, auto:1,
+    yaw:0.6, pitch:0.35, radius:3.4,
+    velYaw:0, velPitch:0,
+    qScale: isTouch?0.7:1.0,
+    steps:  isTouch?110:150
+  };
+  const DEF = {yaw:0.6, pitch:0.35, radius:3.4};
+  const MAXSIDE = 1600;
+
+  function resize(){
+    const w0=canvas.clientWidth, h0=canvas.clientHeight;
+    let w=Math.max(2,Math.round(w0*state.qScale));
+    let h=Math.max(2,Math.round(h0*state.qScale));
+    const lng=Math.max(w,h);
+    if(lng>MAXSIDE){ const k=MAXSIDE/lng; w=Math.round(w*k); h=Math.round(h*k); }
+    if(canvas.width!==w||canvas.height!==h){ canvas.width=w; canvas.height=h; }
+  }
+  window.addEventListener('resize',resize);
+
+  // ---- input: orbit ----
+  let dragging=false, lx=0, ly=0;
+  canvas.addEventListener('pointerdown',e=>{
+    dragging=true; lx=e.clientX; ly=e.clientY; canvas.classList.add('drag');
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointermove',e=>{
+    if(!dragging) return;
+    const dx=(e.clientX-lx)/innerWidth, dy=(e.clientY-ly)/innerHeight;
+    lx=e.clientX; ly=e.clientY;
+    state.velYaw  = -dx*3.2;
+    state.velPitch=  dy*3.2;
+    state.yaw   += state.velYaw;
+    state.pitch  = Math.max(-0.05, Math.min(1.25, state.pitch+state.velPitch));
+  });
+  function endDrag(e){ dragging=false; canvas.classList.remove('drag');
+    if(e&&e.pointerId!=null){ try{canvas.releasePointerCapture(e.pointerId);}catch(_){}} }
+  canvas.addEventListener('pointerup',endDrag);
+  canvas.addEventListener('pointercancel',endDrag);
+  canvas.addEventListener('wheel',e=>{
+    e.preventDefault();
+    state.radius=Math.max(2.2,Math.min(7.0, state.radius*(1+Math.sign(e.deltaY)*0.08)));
+  },{passive:false});
+
+  // ---- UI ----
+  const matNames=['GLASS','CHROME','GOLD','OBSIDIAN'];
+  const mats=[...document.querySelectorAll('#mats .chip')];
+  const dispBtn=document.getElementById('disp');
+  function setMat(m){
+    state.mat=m;
+    mats.forEach(c=>c.classList.toggle('on', +c.dataset.mat===m));
+    document.getElementById('r-mat').textContent=matNames[m];
+    dispBtn.dataset.disabled = (m===0)?'0':'1';   // dispersion only meaningful for glass
+  }
+  mats.forEach(c=>c.addEventListener('click',()=>setMat(+c.dataset.mat)));
+  document.getElementById('auto').addEventListener('click',function(){
+    state.auto^=1; this.classList.toggle('on',!!state.auto);
+  });
+  dispBtn.addEventListener('click',function(){
+    state.disp^=1; this.classList.toggle('on',!!state.disp);
+  });
+  document.getElementById('reset').addEventListener('click',()=>{
+    state.yaw=DEF.yaw; state.pitch=DEF.pitch; state.radius=DEF.radius;
+    state.velYaw=state.velPitch=0;
+  });
+  addEventListener('keydown',e=>{
+    if(e.key>='1'&&e.key<='4') setMat(+e.key-1);
+    if(e.code==='Space'){ e.preventDefault(); document.getElementById('auto').click(); }
+  });
+
+  // ---- adaptive quality + loop ----
+  const rMat=document.getElementById('r-mat'), rFps=document.getElementById('r-fps'),
+        rRes=document.getElementById('r-res'), rSteps=document.getElementById('r-steps'),
+        rQ=document.getElementById('r-q');
+  let t0=performance.now(), acc=0, frames=0, avg=16.6, last=t0, running=true;
+  document.addEventListener('visibilitychange',()=>{ running=!document.hidden; if(running){last=performance.now(); requestAnimationFrame(loop);} });
+
+  function loop(now){
+    if(!running) return;
+    const dt=Math.min(0.05,(now-last)/1000); last=now;
+
+    // inertia + auto-orbit
+    if(!dragging){
+      state.yaw   += state.velYaw;
+      state.pitch  = Math.max(-0.05,Math.min(1.25, state.pitch+state.velPitch));
+      state.velYaw  *=0.92; state.velPitch*=0.92;
+      if(state.auto) state.yaw += dt*0.14;
+    }
+
+    const cp=Math.cos(state.pitch), sp=Math.sin(state.pitch);
+    const cx= state.radius*cp*Math.sin(state.yaw);
+    const cz= state.radius*cp*Math.cos(state.yaw);
+    const cy= -0.05 + state.radius*sp;
+
+    resize();
+    gl.viewport(0,0,canvas.width,canvas.height);
+    gl.uniform2f(U.uRes,canvas.width,canvas.height);
+    gl.uniform1f(U.uTime,(now-t0)/1000);
+    gl.uniform3f(U.uCamPos,cx,cy,cz);
+    gl.uniform3f(U.uTarget,0,-0.05,0);
+    gl.uniform1f(U.uMat,state.mat);
+    gl.uniform1f(U.uMaxSteps,state.steps);
+    gl.uniform1f(U.uDisp,state.disp);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+
+    // metrics
+    frames++; acc+=now-(loop._p||now); loop._p=now;
+    if(acc>=400){
+      avg=acc/frames; const fps=1000/avg;
+      rFps.textContent=Math.round(fps);
+      rRes.textContent=canvas.width+'×'+canvas.height;
+      rSteps.textContent=Math.round(state.steps);
+      rQ.textContent=state.qScale.toFixed(2);
+      // adapt
+      if(avg>26 && state.qScale>0.55){ state.qScale=Math.max(0.55,state.qScale*0.9); state.steps=Math.max(80,state.steps-12); }
+      else if(avg<13 && (state.qScale<1.35||state.steps<160)){ state.qScale=Math.min(1.35,state.qScale*1.05); state.steps=Math.min(165,state.steps+8); }
+      acc=0; frames=0;
+    }
+    requestAnimationFrame(loop);
+  }
+  resize(); setMat(0);
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
