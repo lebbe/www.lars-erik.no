@@ -57,6 +57,17 @@ const { frontmatter } = Astro.props
 
       <a href="/blog" class="back-link">← Tilbake til bloggen</a>
     </div>
+    <script>
+      document.querySelectorAll('.blog-content img').forEach((img) => {
+        if (img.closest('a')) return
+        const a = document.createElement('a')
+        a.href = img.currentSrc || img.src
+        a.target = '_blank'
+        a.rel = 'noopener'
+        img.replaceWith(a)
+        a.appendChild(img)
+      })
+    </script>
   </body>
 </html>
 
@@ -119,6 +130,13 @@ const { frontmatter } = Astro.props
 
   .blog-content {
     margin: 20px 0;
+  }
+
+  :global(.blog-content img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    cursor: zoom-in;
   }
 
   :global(.blog-content h1) {
