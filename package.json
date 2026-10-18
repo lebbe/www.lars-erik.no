@@ -16,14 +16,14 @@
     "blog": "node scripts/new-blog-post.js"
   },
   "dependencies": {
-    "astro": "^6.0.4",
-    "lucide": "^0.577.0",
+    "astro": "^7.4.0",
+    "lucide": "^1.59.0",
     "simple-icons-astro": "^16.1.0"
   },
   "devDependencies": {
-    "oxlint": "^1.55.0",
-    "prettier": "^3.8.1",
-    "prettier-plugin-astro": "^0.14.1",
-    "simple-icons": "^16.12.0"
+    "oxlint": "^1.88.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "simple-icons": "^16.35.0"
   }
 }
